@@ -1,0 +1,76 @@
+#!/bin/sh
+# SkyStream's AppImage entry point.
+#
+# SkyStream takes GTK 3, WebKitGTK 4.1, libsecret and VLC from the system, as
+# the .deb and the tarball do, and needs a system at least as new as the one
+# it was built on. When either fails the binary can't start, and the loader
+# says so only on a terminal, which a launch from the desktop never shows. So
+# this says what is wrong first: on stderr, and in a dialog where the desktop
+# has a dialog tool.
+#
+# Nothing is exported. The binary finds its own libraries through its RUNPATH,
+# and anything set here would pass to every program SkyStream starts, the
+# browser it opens links in included.
+
+here="${APPDIR:-$(dirname "$(readlink -f "$0")")}"
+bin="$here/opt/skystream/skystream"
+
+if command -v ldd >/dev/null 2>&1; then
+  # The loader's own account: libraries it can't find, and symbol versions the
+  # system's libraries are too old for. The plugins' libraries are the
+  # binary's own NEEDED entries, so one ldd covers them all.
+  trace="$(ldd "$bin" 2>&1)"
+  missing="$(printf '%s\n' "$trace" | awk '/=> not found/ { print $1 }')"
+  too_old="$(printf '%s\n' "$trace" | grep -o "version \`[^']*' not found" | sort -u)"
+  message=""
+
+  if [ -n "$missing" ]; then
+    # One "what|Debian and Ubuntu packages" line per missing piece.
+    report="$(for lib in $missing; do
+      case "$lib" in
+        libvlc.so.* | libvlccore.so.*)
+          echo 'VLC|libvlc5 vlc-plugin-base' ;;
+        libwebkit2gtk-4.1.so.* | libjavascriptcoregtk-4.1.so.* | libsoup-3.0.so.*)
+          echo 'WebKitGTK 4.1|libwebkit2gtk-4.1-0' ;;
+        libsecret-1.so.*)
+          echo 'libsecret|libsecret-1-0' ;;
+        libgtk-3.so.* | libgdk-3.so.*)
+          echo 'GTK 3|libgtk-3-0' ;;
+        *)
+          echo "$lib|" ;;
+      esac
+    done | sort -u)"
+    needs="$(printf '%s\n' "$report" | cut -d'|' -f1 | sed 's/^/  • /')"
+    packages="$(printf '%s\n' "$report" | cut -d'|' -f2 | tr ' ' '\n' | sed '/^$/d' | sort -u | tr '\n' ' ')"
+
+    message="SkyStream can't start: it needs these from your system.
+
+$needs"
+    if [ -n "$packages" ]; then
+      message="$message
+
+On Debian or Ubuntu, install them with:
+  sudo apt install ${packages% }
+
+On other systems, install them with your package manager."
+    fi
+  elif [ -n "$too_old" ]; then
+    message="SkyStream can't start: this system is older than it needs.
+
+$(printf '%s\n' "$too_old" | sed 's/^/  • /')
+
+It runs on Ubuntu 22.04, Debian 12, Fedora 36 and newer."
+  fi
+
+  if [ -n "$message" ]; then
+    printf '%s\n' "$message" >&2
+    if command -v zenity >/dev/null 2>&1; then
+      zenity --error --title=SkyStream --no-wrap --text="$message" 2>/dev/null
+    elif command -v kdialog >/dev/null 2>&1; then
+      kdialog --title SkyStream --error "$message" 2>/dev/null
+    fi
+    exit 1
+  fi
+fi
+
+exec "$bin" "$@"

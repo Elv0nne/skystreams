@@ -1,0 +1,216 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../library/1.0.1/library-1.0.1.module",
+    "group": "com.lagradost.api",
+    "module": "library",
+    "version": "1.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "androidApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "library.aar",
+          "url": "library-android-1.0.1.aar",
+          "size": 2704186,
+          "sha512": "77c2dd81a9e9c6e2b8c019a00ba92bfd90883c320851371611706cbc2f429ec77493621e94f249d4f54030a9d66c05b8d2c5f1165af01d58c96e0e165386304e",
+          "sha256": "4506145c91a9c4d894aaccc10651751e5f71796cd45f793abb1e3f6fc6c84cd2",
+          "sha1": "52830604e47fecb6290f67efaeb46f880eced161",
+          "md5": "3e5899df7bf0e7e5c7332b1045fc4201"
+        }
+      ]
+    },
+    {
+      "name": "androidRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.0"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.10.0"
+          }
+        },
+        {
+          "group": "com.fasterxml.jackson.module",
+          "module": "jackson-module-kotlin",
+          "version": {
+            "strictly": "2.13.1",
+            "requires": "2.13.1"
+          }
+        },
+        {
+          "group": "org.jsoup",
+          "module": "jsoup",
+          "version": {
+            "requires": "1.22.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.33.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-datetime",
+          "version": {
+            "requires": "0.8.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "com.fleeksoft.ksoup",
+          "module": "ksoup",
+          "version": {
+            "requires": "0.2.6"
+          }
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-http",
+          "version": {
+            "requires": "3.5.0"
+          }
+        },
+        {
+          "group": "com.github.Blatzar",
+          "module": "NiceHttp",
+          "version": {
+            "requires": "0.4.18"
+          }
+        },
+        {
+          "group": "org.mozilla",
+          "module": "rhino",
+          "version": {
+            "strictly": "1.8.1",
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "dev.whyoleg.cryptography",
+          "module": "cryptography-core",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "dev.whyoleg.cryptography",
+          "module": "cryptography-provider-optimal",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "2.4.0"
+          }
+        },
+        {
+          "group": "com.github.teamnewpipe",
+          "module": "NewPipeExtractor",
+          "version": {
+            "requires": "v0.26.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "library.aar",
+          "url": "library-android-1.0.1.aar",
+          "size": 2704186,
+          "sha512": "77c2dd81a9e9c6e2b8c019a00ba92bfd90883c320851371611706cbc2f429ec77493621e94f249d4f54030a9d66c05b8d2c5f1165af01d58c96e0e165386304e",
+          "sha256": "4506145c91a9c4d894aaccc10651751e5f71796cd45f793abb1e3f6fc6c84cd2",
+          "sha1": "52830604e47fecb6290f67efaeb46f880eced161",
+          "md5": "3e5899df7bf0e7e5c7332b1045fc4201"
+        }
+      ]
+    },
+    {
+      "name": "androidSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "files": [
+        {
+          "name": "library-android-1.0.1-sources.jar",
+          "url": "library-android-1.0.1-sources.jar",
+          "size": 255706,
+          "sha512": "0ea3376a977d06f00e2ad187cde76d9634f2c59529bb9566f5be70f21eda694b6746864cdd95db9e312c7cc2d338b96073623af776e69483b0d119be099332a1",
+          "sha256": "de1fce31cf5de41bb7b551af8fc24f37261d8ce9b75d9bc0616481b1394dc3cb",
+          "sha1": "76c95709515df788c22b90a893dded1402355c11",
+          "md5": "25e358d06244886de31c52d7b5efb7a5"
+        }
+      ]
+    }
+  ]
+}

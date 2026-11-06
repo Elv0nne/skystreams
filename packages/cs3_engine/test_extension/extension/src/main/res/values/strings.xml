@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title">SkyStream test settings</string>
+    <string name="close">Close</string>
+    <string name="second_provider">Second provider</string>
+    <string name="dark_posters">Dark posters</string>
+    <string name="token_label">Token</string>
+    <string name="token_hint">Paste a token</string>
+    <string name="fast">Fast</string>
+    <string name="careful">Careful</string>
+    <string name="timeout_label">Timeout</string>
+    <string name="picked">Picked: none</string>
+    <string name="save">Save</string>
+    <string name="save_activity">Save and restart</string>
+    <string name="restart_title">Restart required</string>
+    <string name="restart_message">Restart the app to apply the changes?</string>
+    <!-- The engine's reader tests (not shown on screen): an emoji, and values the night and Hindi folders change. -->
+    <string name="emoji">Movies 🎬</string>
+    <string name="theme_probe">day</string>
+    <string name="language_probe">English</string>
+    <string name="greeting">Hello, %1$s</string>
+    <string-array name="qualities">
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+    </string-array>
+</resources>

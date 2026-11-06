@@ -1,0 +1,1176 @@
+/// The player's side panel: Sources, Quality, Audio, Subtitles, Episodes and
+/// Files in one right-anchored drawer instead of four bottom sheets. The shape
+/// lives in player_panel_shell.dart.
+///
+/// Opening moves focus onto the row that is selected now, not row one. Closing
+/// returns focus to the control that opened the panel, which falls out of the
+/// panel being a route: the scope below keeps its focused child and gets it
+/// back when this one is popped. That is also why the chrome must be held open
+/// while the panel is up - the button focus returns to has to still be there.
+/// Every row is one focus stop ([PanelRow]), the tab strip is ordinary
+/// focusable buttons rather than a scrollable [TabBar], and nothing here
+/// hand-routes an arrow key.
+///
+/// A tab can open a second step in the panel's place - the Subtitles tab's
+/// online search and its subtitle style - under a title and a Back button
+/// ([PanelPage]). Back from there is back to the tab, focused on the row that
+/// opened it; only Back from the tabs closes the panel.
+///
+/// Data is live: the screen publishes a [PanelData] through a
+/// `ValueListenable` and the panel rebuilds from it, so a failover, a late
+/// probe or a torrent poll moves the tick, the chips and the badges in place.
+/// The row a list opens on and focuses is decided once, from the value at
+/// open, and a later value never scrolls or refocuses.
+///
+/// Every size, inset and text alpha comes from [PlayerPanelMetrics], installed
+/// once here and read off the context by the rows, badges, subheaders and tabs
+/// below. The television ramp is about 1.2x the type, a 48 dp overscan inset
+/// and paddings that make a row and a tab one whole focus target.
+///
+/// The panel is drawn over a platform view. It animates in with a
+/// [SlideTransition] - a transform, not a window-sized opacity layer - and its
+/// surface is opaque, with no blur anywhere. The five rules in
+/// vlc_player_controls.dart apply here in full.
+library;
+
+import 'dart:async';
+
+import 'package:flutter/foundation.dart'
+    show SynchronousFuture, ValueListenable, listEquals;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:vlc_player/vlc_player.dart';
+
+import '../../../../../core/domain/entity/multimedia_item.dart';
+import '../../../../../l10n/generated/app_localizations.dart';
+import '../../../domain/side_car_subtitles.dart';
+import '../../widgets/hotstar_player_style.dart';
+import '../torrent_file_sheet.dart';
+import 'player_episodes_tab.dart';
+import 'player_files_tab.dart';
+import 'player_panel_data.dart';
+import 'player_panel_metrics.dart';
+import 'player_panel_page.dart';
+import 'player_panel_row.dart';
+import 'player_panel_shell.dart';
+import 'player_quality_tab.dart';
+import 'player_sources_tab.dart';
+import 'player_subtitle_style_page.dart';
+import 'player_tracks_tab.dart';
+import '../../../../../shared/focus/app_focus.dart';
+
+export 'player_panel_data.dart'
+    show EpisodeProgress, EpisodeProgressLookup, PanelData;
+export 'player_subtitle_style_page.dart' show SubtitleStyleBinding;
+
+/// The panel's tabs, in the order they are shown.
+enum PlayerPanelTab { sources, quality, audio, subtitles, episodes, files }
+
+/// Which tabs the panel would show for these lists. The panel strip and the
+/// bottom-bar buttons both read this, so a button can never open a tab that
+/// does not exist.
+///
+/// Audio and Subtitles are always present: an empty list is still something to
+/// say. One episode or one file is not a choice, so neither gets a tab - and
+/// neither does a stream with one quality, or a stream that is not HLS.
+Set<PlayerPanelTab> availablePanelTabs({
+  required int sourceCount,
+  required int episodeCount,
+  required int fileCount,
+  int qualityCount = 0,
+}) => <PlayerPanelTab>{
+  if (sourceCount > 0) PlayerPanelTab.sources,
+  if (qualityCount > 1) PlayerPanelTab.quality,
+  PlayerPanelTab.audio,
+  PlayerPanelTab.subtitles,
+  if (episodeCount > 1) PlayerPanelTab.episodes,
+  if (fileCount > 1) PlayerPanelTab.files,
+};
+
+/// Opens the panel over the player and resolves when it closes.
+///
+/// The caller holds the chrome open for the life of the future
+/// (`ChromeVisibilityController.whileHeld`), so the bars cannot vanish
+/// underneath a panel and the control that opened it is still on screen to
+/// take focus back.
+///
+/// [data] is live: the panel follows a new [PanelData] without being reopened.
+///
+/// [onOpened] hands back the panel's own context so the screen can register it
+/// with its one guarded Back path. On a television Back arrives both as a
+/// route pop and as a key event, and without a single owner one press can
+/// close the panel and leave playback in the same frame.
+///
+/// [episodeProgress] is how the Episodes tab knows which episodes have been
+/// seen. It is a function rather than data because the panel has no
+/// `ProviderScope` to read the repositories from and because the answer must
+/// not be computed for rows nobody scrolled to.
+///
+/// [onAudioPicked] hears of each audio track the viewer puts on from the Audio
+/// tab - see [PlayerTracksTab.onAudioPicked].
+///
+/// [subtitleStyle] is the viewer's subtitle settings, for the Subtitles tab's
+/// Subtitle style page - see [PlayerTracksTab.subtitleStyle].
+///
+/// [onPickQuality] hears the quality the viewer picked in the Quality tab: a
+/// height, or null for Auto. The panel closes first, as for a source.
+Future<void> showPlayerPanel(
+  BuildContext context, {
+  required VlcPlayerController controller,
+  required PlayerPanelTab initialTab,
+  required ValueListenable<PanelData> data,
+  bool isTv = false,
+  bool focusOnOpen = false,
+  ValueChanged<int>? onPickSource,
+  ValueChanged<int?>? onPickQuality,
+  ValueChanged<Episode>? onPickEpisode,
+  ValueChanged<TorrentFile>? onPickFile,
+  ValueChanged<BuildContext>? onOpened,
+  EpisodeProgressLookup? episodeProgress,
+  SideCarSubtitles? sideCars,
+  ValueChanged<VlcTrackDescription>? onAudioPicked,
+  SubtitleStyleBinding? subtitleStyle,
+}) {
+  return Navigator.of(context).push<void>(
+    _PlayerPanelRoute(
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      builder: (routeContext) {
+        onOpened?.call(routeContext);
+        return PlayerPanel(
+          controller: controller,
+          initialTab: initialTab,
+          data: data,
+          isTv: isTv,
+          focusOnOpen: focusOnOpen,
+          onPickSource: onPickSource,
+          onPickQuality: onPickQuality,
+          onPickEpisode: onPickEpisode,
+          onPickFile: onPickFile,
+          episodeProgress: episodeProgress,
+          sideCars: sideCars,
+          onAudioPicked: onAudioPicked,
+          subtitleStyle: subtitleStyle,
+          onClose: () => Navigator.of(routeContext).pop(),
+        );
+      },
+    ),
+  );
+}
+
+/// A modal that leaves the video playing behind it.
+///
+/// [PopupRoute] rather than `showModalBottomSheet`: this one has to keep the
+/// route below built and visible, own its own transition (a slide, never a
+/// window-sized fade), and take its shape from the window.
+class _PlayerPanelRoute extends PopupRoute<void> {
+  _PlayerPanelRoute({required this.builder, required this.barrierLabel});
+
+  final WidgetBuilder builder;
+
+  @override
+  final String barrierLabel;
+
+  /// A plain colour, drawn by the framework's own barrier: a [ColoredBox], not
+  /// an opacity layer over the video.
+  ///
+  /// 45 %, not the 54 % it was, because the barrier is painted behind the
+  /// drawer as well as beside it and the drawer is glass now. Two dimmings in
+  /// series left about 7 % of the picture coming through, which is a panel that
+  /// is translucent only on paper. The drawer does its own darkening; the
+  /// barrier only has to say that the video is not what is being pointed at.
+  @override
+  Color get barrierColor => const Color(0x73000000);
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  Duration get transitionDuration => HotstarPlayerStyle.panelMotionDuration;
+
+  /// A tap beside the drawer is the viewer done with it, wherever it has got
+  /// to, so it closes the panel from a second step too. Back is what walks
+  /// the steps: the framework's own barrier asks for a `maybePop`, which the
+  /// panel answers from a step by stepping back - see [PanelPage].
+  @override
+  Widget buildModalBarrier() {
+    void dismiss() {
+      if (isCurrent) navigator?.pop();
+    }
+
+    if (offstage) {
+      return ModalBarrier(
+        dismissible: barrierDismissible,
+        semanticsLabel: barrierLabel,
+        barrierSemanticsDismissible: semanticsDismissible,
+        onDismiss: dismiss,
+      );
+    }
+    return AnimatedModalBarrier(
+      color: animation!.drive(
+        ColorTween(
+          begin: barrierColor.withValues(alpha: 0),
+          end: barrierColor,
+        ).chain(CurveTween(curve: barrierCurve)),
+      ),
+      dismissible: barrierDismissible,
+      semanticsLabel: barrierLabel,
+      barrierSemanticsDismissible: semanticsDismissible,
+      onDismiss: dismiss,
+    );
+  }
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return builder(context);
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return SlideTransition(
+      position:
+          Tween<Offset>(begin: kPanelSlideFrom, end: Offset.zero).animate(
+            CurvedAnimation(parent: animation, curve: Curves.fastOutSlowIn),
+          ),
+      child: child,
+    );
+  }
+}
+
+/// The panel's content. Split from the route so a test can pump it directly.
+class PlayerPanel extends StatefulWidget {
+  const PlayerPanel({
+    required this.controller,
+    required this.initialTab,
+    required this.data,
+    required this.onClose,
+    this.isTv = false,
+    this.focusOnOpen = false,
+    this.onPickSource,
+    this.onPickQuality,
+    this.onPickEpisode,
+    this.onPickFile,
+    this.episodeProgress,
+    this.sideCars,
+    this.onAudioPicked,
+    this.subtitleStyle,
+    super.key,
+  });
+
+  final VlcPlayerController controller;
+  final PlayerPanelTab initialTab;
+
+  /// What the panel shows, live. Read once at open for the anchor row; every
+  /// later value redraws the tick, chips and badges in place.
+  final ValueListenable<PanelData> data;
+
+  final VoidCallback onClose;
+  final bool isTv;
+
+  /// Whether a row takes focus as the panel opens. False on touch, where a
+  /// focus ring nobody asked for is just a mark on the screen.
+  final bool focusOnOpen;
+
+  final ValueChanged<int>? onPickSource;
+
+  /// The quality picked in the Quality tab: a height, or null for Auto.
+  final ValueChanged<int?>? onPickQuality;
+
+  final ValueChanged<Episode>? onPickEpisode;
+  final ValueChanged<TorrentFile>? onPickFile;
+
+  /// Which episodes have been seen, asked one built row at a time. Not part of
+  /// [data]: a closure has no `==`, and [PanelData]'s equality is what keeps
+  /// the panel still under the screen's republishes.
+  final EpisodeProgressLookup? episodeProgress;
+
+  /// The subtitle files SkyStream draws, for the Subtitles tab to list beside
+  /// the video's own tracks. A listenable of its own rather than part of
+  /// [data], because a file's progress is not something to republish the
+  /// whole panel over.
+  final SideCarSubtitles? sideCars;
+
+  /// Each audio track the viewer puts on from the Audio tab - see
+  /// [PlayerTracksTab.onAudioPicked].
+  final ValueChanged<VlcTrackDescription>? onAudioPicked;
+
+  /// The viewer's subtitle settings, for the Subtitles tab's Subtitle style
+  /// page - see [PlayerTracksTab.subtitleStyle].
+  final SubtitleStyleBinding? subtitleStyle;
+
+  @override
+  State<PlayerPanel> createState() => _PlayerPanelState();
+}
+
+class _PlayerPanelState extends State<PlayerPanel> {
+  /// The data as it stood when the panel opened. The row each list opens on
+  /// and focuses is decided from this and never revisited, so a failover or a
+  /// torrent poll after open ticks a different row rather than scrolling the
+  /// list or moving focus.
+  late final PanelData _opened = widget.data.value;
+
+  /// The tab the viewer is on - the one they opened, or the one they picked.
+  late PlayerPanelTab _tab;
+
+  /// The tab actually on screen. Usually [_tab]; while live data has taken
+  /// that tab away (Files after the torrent stopped) it is the first tab that
+  /// is left, and [_tab] is remembered so the viewer's own tab comes back if
+  /// the data does.
+  late PlayerPanelTab _shown;
+
+  late Future<_PanelTracks> _tracks;
+
+  /// The lists on screen, kept while a revision move reads them again: the
+  /// answer replaces them only if it differs, in place.
+  _PanelTracks? _shownTracks;
+
+  /// Counts the background reads, so only the newest one lands.
+  int _refreshes = 0;
+
+  /// Set when the tab hands the engine a track the viewer brought: the first
+  /// answer with a row the lists on screen lack re-anchors, as a reload does.
+  bool _trackOnItsWay = false;
+
+  /// The engine's track revision the list was last read under. The engine owns
+  /// both the list and the selection, so when the revision moves - a side-car
+  /// landing after the panel opened, a stream announcing its audio late - the
+  /// list is re-read here without a Retry. The panel holds no selection state.
+  late int _seenRevision;
+
+  /// Whether the viewer has switched tab. Only the tab the panel opened on
+  /// autofocuses a row: after a switch, focus belongs on the tab button that
+  /// was just pressed.
+  bool _switchedTab = false;
+
+  /// Whether the track list has been re-read since the last tab switch. A
+  /// reload swaps the Future and the spinner unmounts every row, the focused
+  /// one included, so on a switched-to tab nothing would claim focus again;
+  /// after a reload the rows may autofocus once more, landing on the active
+  /// row.
+  bool _reloadedSinceSwitch = false;
+
+  /// The second step the panel is on, or null on the tabs. See [PanelPage].
+  PanelPage? _page;
+
+  /// What held focus when [_page] opened, given it back when the page closes.
+  FocusNode? _pageOpener;
+
+  /// The Subtitles tab's Search online row. Owned here so the row keeps it
+  /// wherever the list moves it - a file the search adds is listed ahead of
+  /// it - and Back from the search lands on that row, not its old position.
+  final FocusNode _searchRow = FocusNode(debugLabel: 'panel search row');
+
+  /// The Subtitles tab's Subtitle style row, owned here for the same reason:
+  /// Back from the page lands on it wherever the list has moved it.
+  final FocusNode _styleRow = FocusNode(debugLabel: 'panel style row');
+
+  @override
+  void initState() {
+    super.initState();
+    final tabs = _tabsOf(_opened);
+    _tab = tabs.contains(widget.initialTab) ? widget.initialTab : tabs.first;
+    _shown = _tab;
+    _seenRevision = widget.controller.value.trackRevision;
+    widget.controller.addListener(_onEngine);
+    _tracks = _loadTracks().then(_show)..ignore();
+  }
+
+  @override
+  void didUpdateWidget(covariant PlayerPanel oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_onEngine);
+      widget.controller.addListener(_onEngine);
+      _seenRevision = widget.controller.value.trackRevision;
+      _reloadTracks();
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onEngine);
+    _searchRow.dispose();
+    _styleRow.dispose();
+    super.dispose();
+  }
+
+  /// Every controller notification, most of them position ticks. Only a moved
+  /// revision does anything: the tick itself is the tab's business.
+  void _onEngine() {
+    final revision = widget.controller.value.trackRevision;
+    if (revision == _seenRevision || !mounted) return;
+    _seenRevision = revision;
+    _refreshTracks();
+  }
+
+  /// Read when the viewer asks for them, the only point at which the engine's
+  /// answer is reliable.
+  Future<_PanelTracks> _loadTracks() async {
+    final audio = await widget.controller.getAudioTracks();
+    final subtitle = await widget.controller.getSubtitleTracks();
+    VlcMediaInfo? info;
+    try {
+      info = await widget.controller.getMediaInfo();
+    } catch (_) {
+      // Detail only. A track list without codecs is still a track list.
+      info = null;
+    }
+    return _PanelTracks(audio: audio, subtitle: subtitle, info: info);
+  }
+
+  /// Remembers [tracks] as the lists on screen.
+  _PanelTracks _show(_PanelTracks tracks) => _shownTracks = tracks;
+
+  /// Re-reads the lists from Retry, a track the tab changed, or another
+  /// controller. The rows remount and re-anchor on the active one.
+  void _reloadTracks() {
+    // Block body on purpose: `=> setState(() => _tracks = _loadTracks())`
+    // returns the assigned Future out of the callback, which trips setState's
+    // own assertion before it ever calls markNeedsBuild.
+    setState(() {
+      // Handled here as well as by the list: a read the panel outlives fails
+      // with nobody left to hear it, and the list still shows the error.
+      _tracks = _loadTracks().then(_show)..ignore();
+      _reloadedSinceSwitch = true;
+    });
+  }
+
+  /// Reads the lists again for a revision move, keeping the rows: a changed
+  /// answer is swapped in place, through a SynchronousFuture so the builder
+  /// skips its waiting frame, and an unchanged or failed one leaves them, with
+  /// focus and scroll where the viewer had them.
+  void _refreshTracks() {
+    final asked = ++_refreshes;
+    _loadTracks().then((tracks) {
+      if (!mounted || asked != _refreshes || tracks == _shownTracks) return;
+      final landed = _trackOnItsWay && _hasNewRow(tracks);
+      if (landed) _trackOnItsWay = false;
+      setState(() {
+        _shownTracks = tracks;
+        // The track the viewer just brought: the rows remount on what is
+        // playing now, through the builder's waiting frame, as a reload does.
+        _tracks = landed
+            ? Future<_PanelTracks>.value(tracks)
+            : SynchronousFuture<_PanelTracks>(tracks);
+        if (landed) _reloadedSinceSwitch = true;
+      });
+    }, onError: (Object _) {});
+  }
+
+  /// Whether [tracks] lists a row the lists on screen don't.
+  bool _hasNewRow(_PanelTracks tracks) {
+    final shown = _shownTracks;
+    if (shown == null) return true;
+    return tracks.audio.any((track) => !shown.audio.contains(track)) ||
+        tracks.subtitle.any((track) => !shown.subtitle.contains(track));
+  }
+
+  /// The tabs [data] would show, in enum order - the same helper the bottom
+  /// bar reads.
+  List<PlayerPanelTab> _tabsOf(PanelData data) {
+    final tabs = data.tabs;
+    return PlayerPanelTab.values.where(tabs.contains).toList(growable: false);
+  }
+
+  /// Opens [page] in the panel's place. The page takes focus on its first
+  /// frame; the tabs below it keep theirs to hand back.
+  void _openPage(PanelPage page) {
+    if (!mounted) return;
+    _pageOpener = FocusManager.instance.primaryFocus;
+    setState(() => _page = page);
+  }
+
+  /// Back from the page to the tab it was opened from, with focus back on the
+  /// row that opened it.
+  void _closePage() {
+    if (!mounted || _page == null) return;
+    final opener = _pageOpener;
+    _pageOpener = null;
+    setState(() => _page = null);
+    if (opener != null) unawaited(_refocus(opener));
+  }
+
+  /// Gives [opener] focus back once it can take it: the frame after the tabs
+  /// are rebuilt reachable - or, when what the page did moved the engine's
+  /// tracks and the list is being read again, once that read has landed and
+  /// the row is back on screen.
+  Future<void> _refocus(FocusNode opener) async {
+    await WidgetsBinding.instance.endOfFrame;
+    if (!mounted || _page != null) return;
+    if (!_canTakeFocus(opener)) {
+      try {
+        await _tracks;
+      } on Object {
+        // The list says so itself; the row is back either way.
+      }
+      await WidgetsBinding.instance.endOfFrame;
+    }
+    if (!mounted || _page != null || !_canTakeFocus(opener)) return;
+    final row = opener.context;
+    if (row == null || !row.mounted) return;
+    opener.requestFocus();
+    // All of it on screen, too: focus given rather than moved to does not
+    // scroll, and a file the page added ahead of the row can have pushed it
+    // past the fold.
+    unawaited(
+      Scrollable.ensureVisible(
+        row,
+        alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+      ),
+    );
+    unawaited(
+      Scrollable.ensureVisible(
+        row,
+        alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtStart,
+      ),
+    );
+  }
+
+  static bool _canTakeFocus(FocusNode node) {
+    final context = node.context;
+    return context != null && context.mounted && node.canRequestFocus;
+  }
+
+  void _select(PlayerPanelTab tab) {
+    // Both, not just [_shown]: while live data has substituted a tab, pressing
+    // the tab on screen is the viewer choosing it. Returning early would leave
+    // [_tab] on the vanished tab, and the panel would switch itself back the
+    // moment the data returned.
+    if (tab == _tab && tab == _shown) return;
+    setState(() {
+      _tab = tab;
+      _shown = tab;
+      _switchedTab = true;
+      _reloadedSinceSwitch = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // The panel is a PopupRoute and inherits nothing from the screen's tree,
+    // so its type scale, insets and text alphas are installed once here and
+    // everything below reads them off the context.
+    final metrics = PlayerPanelMetrics.forTv(widget.isTv);
+    final page = _page;
+
+    return PopScope(
+      // Back from a page is back to its tab; only Back from the tabs closes
+      // the panel. Android's Back and a remote's arrive as this route's pop,
+      // and the screen routes its own Back here through `maybePop`.
+      canPop: page == null,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _closePage();
+      },
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          // Escape, from a desktop keyboard: a step back from a page, like
+          // Back. Back itself is deliberately not handled here: on Android it
+          // arrives as a route pop the Navigator already owns, and taking it
+          // twice would close the panel and the player.
+          DismissIntent: CallbackAction<DismissIntent>(
+            onInvoke: (_) {
+              if (_page != null) {
+                _closePage();
+              } else {
+                widget.onClose();
+              }
+              return null;
+            },
+          ),
+        },
+        child: FocusTraversalGroup(
+          policy: ReadingOrderTraversalPolicy(),
+          child: PlayerPanelMetricsScope(
+            metrics: metrics,
+            child: PlayerPanelShell(
+              metrics: metrics,
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  // The tabs stay built under a page - the lists read, the
+                  // scroll offset, the row that opened it - so Back finds
+                  // them as they were left. Unpainted, still, and out of
+                  // focus's reach meanwhile.
+                  Offstage(
+                    offstage: page != null,
+                    child: TickerMode(
+                      enabled: page == null,
+                      child: ExcludeFocus(
+                        excluding: page != null,
+                        child: _tabs(l10n, metrics),
+                      ),
+                    ),
+                  ),
+                  if (page != null) _pageView(page, metrics),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// The first step: the tab strip over the chosen tab's body.
+  Widget _tabs(AppLocalizations l10n, PlayerPanelMetrics metrics) {
+    // One builder around strip and body together, so both read the same value
+    // and the strip can never offer a tab the body cannot show.
+    return ValueListenableBuilder<PanelData>(
+      valueListenable: widget.data,
+      builder: (context, data, _) {
+        final tabs = _tabsOf(data);
+        // Computed, not set: the value that took a tab away arrives from a
+        // listener, where setState would be a rebuild inside a build.
+        final shown = tabs.contains(_tab) ? _tab : tabs.first;
+        if (shown != _shown) {
+          // The data, not the viewer, changed what is on screen. The rows are
+          // gone either way, so the remount is a fresh open rather than a
+          // switch: on a remote the new list must take focus or nothing in
+          // the panel holds it.
+          _shown = shown;
+          _switchedTab = false;
+          _reloadedSinceSwitch = false;
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            _header(l10n, tabs, shown),
+            Divider(height: 1, thickness: 1, color: metrics.divider),
+            Expanded(
+              // A key per tab so switching gives the new list a fresh viewport
+              // rather than the previous tab's scroll offset, and the same
+              // element across data rebuilds of one tab so scroll position,
+              // centring and row focus survive.
+              child: KeyedSubtree(
+                key: ValueKey<PlayerPanelTab>(shown),
+                child: _body(l10n, data, shown),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// The second step: Back and the page's title over the page itself.
+  Widget _pageView(PanelPage page, PlayerPanelMetrics metrics) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2, 6, 4, 4),
+          child: Row(
+            children: <Widget>[
+              _PanelIconButton(
+                icon: Icons.arrow_back_rounded,
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                onPressed: _closePage,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  page.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: HotstarPlayerStyle.primaryText,
+                    fontSize: metrics.tabLabelSize,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Divider(height: 1, thickness: 1, color: metrics.divider),
+        Expanded(
+          // A fresh element per page opened, so a search reopened starts from
+          // its own opening rather than the last one's scroll and focus.
+          child: KeyedSubtree(
+            key: ObjectKey(page),
+            child: Builder(
+              builder: (context) => page.builder(context, _closePage),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Tab strip plus close. A [Row] of ordinary buttons, not a [TabBar]: a
+  /// scrollable strip traps directional focus, and a Material tab is two nodes
+  /// where a remote needs one.
+  ///
+  /// The strip is a row of equal columns when every label fits one, and a
+  /// [Wrap] of intrinsically-sized tabs when they do not.
+  ///
+  /// Equal columns are the shape the panel is meant to have: three tabs across
+  /// the width of the drawer, each underlined beneath its own word. But five
+  /// equal columns of a drawer give each tab about 62 dp of text, which
+  /// ellipsises `Subtitles` in English and cannot hold the Hindi or Kannada
+  /// labels at all — and an ellipsised tab strip is worse than a wrapped one.
+  ///
+  /// So the choice is measured rather than guessed at, against the labels this
+  /// locale actually has and the text scale actually in force: [_tabsFit] lays
+  /// every label out and answers whether the widest one clears an equal share.
+  /// English and Hindi at three or four tabs take the row; Kannada at five
+  /// falls back to the [Wrap] it had before. Either way a tab is one focus
+  /// stop and there is no [Scrollable] to trap directional focus.
+  Widget _header(
+    AppLocalizations l10n,
+    List<PlayerPanelTab> tabs,
+    PlayerPanelTab shown,
+  ) {
+    final metrics = PlayerPanelMetrics.of(context);
+    final labels = <String>[for (final tab in tabs) _tabLabel(l10n, tab)];
+
+    Widget tabButton(int index) => _PanelTabButton(
+      label: labels[index],
+      selected: tabs[index] == shown,
+      onPressed: () => _select(tabs[index]),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6, 6, 4, 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (_tabsFit(context, labels, metrics, constraints.maxWidth)) {
+                  return Row(
+                    children: <Widget>[
+                      for (var i = 0; i < tabs.length; i++)
+                        Expanded(child: tabButton(i)),
+                    ],
+                  );
+                }
+                return Wrap(
+                  spacing: 4,
+                  runSpacing: 2,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    for (var i = 0; i < tabs.length; i++) tabButton(i),
+                  ],
+                );
+              },
+            ),
+          ),
+          _PanelIconButton(
+            icon: Icons.close_rounded,
+            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+            onPressed: widget.onClose,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Whether every one of [labels] fits an equal share of [available].
+  ///
+  /// Laid out for real with a [TextPainter], in this locale's script and under
+  /// this device's text scale, because that is what a threshold on the label
+  /// count cannot know: `Subtitles` and `ಉಪಶೀರ್ಷಿಕೆಗಳು` are the same one tab
+  /// and nothing about the number of tabs tells them apart.
+  ///
+  /// Cheap enough to run in a build: at most five short strings, and only when
+  /// the strip's constraints or the tab set change.
+  static bool _tabsFit(
+    BuildContext context,
+    List<String> labels,
+    PlayerPanelMetrics metrics,
+    double available,
+  ) {
+    if (labels.isEmpty || !available.isFinite) return false;
+    final share = available / labels.length - 2 * metrics.tabHorizontalPadding;
+    if (share <= 0) return false;
+    final textScaler = MediaQuery.textScalerOf(context);
+    final direction = Directionality.of(context);
+    final painter = TextPainter(
+      textDirection: direction,
+      textScaler: textScaler,
+      maxLines: 1,
+    );
+    try {
+      for (final label in labels) {
+        painter.text = TextSpan(
+          text: label,
+          // The selected weight, which is the wider of the two: a tab that
+          // fits unselected and ellipsises the moment it is chosen is the
+          // failure this measurement exists to avoid.
+          style: TextStyle(
+            fontSize: metrics.tabLabelSize,
+            fontWeight: FontWeight.w800,
+          ),
+        );
+        painter.layout();
+        if (painter.width > share) return false;
+      }
+    } finally {
+      painter.dispose();
+    }
+    return true;
+  }
+
+  String _tabLabel(AppLocalizations l10n, PlayerPanelTab tab) => switch (tab) {
+    PlayerPanelTab.sources => l10n.sources,
+    PlayerPanelTab.quality => l10n.playerQuality,
+    PlayerPanelTab.audio => l10n.audio,
+    PlayerPanelTab.subtitles => l10n.subtitles,
+    PlayerPanelTab.episodes => l10n.episodes,
+    PlayerPanelTab.files => l10n.playerFiles,
+  };
+
+  /// Position in the opening episode list of the episode that was playing
+  /// then; the first row when nothing was.
+  int get _openedEpisodeAnchor {
+    final current = _opened.currentEpisode;
+    return current == null ? 0 : _opened.episodes.indexOf(current);
+  }
+
+  Widget _body(AppLocalizations l10n, PanelData data, PlayerPanelTab shown) {
+    // Still true across the first few rebuilds on purpose: the track lists
+    // arrive from the engine a frame or two after the panel does, and the row
+    // to land on does not exist until they do.
+    final autofocus = widget.focusOnOpen && !_switchedTab;
+
+    // Live data for the tick, the chips and the badges; the anchor - where the
+    // list opens and focus lands - from the value at open, so neither moves
+    // when the screen publishes.
+    switch (shown) {
+      case PlayerPanelTab.sources:
+        return PlayerSourcesTab(
+          sources: data.sources,
+          currentIndex: data.currentSourceIndex,
+          anchorIndex: _opened.currentSourceIndex,
+          probes: data.probes,
+          failed: data.failedSources,
+          played: data.playedSources,
+          qualityFilteredFallback: data.qualityFilteredFallback,
+          autofocus: autofocus,
+          // Close first, then pick: on a television the panel covers the
+          // video, and the viewer wants to see whether the new source plays.
+          onPick: (index) {
+            widget.onClose();
+            widget.onPickSource?.call(index);
+          },
+        );
+      case PlayerPanelTab.quality:
+        return PlayerQualityTab(
+          controller: widget.controller,
+          ladder: data.qualityLadder,
+          pick: data.qualityPick,
+          anchorRow: qualityAnchorRow(
+            _opened.qualityPick,
+            _opened.qualityLadder,
+          ),
+          autofocus: autofocus,
+          // Close first, then pick: the reopen is the viewer's to watch.
+          onPick: (height) {
+            widget.onClose();
+            widget.onPickQuality?.call(height);
+          },
+        );
+      case PlayerPanelTab.audio:
+      case PlayerPanelTab.subtitles:
+        // A reload unmounts every row, so on a switched-to tab the list may
+        // autofocus again.
+        return _tracksTab(
+          l10n,
+          data,
+          isAudio: shown == PlayerPanelTab.audio,
+          autofocus:
+              widget.focusOnOpen && (!_switchedTab || _reloadedSinceSwitch),
+        );
+      case PlayerPanelTab.episodes:
+        return PlayerEpisodesTab(
+          episodes: data.episodes,
+          currentEpisode: data.currentEpisode,
+          anchorIndex: _openedEpisodeAnchor,
+          autofocus: autofocus,
+          episodeProgress: widget.episodeProgress,
+          onPick: (episode) {
+            widget.onClose();
+            widget.onPickEpisode?.call(episode);
+          },
+        );
+      case PlayerPanelTab.files:
+        return PlayerFilesTab(
+          files: data.files,
+          currentIndex: data.currentFileIndex,
+          // A server id, like currentIndex. No file playing at open means an
+          // id no file has, which the tab reads as "the first row".
+          anchorIndex: _opened.currentFileIndex ?? -1,
+          autofocus: autofocus,
+          onPick: (file) {
+            widget.onClose();
+            widget.onPickFile?.call(file);
+          },
+        );
+    }
+  }
+
+  Widget _tracksTab(
+    AppLocalizations l10n,
+    PanelData data, {
+    required bool isAudio,
+    required bool autofocus,
+  }) {
+    // The Future is a State field: a data rebuild reuses it rather than asking
+    // the engine again.
+    return FutureBuilder<_PanelTracks>(
+      future: _tracks,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Padding(
+            padding: EdgeInsets.all(32),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (snapshot.hasError) {
+          return PanelEmpty(
+            text: l10n.playerCouldNotReadTracks('${snapshot.error}'),
+          );
+        }
+        final tracks = snapshot.data!;
+        return PlayerTracksTab(
+          controller: widget.controller,
+          kind: isAudio ? PlayerTrackKind.audio : PlayerTrackKind.subtitle,
+          tracks: isAudio ? tracks.audio : tracks.subtitle,
+          trackInfo: isAudio
+              ? tracks.info?.audioTracks ?? const <VlcMediaTrackInfo>[]
+              : tracks.info?.subtitleTracks ?? const <VlcMediaTrackInfo>[],
+          target: data.subtitleTarget,
+          sideCars: widget.sideCars,
+          isTv: widget.isTv,
+          autofocus: autofocus,
+          onTracksChanged: _reloadTracks,
+          onOpenPage: _openPage,
+          onTrackAdded: () => _trackOnItsWay = true,
+          searchFocusNode: isAudio ? null : _searchRow,
+          subtitleStyle: isAudio ? null : widget.subtitleStyle,
+          styleFocusNode: isAudio ? null : _styleRow,
+          onAudioPicked: isAudio ? widget.onAudioPicked : null,
+        );
+      },
+    );
+  }
+}
+
+/// One track list read, as the engine sees it.
+class _PanelTracks {
+  const _PanelTracks({required this.audio, required this.subtitle, this.info});
+
+  final List<VlcTrackDescription> audio;
+  final List<VlcTrackDescription> subtitle;
+
+  /// Null when the engine would not answer. Only ever used for detail.
+  final VlcMediaInfo? info;
+
+  @override
+  bool operator ==(Object other) =>
+      other is _PanelTracks &&
+      listEquals(other.audio, audio) &&
+      listEquals(other.subtitle, subtitle) &&
+      other.info == info;
+
+  @override
+  int get hashCode =>
+      Object.hash(Object.hashAll(audio), Object.hashAll(subtitle), info);
+}
+
+/// A tab header: one focus stop, activated by tap or Select.
+class _PanelTabButton extends StatefulWidget {
+  const _PanelTabButton({
+    required this.label,
+    required this.selected,
+    required this.onPressed,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onPressed;
+
+  @override
+  State<_PanelTabButton> createState() => _PanelTabButtonState();
+}
+
+class _PanelTabButtonState extends State<_PanelTabButton> {
+  bool _focused = false;
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final active = widget.selected;
+    final metrics = PlayerPanelMetrics.of(context);
+    return Semantics(
+      button: true,
+      selected: active,
+      label: widget.label,
+      child: Focus(
+        onFocusChange: (value) => setState(() => _focused = value),
+        onKeyEvent: (node, event) {
+          if (event is! KeyDownEvent) return KeyEventResult.ignored;
+          final key = event.logicalKey;
+          if (key == LogicalKeyboardKey.select ||
+              key == LogicalKeyboardKey.enter ||
+              key == LogicalKeyboardKey.space ||
+              key == LogicalKeyboardKey.gameButtonA) {
+            widget.onPressed();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (_) => setState(() => _hovered = true),
+          onExit: (_) => setState(() => _hovered = false),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: widget.onPressed,
+            // A floor on the width, because a Wrap gives a tab exactly the
+            // width of its word: `Files` is 37 dp of Roboto at the touch ramp's
+            // 13 sp, and three of those 4 dp apart is a mis-tap rather than a
+            // tab strip. In the equal-column strip the [Expanded] above is
+            // already wider than this, so it binds only in the [Wrap].
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: metrics.tabMinWidth),
+              child: AnimatedContainer(
+                duration: HotstarPlayerStyle.fastMotionDuration,
+                padding: EdgeInsets.symmetric(
+                  horizontal: metrics.tabHorizontalPadding,
+                  vertical: metrics.tabVerticalPadding,
+                ),
+                // Fill and target are the whole column; the indicator below is
+                // not. Hover and focus want every pixel a pointer or a remote
+                // can land on.
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: showFocusIndicator(context, _focused)
+                      ? HotstarPlayerStyle.focusFill
+                      : (_hovered
+                            ? const Color(0xFF151A22)
+                            : Colors.transparent),
+                ),
+                // The indicator sits under the word, not under the column: an
+                // accent rule the full width of an equal share reads as a
+                // filled segment rather than as a tab marker, and in the
+                // [Wrap] the two are the same thing anyway.
+                child: Center(
+                  widthFactor: 1,
+                  child: Container(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: active
+                              ? HotstarPlayerStyle.accent
+                              : Colors.transparent,
+                          width: 2.5,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      widget.label,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: active
+                            ? HotstarPlayerStyle.primaryText
+                            : metrics.secondaryText,
+                        fontSize: metrics.tabLabelSize,
+                        fontWeight: active ? FontWeight.w800 : FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The close button. Its own widget for the same reason the rows are: an
+/// [IconButton] would bring a Material ink response and a second focus node.
+class _PanelIconButton extends StatefulWidget {
+  const _PanelIconButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  State<_PanelIconButton> createState() => _PanelIconButtonState();
+}
+
+class _PanelIconButtonState extends State<_PanelIconButton> {
+  bool _focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final metrics = PlayerPanelMetrics.of(context);
+    return Semantics(
+      button: true,
+      label: widget.tooltip,
+      child: Focus(
+        onFocusChange: (value) => setState(() => _focused = value),
+        onKeyEvent: (node, event) {
+          if (event is! KeyDownEvent) return KeyEventResult.ignored;
+          final key = event.logicalKey;
+          // The same four keys a row and a tab take: a game controller's A is
+          // Select on the remotes that are also gamepads.
+          if (key == LogicalKeyboardKey.select ||
+              key == LogicalKeyboardKey.enter ||
+              key == LogicalKeyboardKey.space ||
+              key == LogicalKeyboardKey.gameButtonA) {
+            widget.onPressed();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+        child: Tooltip(
+          message: widget.tooltip,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: widget.onPressed,
+              child: Container(
+                margin: const EdgeInsets.only(left: 4),
+                padding: EdgeInsets.all(metrics.closeButtonPadding),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: showFocusIndicator(context, _focused)
+                      ? HotstarPlayerStyle.focusFill
+                      : Colors.transparent,
+                ),
+                child: Icon(
+                  widget.icon,
+                  size: metrics.iconSize,
+                  color: HotstarPlayerStyle.primaryText,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

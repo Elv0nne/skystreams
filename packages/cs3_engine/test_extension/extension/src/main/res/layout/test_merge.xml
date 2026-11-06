@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Included by test_parts: a merge's children go where the include stands. -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/merged_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dark_posters" />
+
+    <ImageButton
+        android:id="@+id/merged_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/close"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+</merge>

@@ -1,0 +1,62 @@
+# Uncomment this line to define a global platform for your project
+# 15.6, matching the Runner target. The project-level configurations and
+# this file both used to say 15.0 while the target said 15.6, so pods were
+# built against a floor the app does not actually support.
+platform :ios, '15.6'
+
+# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_root
+  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+  unless File.exist?(generated_xcode_build_settings_path)
+    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+  end
+
+  File.foreach(generated_xcode_build_settings_path) do |line|
+    matches = line.match(/FLUTTER_ROOT\=(.*)/)
+    return matches[1].strip if matches
+  end
+  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
+target 'Runner' do
+  use_frameworks!
+
+  # MobileVLCKit downloads from download.videolan.org (by choice since 3.7.4,
+  # 2026-10-02). That host is the only place VideoLAN publishes these
+  # frameworks -- no mirror carries /pub/cocoapods/, there are no upstream
+  # GitHub release assets, and the SPM manifest points back at the same host
+  # -- so when it went down on 2026-09-20 `pod install` died on
+  # `curl (7) Failed to connect` and took the iOS build with it. A podspec
+  # `source` accepts exactly one URL, so unlike
+  # packages/vlc_player/windows/CMakeLists.txt there is no mirror list to fall
+  # back to.
+  #
+  # 3.7.3 was served from a SkyStream release asset after that outage. If the
+  # host fails again, do the same; the `description` field in
+  # vendor/MobileVLCKit.podspec.json has the steps. CocoaPods enforces the
+  # sha256 either way.
+  pod 'MobileVLCKit', :podspec => 'vendor/MobileVLCKit.podspec.json'
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+  end
+end

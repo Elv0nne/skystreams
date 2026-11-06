@@ -1,0 +1,74 @@
+# The CloudStream switch in a release build (R8 on), through the UI, which `flutter test` cannot run: add CNC's
+# repository, install HDrezka, switch CloudStream off (HDrezka leaves Home's provider list), then on again (it's
+# back).
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/cloudstream_switch_release.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Home is the first of five, Settings the last.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/NivinCNC/CNCVerse-Cloud-Stream-Extension/refs/heads/builds/CNC.json"
+- tapOn: "Add"
+- extendedWaitUntil:
+    visible: "CNC Repo.*"
+    timeout: 60000
+- tapOn: "CNC Repo.*"
+# Centred: at the list's foot the row is under the floating navigation bar.
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-HDrezkaProvider"
+    direction: DOWN
+    centerElement: true
+    timeout: 60000
+- tapOn:
+    id: "cs3-install-HDrezkaProvider"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-uninstall-HDrezkaProvider"
+    timeout: 180000
+# Off: HDrezka leaves Home's provider list.
+- tapOn:
+    id: "cs3-cloudstream-switch"
+# The header's texts are one node to Maestro: "CloudStream", a line break, then its explanation.
+- extendedWaitUntil:
+    visible: "(?s).*Off: no CloudStream extension is loaded.*"
+    timeout: 10000
+- tapOn:
+    point: "15%,92%"
+- tapOn: "None"
+- assertNotVisible: "HDrezka.*"
+- takeScreenshot: cloudstream-off
+- tapOn: "Close"
+# On again: it's back.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn:
+    id: "cs3-cloudstream-switch"
+- extendedWaitUntil:
+    notVisible: "(?s).*Off: no CloudStream extension is loaded.*"
+    timeout: 10000
+- tapOn:
+    point: "15%,92%"
+- tapOn: "None"
+- assertVisible: "HDrezka.*"
+- takeScreenshot: cloudstream-on

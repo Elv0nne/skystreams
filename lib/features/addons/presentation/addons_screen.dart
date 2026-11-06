@@ -1,0 +1,1133 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../core/addons/data/addon_client.dart';
+import '../../../core/addons/data/addon_repository.dart';
+import '../../../core/addons/models/addon_manifest.dart';
+import '../../../core/addons/models/addon_meta.dart';
+import '../../../core/router/app_router.dart';
+import '../../../shared/widgets/cards_wrapper.dart';
+import 'addon_providers.dart';
+import 'widgets/addon_manage_view.dart';
+
+import '../../../core/domain/entity/multimedia_item.dart';
+import '../../../core/utils/layout_constants.dart';
+import '../../../core/utils/responsive_breakpoints.dart';
+import '../../../shared/focus/text_field_keys.dart';
+import '../../../shared/widgets/shimmer_placeholder.dart';
+import '../../explore/presentation/view_all_screen.dart';
+import '../../explore/presentation/widgets/explore_carousel.dart';
+import '../../explore/presentation/widgets/media_horizontal_list.dart';
+
+import 'package:skystream/l10n/generated/app_localizations.dart';
+
+import '../../../shared/widgets/loading_indicator.dart';
+import '../../../shared/widgets/no_scrollbar_behavior.dart';
+
+/// Stremio Add-ons settings destination — management and discovery.
+class AddonsScreen extends ConsumerWidget {
+  final int initialTab;
+  final bool isEmbedded;
+
+  const AddonsScreen({super.key, this.initialTab = 0, this.isEmbedded = false});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final state = ref.watch(addonRepositoryProvider);
+
+    if (isEmbedded) {
+      if (state.isLoading && state.addons.isEmpty) {
+        return const Center(child: AppLoadingIndicator());
+      }
+      return DefaultTabController(
+        length: 2,
+        initialIndex: initialTab.clamp(0, 1),
+        child: Column(
+          children: [
+            TabBar(
+              indicatorSize: TabBarIndicatorSize.label,
+              tabs: [
+                Tab(text: l10n.installed),
+                const Tab(text: 'Discover'),
+              ],
+            ),
+            const Expanded(
+              child: TabBarView(children: [AddonManageView(), _DiscoverTab()]),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (state.isLoading && state.addons.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              } else {
+                const SettingsRoute().go(context);
+              }
+            },
+          ),
+          title: const Text('Stremio Add-ons'),
+        ),
+        body: const Center(child: AppLoadingIndicator()),
+      );
+    }
+
+    return DefaultTabController(
+      key: const ValueKey('stremio_addons_tab_controller'),
+      length: 2,
+      initialIndex: initialTab.clamp(0, 1),
+      child: Builder(
+        builder: (tabContext) => Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              tooltip: MaterialLocalizations.of(tabContext).backButtonTooltip,
+              onPressed: () {
+                if (Navigator.of(tabContext).canPop()) {
+                  Navigator.of(tabContext).pop();
+                } else {
+                  const SettingsRoute().go(tabContext);
+                }
+              },
+            ),
+            title: const Text('Stremio Add-ons'),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(48),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 800),
+                  child: TabBar(
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 3,
+                    labelStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                    unselectedLabelStyle: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                    ),
+                    labelColor: Theme.of(tabContext).colorScheme.primary,
+                    unselectedLabelColor: Theme.of(tabContext)
+                        .colorScheme
+                        .onSurfaceVariant,
+                    indicatorColor: Theme.of(tabContext).colorScheme.primary,
+                    dividerColor: Theme.of(tabContext).dividerColor
+                        .withValues(alpha: 0.2),
+                    tabs: [
+                      Tab(text: l10n.installed),
+                      const Tab(text: 'Discover'),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          body: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: TabBarView(
+                children: [
+                  FocusTraversalGroup(
+                    policy: ReadingOrderTraversalPolicy(),
+                    child: const AddonManageView(),
+                  ),
+                  FocusTraversalGroup(
+                    policy: ReadingOrderTraversalPolicy(),
+                    child: const _DiscoverTab(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddonCatalogsTabView extends ConsumerStatefulWidget {
+  final ScrollController? scrollController;
+  final FocusNode? firstActionFocusNode;
+  final void Function(HeroCarouselController)? onControllerReady;
+
+  const AddonCatalogsTabView({
+    super.key,
+    this.scrollController,
+    this.firstActionFocusNode,
+    this.onControllerReady,
+  });
+
+  @override
+  ConsumerState<AddonCatalogsTabView> createState() =>
+      _AddonCatalogsTabViewState();
+}
+
+class _AddonCatalogsTabViewState extends ConsumerState<AddonCatalogsTabView>
+    with AutomaticKeepAliveClientMixin {
+  late final ScrollController _scrollController;
+  bool _createdInternalScrollController = false;
+  final ValueNotifier<bool> _showBottomFade = ValueNotifier(false);
+
+  /// Catalogs that came back with nothing in them, by [BrowsableCatalog.key].
+  ///
+  /// Taken out of the list rather than left in it as zero-height rows.
+  /// [SliverList] places the rows it rebuilds on the way back up by dead
+  /// reckoning, and near-zero rows at that edge set it correcting its own
+  /// scroll offset every frame: a drag upward was cancelled as fast as it was
+  /// made, and the list jittered and bounced instead of scrolling. A bridge
+  /// add-on - CNCVerse and the like - has dozens of catalogs and many of them
+  /// empty, which is where it showed. A refresh asks them all again.
+  final Set<String> _emptyCatalogs = <String>{};
+
+  @override
+  bool get wantKeepAlive => true;
+
+  void _dropEmptyCatalog(String key) {
+    if (!mounted || _emptyCatalogs.contains(key)) return;
+    setState(() => _emptyCatalogs.add(key));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.scrollController != null) {
+      _scrollController = widget.scrollController!;
+    } else {
+      _scrollController = ScrollController();
+      _createdInternalScrollController = true;
+    }
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    if (_createdInternalScrollController) {
+      _scrollController.dispose();
+    }
+    _showBottomFade.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    final showFade = maxScroll > 0 && currentScroll < maxScroll - 10;
+    if (showFade != _showBottomFade.value) {
+      _showBottomFade.value = showFade;
+    }
+  }
+
+  Widget _withGradientEdgeHint(Widget scrollView) {
+    return Stack(
+      children: [
+        ScrollConfiguration(
+          behavior: const NoScrollbarBehavior(),
+          child: scrollView,
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 48,
+          child: ValueListenableBuilder<bool>(
+            valueListenable: _showBottomFade,
+            builder: (context, show, _) {
+              if (!show) return const SizedBox.shrink();
+              final surfaceColor = Theme.of(context).colorScheme.surface;
+              return IgnorePointer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        surfaceColor.withValues(alpha: 0.0),
+                        surfaceColor.withValues(alpha: 0.15),
+                        surfaceColor.withValues(alpha: 0.45),
+                        surfaceColor.withValues(alpha: 0.8),
+                        surfaceColor,
+                      ],
+                      stops: const [0.0, 0.5, 0.75, 0.9, 1.0],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final state = ref.watch(addonRepositoryProvider);
+    final theme = Theme.of(context);
+    final catalogs = ref.watch(browsableCatalogsProvider);
+    final hasStreamAddon = state.enabled.any(
+      (a) => a.manifest?.hasResource('stream') ?? false,
+    );
+
+    if (!state.isLoading && state.enabled.isEmpty) {
+      return const _EmptyHint(
+        icon: Icons.dashboard_customize_outlined,
+        title: 'No add-ons yet',
+        message:
+            'Open "My add-ons" and install Cinemeta for catalogs, then pick a '
+            'stream add-on in Discover — two taps and this tab fills up.',
+      );
+    }
+
+    if (catalogs.isEmpty) {
+      return const _EmptyHint(
+        icon: Icons.grid_view_rounded,
+        title: 'No catalogs',
+        message:
+            'None of your add-ons publish browsable catalogs. '
+            'Cinemeta or a streaming-catalogs add-on will fill this.',
+      );
+    }
+
+    final firstCatalog = catalogs.first;
+    final listCatalogs = [
+      for (final entry in catalogs.length > 1 ? catalogs.skip(1) : catalogs)
+        if (!_emptyCatalogs.contains(entry.key)) entry,
+    ];
+
+    return _withGradientEdgeHint(
+      RefreshIndicator(
+        onRefresh: () async {
+          setState(_emptyCatalogs.clear);
+          ref.read(addonClientProvider).clearCache();
+          for (final entry in catalogs) {
+            ref.invalidate(
+              addonCatalogItemsProvider(
+                entry.addon.manifestUrl,
+                entry.catalog.type,
+                entry.catalog.id,
+              ),
+            );
+          }
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            // 1. Hero Carousel from the top catalog
+            SliverToBoxAdapter(
+              child: _CatalogCarouselSection(
+                catalog: firstCatalog,
+                scrollController: _scrollController,
+                onNavigateUp: () => widget.firstActionFocusNode?.requestFocus(),
+                onControllerReady: widget.onControllerReady,
+              ),
+            ),
+
+            // 2. Stream warning banner if no streaming add-on installed
+            if (!state.isLoading && !hasStreamAddon)
+              SliverToBoxAdapter(
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.tertiaryContainer.withValues(
+                      alpha: 0.5,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline_rounded,
+                        size: 18,
+                        color: theme.colorScheme.onTertiaryContainer,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'None of your add-ons provide streams yet — install '
+                          'one from the Discover tab (e.g. Torrentio) to play '
+                          'anything.',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onTertiaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+            // 3. Catalog Rows using MediaHorizontalList
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index >= listCatalogs.length) return null;
+                  final entry = listCatalogs[index];
+                  return _CatalogRow(
+                    key: ValueKey(entry.key),
+                    entry: entry,
+                    onEmpty: _dropEmptyCatalog,
+                  );
+                },
+                childCount: listCatalogs.length,
+                // Keyed, so dropping an empty row moves the rows after it
+                // instead of rebuilding each of them into its neighbour's
+                // slot, where it would start loading all over again.
+                findChildIndexCallback: (key) {
+                  final index = listCatalogs.indexWhere(
+                    (entry) => ValueKey(entry.key) == key,
+                  );
+                  return index < 0 ? null : index;
+                },
+              ),
+            ),
+
+            SliverPadding(
+              padding: EdgeInsets.only(
+                bottom: LayoutConstants.shellBottomContentPadding(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CatalogCarouselSection extends ConsumerWidget {
+  final BrowsableCatalog catalog;
+  final ScrollController scrollController;
+  final VoidCallback? onNavigateUp;
+  final void Function(HeroCarouselController)? onControllerReady;
+
+  const _CatalogCarouselSection({
+    required this.catalog,
+    required this.scrollController,
+    this.onNavigateUp,
+    this.onControllerReady,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final itemsAsync = ref.watch(
+      addonCatalogItemsProvider(
+        catalog.addon.manifestUrl,
+        catalog.catalog.type,
+        catalog.catalog.id,
+      ),
+    );
+
+    return itemsAsync.when(
+      loading: () => _buildCarouselShimmer(context),
+      error: (_, _) => const SizedBox.shrink(),
+      data: (result) {
+        if (result.failed || result.items.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        final heroItems = result.items
+            .where(
+              (i) =>
+                  (i.background != null && i.background!.isNotEmpty) ||
+                  (i.poster != null && i.poster!.isNotEmpty),
+            )
+            .take(7)
+            .toList();
+        if (heroItems.isEmpty) return const SizedBox.shrink();
+
+        final mediaList = heroItems.map((e) => e.toMultimediaItem()).toList();
+        final previewMap = {for (final item in heroItems) item.id: item};
+
+        return ExploreCarousel(
+          movies: mediaList,
+          scrollController: scrollController,
+          onNavigateUp: onNavigateUp,
+          onControllerReady: onControllerReady,
+          onTap: (item) {
+            final preview = previewMap[item.url];
+            final type =
+                preview?.type ??
+                (item.contentType == MultimediaContentType.series
+                    ? 'series'
+                    : 'movie');
+            AddonDetailRoute(
+              type: type,
+              id: item.url,
+              addonUrl: catalog.addon.manifestUrl,
+            ).push<void>(context);
+          },
+        );
+      },
+    );
+  }
+}
+
+Widget _buildCarouselShimmer(BuildContext context) {
+  final size = MediaQuery.sizeOf(context);
+  final heroHeight = size.height * 0.60;
+  final isDesktop =
+      size.width > LayoutConstants.exploreCarouselDesktopBreakpoint;
+
+  if (isDesktop) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: LayoutConstants.dashboardContentPadding,
+        vertical: LayoutConstants.spacingSm,
+      ),
+      child: SizedBox(
+        height: heroHeight,
+        width: double.infinity,
+        child: ShimmerPlaceholder(borderRadius: 18),
+      ),
+    );
+  } else {
+    return SizedBox(
+      height: heroHeight,
+      width: double.infinity,
+      child: ShimmerPlaceholder.rectangular(
+        width: double.infinity,
+        height: heroHeight,
+        borderRadius: 0,
+      ),
+    );
+  }
+}
+
+Widget _buildListShimmer(BuildContext context) {
+  final isDesktop = context.isDesktop;
+  final cardWidth = isDesktop ? 200.0 : 130.0;
+  final imageHeight = cardWidth / (2 / 3);
+  final listHeight = imageHeight + 40.0;
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          isDesktop
+              ? LayoutConstants.dashboardContentPadding
+              : LayoutConstants.spacingMd,
+          LayoutConstants.spacingLg,
+          isDesktop
+              ? LayoutConstants.dashboardContentPadding
+              : LayoutConstants.spacingMd,
+          LayoutConstants.spacingSm,
+        ),
+        child: ShimmerPlaceholder.rectangular(
+          width: 150,
+          height: 24,
+          borderRadius: 4,
+        ),
+      ),
+      const SizedBox(height: LayoutConstants.spacingMd),
+      SizedBox(
+        height: listHeight,
+        child: ListView.separated(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop
+                ? LayoutConstants.dashboardContentPadding
+                : LayoutConstants.spacingMd,
+          ),
+          scrollDirection: Axis.horizontal,
+          itemCount: 8,
+          separatorBuilder: (_, _) => SizedBox(
+            width: isDesktop
+                ? LayoutConstants.spacingLg
+                : LayoutConstants.spacingSm,
+          ),
+          itemBuilder: (context, index) {
+            return ShimmerPlaceholder(borderRadius: 12);
+          },
+        ),
+      ),
+    ],
+  );
+}
+
+class _CatalogRow extends ConsumerWidget {
+  final BrowsableCatalog entry;
+
+  /// Called with [BrowsableCatalog.key] once the catalog turns out to be
+  /// empty, so the list can drop the row - see
+  /// `_AddonCatalogsTabViewState._emptyCatalogs` for why it must not stay.
+  final ValueChanged<String> onEmpty;
+
+  const _CatalogRow({super.key, required this.entry, required this.onEmpty});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final itemsAsync = ref.watch(
+      addonCatalogItemsProvider(
+        entry.addon.manifestUrl,
+        entry.catalog.type,
+        entry.catalog.id,
+      ),
+    );
+
+    return itemsAsync.when(
+      loading: () => _buildListShimmer(context),
+      error: (error, _) => _RowProblem(
+        title: entry.title,
+        message: error.toString(),
+        onRetry: () => ref.invalidate(
+          addonCatalogItemsProvider(
+            entry.addon.manifestUrl,
+            entry.catalog.type,
+            entry.catalog.id,
+          ),
+        ),
+      ),
+      data: (result) {
+        if (result.failed) {
+          return _RowProblem(
+            title: entry.title,
+            message: result.error!,
+            onRetry: () => ref.invalidate(
+              addonCatalogItemsProvider(
+                entry.addon.manifestUrl,
+                entry.catalog.type,
+                entry.catalog.id,
+              ),
+            ),
+          );
+        }
+        final items = result.items;
+        if (items.isEmpty) {
+          // After the frame: the list rebuilds without this row, and that is
+          // not something to do from inside its build.
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => onEmpty(entry.key),
+          );
+          return const SizedBox.shrink();
+        }
+
+        final mediaList = items.map((e) => e.toMultimediaItem()).toList();
+        final previewMap = {for (final item in items) item.id: item};
+
+        return MediaHorizontalList(
+          title: entry.title,
+          mediaList: mediaList,
+          category: ViewAllCategory.providerContent,
+          showViewAll: true,
+          heroTagPrefix: 'addon_${entry.addon.id}_${entry.catalog.id}',
+          onViewAll: () => AddonCatalogRoute(
+            addonUrl: entry.addon.manifestUrl,
+            type: entry.catalog.type,
+            catalogId: entry.catalog.id,
+            title: entry.title,
+          ).push<void>(context),
+          onTap: (mediaItem) {
+            final preview = previewMap[mediaItem.url];
+            final type =
+                preview?.type ??
+                (mediaItem.contentType == MultimediaContentType.series
+                    ? 'series'
+                    : 'movie');
+            AddonDetailRoute(
+              type: type,
+              id: mediaItem.url,
+              addonUrl: entry.addon.manifestUrl,
+            ).push<void>(context);
+          },
+        );
+      },
+    );
+  }
+}
+
+/// Poster tile for catalog rows, search results and the full catalog grid.
+class AddonPosterCard extends StatelessWidget {
+  final AddonMetaPreview item;
+  final String? addonUrl;
+  final double width;
+
+  const AddonPosterCard({
+    super.key,
+    required this.item,
+    required this.addonUrl,
+    this.width = 124,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SizedBox(
+      width: width == double.infinity ? null : width,
+      // Same focusable card the rest of the app uses, so D-pad works on TV.
+      child: CardsWrapper(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => AddonDetailRoute(
+          type: item.type,
+          id: item.id,
+          addonUrl: addonUrl,
+        ).push<void>(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: item.poster == null
+                    ? ColoredBox(
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        child: const Center(child: Icon(Icons.movie_outlined)),
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: item.poster!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        // Decoding at display size is the single biggest
+                        // memory saving on poster-heavy screens.
+                        memCacheWidth: 320,
+                        fadeInDuration: const Duration(milliseconds: 120),
+                        errorWidget: (_, _, _) => ColoredBox(
+                          color: theme.colorScheme.surfaceContainerHighest,
+                          child: const Center(
+                            child: Icon(Icons.broken_image_outlined),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              item.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            if (item.releaseInfo != null)
+              Text(
+                item.releaseInfo!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DiscoverTab extends ConsumerStatefulWidget {
+  const _DiscoverTab();
+
+  @override
+  ConsumerState<_DiscoverTab> createState() => _DiscoverTabState();
+}
+
+class _DiscoverTabState extends ConsumerState<_DiscoverTab> {
+  final TextEditingController _searchController = TextEditingController();
+
+  /// Up and down leave the field while the keyboard is put away, and Select
+  /// brings it back - see [remoteTextFieldKeys].
+  final FocusNode _searchNode = FocusNode(
+    debugLabel: 'community add-ons search',
+    onKeyEvent: remoteTextFieldKeys,
+  );
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchNode.dispose();
+    super.dispose();
+  }
+
+  Future<void> _refresh() async {
+    try {
+      await ref.read(addonClientProvider).communityAddons(forceRefresh: true);
+    } catch (_) {
+      // The provider rebuild below surfaces the error state on its own.
+    }
+    ref.invalidate(communityAddonsProvider);
+  }
+
+  Future<void> _install(CommunityAddon entry) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref
+          .read(addonRepositoryProvider.notifier)
+          .install(entry.transportUrl);
+      messenger.showSnackBar(
+        SnackBar(content: Text('Installed ${entry.manifest.name}')),
+      );
+    } catch (error) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('Install failed: $error')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final directoryAsync = ref.watch(communityAddonsProvider);
+    final installed = ref.watch(addonRepositoryProvider).addons;
+    final installedIds = installed.map((a) => a.id).toSet();
+
+    return directoryAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, _) => _DiscoverProblem(
+        icon: Icons.cloud_off_rounded,
+        title: 'Could not load the add-on directory',
+        message: '$error',
+        onRetry: _refresh,
+      ),
+      data: (entries) {
+        if (entries.isEmpty) {
+          return _DiscoverProblem(
+            icon: Icons.travel_explore_rounded,
+            title: 'Directory unavailable',
+            message: 'You can still paste a manifest URL in the "My add-ons" '
+                'tab.',
+            onRetry: _refresh,
+          );
+        }
+
+        final query = _searchController.text.trim().toLowerCase();
+        final filtered = query.isEmpty
+            ? entries
+            : entries
+                  .where(
+                    (entry) =>
+                        entry.manifest.name.toLowerCase().contains(query) ||
+                        entry.manifest.description.toLowerCase().contains(
+                          query,
+                        ),
+                  )
+                  .toList(growable: false);
+
+        return RefreshIndicator(
+          onRefresh: _refresh,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
+                child: TextField(
+                  controller: _searchController,
+                  focusNode: _searchNode,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    hintText: l10n.discoverSearchHint,
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    suffixIcon: query.isEmpty
+                        ? null
+                        : IconButton(
+                            tooltip: l10n.discoverClearSearch,
+                            icon: const Icon(Icons.close_rounded),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {});
+                            },
+                          ),
+                    border: const OutlineInputBorder(),
+                  ),
+                  onChanged: (_) => setState(() {}),
+                ),
+              ),
+              Expanded(
+                child: filtered.isEmpty
+                    ? ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          const SizedBox(height: 160),
+                          _DiscoverProblem(
+                            icon: Icons.search_off_rounded,
+                            title: 'No matches',
+                            message: 'No community add-on matches your search.',
+                            onRetry: () {
+                              _searchController.clear();
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      )
+                    : ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 90),
+                        itemCount: filtered.length,
+                        itemBuilder: (context, index) {
+                          final entry = filtered[index];
+                          return _CommunityAddonTile(
+                            entry: entry,
+                            isInstalled: installedIds.contains(
+                              entry.manifest.id,
+                            ),
+                            onInstall: () => unawaited(_install(entry)),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// One directory row. Add-ons whose manifest says `configurationRequired`
+/// cannot serve anything until the user finishes their web setup (46 of the
+/// 95 entries in Stremio's directory as of writing), so — like the official
+/// app — the row leads to the configure page instead of installing a dead
+/// add-on. The configured URL it produces can be pasted in "My add-ons".
+class _CommunityAddonTile extends StatelessWidget {
+  final CommunityAddon entry;
+  final bool isInstalled;
+  final VoidCallback onInstall;
+
+  const _CommunityAddonTile({
+    required this.entry,
+    required this.isInstalled,
+    required this.onInstall,
+  });
+
+  bool get _needsSetup =>
+      entry.manifest.behaviorHints.configurationRequired;
+
+  String get _configureUrl {
+    final base = AddonTransport.baseUrl(entry.transportUrl);
+    return '$base/configure';
+  }
+
+  Future<void> _openSetup() async {
+    final uri = Uri.tryParse(_configureUrl);
+    if (uri == null) return;
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        leading: entry.manifest.logoUrl != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: entry.manifest.logoUrl!,
+                  width: 38,
+                  height: 38,
+                  fit: BoxFit.cover,
+                  memCacheWidth: 96,
+                  errorWidget: (_, _, _) =>
+                      const Icon(Icons.extension_rounded),
+                ),
+              )
+            : const Icon(Icons.extension_rounded),
+        title: Text(entry.manifest.name),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (_needsSetup)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  l10n.discoverNeedsWebSetup,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.tertiary,
+                  ),
+                ),
+              ),
+            Text(
+              entry.manifest.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+        trailing: isInstalled
+            ? const Icon(Icons.check_circle_rounded, color: Colors.green)
+            : _needsSetup
+            ? IconButton(
+                tooltip: l10n.discoverOpenSetup,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => unawaited(_openSetup()),
+              )
+            : IconButton(
+                tooltip: l10n.install,
+                icon: const Icon(Icons.add_circle_outline_rounded),
+                onPressed: onInstall,
+              ),
+      ),
+    );
+  }
+}
+
+/// Error / empty placeholder with a retry action, used by the Discover tab.
+class _DiscoverProblem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String message;
+  final VoidCallback onRetry;
+
+  const _DiscoverProblem({
+    required this.icon,
+    required this.title,
+    required this.message,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 52, color: theme.colorScheme.primary),
+            const SizedBox(height: 14),
+            Text(
+              title,
+              style: theme.textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded),
+              label: Text(AppLocalizations.of(context)!.retry),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyHint extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String message;
+
+  const _EmptyHint({
+    required this.icon,
+    required this.title,
+    required this.message,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 52, color: theme.colorScheme.primary),
+            const SizedBox(height: 14),
+            Text(title, style: theme.textTheme.titleMedium),
+            const SizedBox(height: 6),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact "this row failed" strip with a retry, so a broken add-on is visible
+/// instead of an empty screen.
+class _RowProblem extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback onRetry;
+
+  const _RowProblem({
+    required this.title,
+    required this.message,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: cs.errorContainer.withValues(alpha: 0.35),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.error_outline_rounded, size: 18, color: cs.error),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    message,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            TextButton(onPressed: onRetry, child: const Text('Retry')),
+          ],
+        ),
+      ),
+    );
+  }
+}

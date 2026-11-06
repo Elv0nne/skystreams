@@ -1,0 +1,28 @@
+PODS:
+  - FlutterMacOS (1.0.0)
+  - vlc_player (2.1.3):
+    - FlutterMacOS
+    - VLCKit (= 3.7.4)
+  - VLCKit (3.7.4)
+
+DEPENDENCIES:
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - vlc_player (from `Flutter/ephemeral/.symlinks/plugins/vlc_player/macos`)
+  - VLCKit (from `../../../../macos/vendor/VLCKit.podspec.json`)
+
+EXTERNAL SOURCES:
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  vlc_player:
+    :path: Flutter/ephemeral/.symlinks/plugins/vlc_player/macos
+  VLCKit:
+    :podspec: "../../../../macos/vendor/VLCKit.podspec.json"
+
+SPEC CHECKSUMS:
+  FlutterMacOS: c232990155153907050900a2e175c7773903ba4e
+  vlc_player: 941519abb14eb6c91b90c2d3edace52df993e3cc
+  VLCKit: df6bb15c7fb1f1c5973ec7a64f353817bc4c012c
+
+PODFILE CHECKSUM: 6fd38ab037f539ea9ebc51fcf5217219315480d1
+
+COCOAPODS: 1.16.2

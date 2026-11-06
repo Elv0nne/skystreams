@@ -1,0 +1,72 @@
+# CloudStream in SkyStream on a phone, through the UI (use on release builds, which
+# `flutter test` cannot run): add the official repository, install Internet Archive,
+# search, open a film, play it, and screenshot the player twice, 15 s apart.
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/cloudstream_playback.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Settings is the last of five.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/recloudstream/extensions/master/repo.json"
+- tapOn: "Add"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-install-InternetArchiveProvider"
+    timeout: 60000
+- tapOn:
+    id: "cs3-install-InternetArchiveProvider"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-uninstall-InternetArchiveProvider"
+    timeout: 180000
+- takeScreenshot: cs3-installed
+- back
+# Search is the second item of the bottom bar.
+- tapOn:
+    point: "32%,92%"
+- tapOn: "Search movies, series.*"
+# With the year: archive.org's ranking for the bare title has drifted to podcasts.
+- inputText: "His Girl Friday 1940"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: "Internet Archive.*"
+    timeout: 60000
+- takeScreenshot: cs3-search
+# The first result card of the Internet Archive section (the search field holds the same text).
+- tapOn:
+    text: ".*Girl Friday.*"
+    below: "Internet Archive.*"
+# archive.org now lists the film as a series of one: "Play E1".
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 60000
+- takeScreenshot: cs3-details
+- tapOn: "(Play|Resume)( E[0-9]+)?"
+- extendedWaitUntil:
+    notVisible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 30000
+- swipe:
+    direction: UP
+    duration: 15000
+    optional: true
+- takeScreenshot: cs3-playing-1
+- swipe:
+    direction: UP
+    duration: 15000
+    optional: true
+- takeScreenshot: cs3-playing-2

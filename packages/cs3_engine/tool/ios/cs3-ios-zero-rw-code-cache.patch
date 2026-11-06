@@ -1,0 +1,17 @@
+diff --git a/src/hotspot/os/bsd/os_bsd.cpp b/src/hotspot/os/bsd/os_bsd.cpp
+index b49bbf183..1b3d891e6 100644
+--- a/src/hotspot/os/bsd/os_bsd.cpp
++++ b/src/hotspot/os/bsd/os_bsd.cpp
+@@ -1602,6 +1602,12 @@ static void warn_fail_commit_memory(char* addr, size_t size, bool exec,
+ //       left at the time of mmap(). This could be a potential
+ //       problem.
+ bool os::pd_commit_memory(char* addr, size_t size, bool exec) {
++#if defined(__IOS__) && defined(ZERO)
++  // Zero never runs generated machine code, and Apple Silicon (iOS devices and
++  // the simulator alike) refuses writable+executable pages outside MAP_JIT.
++  // The code cache only needs to be readable and writable.
++  exec = false;
++#endif
+   int prot = exec ? PROT_READ|PROT_WRITE|PROT_EXEC : PROT_READ|PROT_WRITE;
+ #if defined(__OpenBSD__)
+   // XXX: Work-around mmap/MAP_FIXED bug temporarily on OpenBSD

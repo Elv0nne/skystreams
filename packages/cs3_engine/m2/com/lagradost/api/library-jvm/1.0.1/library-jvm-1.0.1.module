@@ -1,0 +1,216 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../library/1.0.1/library-1.0.1.module",
+    "group": "com.lagradost.api",
+    "module": "library",
+    "version": "1.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.4.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "library-jvm-1.0.1.jar",
+          "url": "library-jvm-1.0.1.jar",
+          "size": 2910144,
+          "sha512": "95e96f4c870d265ac399b971dd0fdb82a9b661440490619dee19d99c33bac9cb4f2364249705b4ee5d43770035b3284ce15ca482bdfe7eda0126bf4bca31d006",
+          "sha256": "46da83d33c8d875b735d7a11db18d2d43fb92f93aed9d573f71db5dc1dcad2f1",
+          "sha1": "dab10bee2a412c2f87b0f24b9bcc8adc6312fc30",
+          "md5": "166713d518626b11f53dedbdca2edb2b"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.0"
+          }
+        },
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.10.0"
+          }
+        },
+        {
+          "group": "com.fasterxml.jackson.module",
+          "module": "jackson-module-kotlin",
+          "version": {
+            "strictly": "2.13.1",
+            "requires": "2.13.1"
+          }
+        },
+        {
+          "group": "org.jsoup",
+          "module": "jsoup",
+          "version": {
+            "requires": "1.22.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.33.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-datetime",
+          "version": {
+            "requires": "0.8.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-serialization-json",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "com.fleeksoft.ksoup",
+          "module": "ksoup",
+          "version": {
+            "requires": "0.2.6"
+          }
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-http",
+          "version": {
+            "requires": "3.5.0"
+          }
+        },
+        {
+          "group": "com.github.Blatzar",
+          "module": "NiceHttp",
+          "version": {
+            "requires": "0.4.18"
+          }
+        },
+        {
+          "group": "org.mozilla",
+          "module": "rhino",
+          "version": {
+            "strictly": "1.8.1",
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "dev.whyoleg.cryptography",
+          "module": "cryptography-core",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "dev.whyoleg.cryptography",
+          "module": "cryptography-provider-optimal",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-reflect",
+          "version": {
+            "requires": "2.4.0"
+          }
+        },
+        {
+          "group": "com.github.teamnewpipe",
+          "module": "NewPipeExtractor",
+          "version": {
+            "requires": "v0.26.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "library-jvm-1.0.1.jar",
+          "url": "library-jvm-1.0.1.jar",
+          "size": 2910144,
+          "sha512": "95e96f4c870d265ac399b971dd0fdb82a9b661440490619dee19d99c33bac9cb4f2364249705b4ee5d43770035b3284ce15ca482bdfe7eda0126bf4bca31d006",
+          "sha256": "46da83d33c8d875b735d7a11db18d2d43fb92f93aed9d573f71db5dc1dcad2f1",
+          "sha1": "dab10bee2a412c2f87b0f24b9bcc8adc6312fc30",
+          "md5": "166713d518626b11f53dedbdca2edb2b"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "library-jvm-1.0.1-sources.jar",
+          "url": "library-jvm-1.0.1-sources.jar",
+          "size": 252900,
+          "sha512": "6720a1e746eafef13bb2e42bdc1edb6343e94d4987991722a071ed1dbfcab5a64fcf964fb38ef15c2ea0e91839ad8ea9b9adc30cd8256eccb02d64187ce0083f",
+          "sha256": "823fae5b863162eee672aa20c8e5084c0479ee3ebc523647e3386957778b3e83",
+          "sha1": "91e2eff82d7f2620991eb70fa60f588b7aba6426",
+          "md5": "9c26efb5a8bfc241eee56543e5d51718"
+        }
+      ]
+    }
+  ]
+}

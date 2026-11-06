@@ -1,0 +1,99 @@
+# An extension's pop-up in a release build (R8 on), through the UI, which `flutter test` cannot run:
+# add CNC's repository, install HDrezka, load its Home, see nothing of its own over the app, then open
+# its support pop-up from its row's Support button in SkyStream's sheet, close it, and open it again: closing puts
+# it back behind Support (the owner, 2026-10-08). HDrezka shows the
+# pop-up once a day per install (clearState makes a fresh one); a pop-up it changes changes the text.
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/extension_popups_release.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Home is the first of five, Settings the last.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/NivinCNC/CNCVerse-Cloud-Stream-Extension/refs/heads/builds/CNC.json"
+- tapOn: "Add"
+- extendedWaitUntil:
+    visible: "CNC Repo.*"
+    timeout: 60000
+- tapOn: "CNC Repo.*"
+# Centred: at the list's foot the row is under the floating navigation bar.
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-HDrezkaProvider"
+    direction: DOWN
+    centerElement: true
+    timeout: 60000
+- tapOn:
+    id: "cs3-install-HDrezkaProvider"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-uninstall-HDrezkaProvider"
+    timeout: 180000
+# Home on HDrezka: its main page loads in the background, where its support pop-up must not show.
+- tapOn:
+    point: "15%,92%"
+- tapOn: "None"
+- tapOn: "HDrezka.*"
+- extendedWaitUntil:
+    notVisible: "Select a provider to start watching"
+    timeout: 30000
+- swipe:
+    direction: UP
+    duration: 15000
+    optional: true
+- assertNotVisible: ".*SUPPORT THE REPO.*"
+- takeScreenshot: popups-home
+# Its row now has Support, which opens the kept pop-up live in SkyStream's sheet.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "(?s)Installed.*"
+- scrollUntilVisible:
+    element:
+      id: "cs3-support-HDrezkaProvider"
+    direction: DOWN
+    centerElement: true
+    timeout: 60000
+- tapOn:
+    id: "cs3-support-HDrezkaProvider"
+- extendedWaitUntil:
+    visible: ".*SUPPORT THE REPO.*"
+    timeout: 30000
+- takeScreenshot: popups-support-sheet
+# Back closes it, and puts it back behind Support (the owner, 2026-10-08): Support stays, and opens it again.
+- back
+- extendedWaitUntil:
+    notVisible: ".*SUPPORT THE REPO.*"
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: "cs3-support-HDrezkaProvider"
+    timeout: 15000
+- tapOn:
+    id: "cs3-support-HDrezkaProvider"
+- extendedWaitUntil:
+    visible: ".*SUPPORT THE REPO.*"
+    timeout: 30000
+- takeScreenshot: popups-support-again
+- back
+- extendedWaitUntil:
+    notVisible: ".*SUPPORT THE REPO.*"
+    timeout: 15000

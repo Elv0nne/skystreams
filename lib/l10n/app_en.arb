@@ -1,0 +1,1881 @@
+{
+  "@@locale": "en",
+  "appTitle": "SkyStream",
+  "languageName": "English",
+  "addonHealthChecking": "Checking add-on…",
+  "@addonHealthChecking": {
+    "description": "Manage tab, Stremio add-ons: the liveness probe for an installed add-on is still running."
+  },
+  "addonHealthWorking": "Working · {ms} ms",
+  "@addonHealthWorking": {
+    "description": "Manage tab, Stremio add-ons: the add-on answered its manifest ping. {ms} is the round-trip latency in milliseconds.",
+    "placeholders": {
+      "ms": {
+        "type": "int",
+        "example": "340"
+      }
+    }
+  },
+  "addonHealthUnavailable": "Unavailable",
+  "@addonHealthUnavailable": {
+    "description": "Manage tab, Stremio add-ons: the add-on did not answer its manifest ping (offline, moved, or wrong URL)."
+  },
+  "home": "Home",
+  "search": "Search",
+  "explore": "Explore",
+  "exploreAnime": "Explore Anime",
+  "exploreMovies": "Explore Movies",
+  "library": "Library",
+  "settings": "Settings",
+  "extensions": "Extensions",
+  "updateAvailable": "Update Available",
+  "retry": "Retry",
+  "factoryReset": "Factory Reset",
+  "startupError": "Startup Error",
+  "general": "General",
+  "appTheme": "App Theme",
+  "recordWatchHistory": "Record Watch History",
+  "fullScreenMode": "Full screen mode",
+  "@fullScreenMode": {
+    "description": "Title of the Settings > General switch that chooses between full screen and windowed. Desktop only: a phone, a tablet and an Android TV never see this row."
+  },
+  "fullScreenModeSubtitle": "Full screen brings the ten-foot TV layout with it, for a computer plugged into a television. Off, the app stays windowed.",
+  "@fullScreenModeSubtitle": {
+    "description": "Subtitle of that switch. Names both states and says what full screen costs/buys: the ten-foot TV layout comes with it, not just a bigger window."
+  },
+  "defaultHomeScreen": "Default Home Screen",
+  "titlePosition": "Title Position",
+  "titlePositionBelowPoster": "Below Poster",
+  "titlePositionInsidePoster": "Inside Poster",
+  "player": "Player",
+  "defaultPlayer": "Default Player",
+  "leftGesture": "Left Gesture",
+  "rightGesture": "Right Gesture",
+  "doubleTapToSeek": "Double Tap to Seek",
+  "swipeToSeek": "Swipe to Seek",
+  "seekDuration": "Seek Duration",
+  "defaultResizeMode": "Default Resize Mode",
+  "hardwareDecoding": "Hardware Decoding",
+  "network": "Network",
+  "dnsOverHttps": "DNS over HTTPS",
+  "dohProvider": "DoH Provider",
+  "githubProxy": "GitHub Proxy",
+  "githubProxySubtitle": "Route extension downloads through jsDelivr to bypass ISP blocks.",
+  "manageExtensions": "Manage Extensions",
+  "appData": "App Data",
+  "resetDataKeepExtensions": "Reset Data (Keep Extensions)",
+  "developer": "Developer",
+  "developerOptions": "Developer Options",
+  "about": "About",
+  "version": "Version",
+  "openSourceLicences": "Open-source licences",
+  "openSourceLicencesSubtitle": "SkyStream is free software under the GNU GPL v3",
+  "appLegalese": "Copyright © 2025–2026 SkyStream contributors.\nSkyStream is free software: you can redistribute it and modify it under the terms of the GNU General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY. Its source code is at github.com/akashdh11/skystream.",
+  "@appLegalese": {
+    "description": "The GPL notice on the licence page: copyright, the licence, no warranty, where the source is."
+  },
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "discord": "Discord",
+  "discordSubtitle": "Join our server",
+  "telegram": "Telegram",
+  "telegramSubtitle": "Join our channel",
+  "developedBy": "Developed by {name}",
+  "@developedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "system": "System",
+  "dark": "Dark",
+  "light": "Light",
+  "later": "Later",
+  "updateNow": "Update Now",
+  "save": "Save",
+  "cancel": "Cancel",
+  "close": "Close",
+  "delete": "Delete",
+  "viewDetails": "View Details",
+  "clearAll": "Clear All",
+  "clearAllHistory": "Clear All History",
+  "all": "All",
+  "none": "None",
+  "confirmDownload": "Confirm Download",
+  "downloadNow": "Download Now",
+  "selectSource": "Select Source",
+  "downloadUnavailable": "Download Unavailable",
+  "selectAnotherSource": "Select Another Source",
+  "watchHistoryCleared": "Watch history cleared",
+  "downloadingUpdate": "Downloading update...",
+  "errorPrefix": "Error: {message}",
+  "@errorPrefix": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "updateAvailableTag": "Update Available: {tag}",
+  "@updateAvailableTag": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "selectProviderToStart": "Select a provider to start watching",
+  "tapExtensionIcon": "Tap the extension icon in the corner",
+  "continueWatching": "Continue Watching",
+  "noInternetConnection": "No Internet Connection",
+  "siteNotReachable": "Site Not Reachable",
+  "checkConnectionOrDownloads": "Check your connection or view your downloaded content.",
+  "tryVpnOrConnection": "Please try accessing the site with a VPN or checking your internet connection.",
+  "errorDetails": "Error Details: {error}",
+  "@errorDetails": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "goToDownloads": "Go to Downloads",
+  "selectProvider": "Select Provider",
+  "searchHint": "Search movies, series...",
+  "searchFavoriteContent": "Search for your favorite content",
+  "pressSearchOrEnter": "Press the Search key or Enter to start",
+  "recentSearches": "Recent searches",
+  "@recentSearches": {
+    "description": "Header above the list of the user's previously submitted search queries."
+  },
+  "removeFromSearchHistory": "Remove {query} from search history",
+  "@removeFromSearchHistory": {
+    "description": "Tooltip and screen-reader label for the button that deletes one recent search.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noResultsFound": "No results found.",
+  "couldNotLoadTrending": "Couldn't load trending items",
+  "popularMovies": "Popular Movies",
+  "popularTVShows": "Popular TV Shows",
+  "newMovies": "New Movies",
+  "newTVShows": "New TV Shows",
+  "featuredMovies": "Featured Movies",
+  "featuredTVShows": "Featured TV Shows",
+  "lastVideosTVShows": "Last videos TV Shows",
+  "downloads": "Downloads",
+  "bookmarks": "Bookmarks",
+  "noDownloadsYet": "No downloads yet",
+  "episodesCount": "{count} Episodes • {done} Done",
+  "@episodesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "done": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteAllEpisodes": "Delete All Episodes",
+  "confirmDeleteAllEpisodes": "Are you sure you want to delete all {count} episodes of \"{title}\" and their files?",
+  "@confirmDeleteAllEpisodes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteAll": "Delete All",
+  "completed": "Completed",
+  "statusQueued": "Queued...",
+  "statusDownloading": "Downloading...",
+  "statusFinished": "Finished",
+  "statusFailed": "Failed",
+  "statusCanceled": "Canceled",
+  "statusPaused": "Paused",
+  "statusWaiting": "Waiting...",
+  "fileNotFoundRemoving": "File not found on disk. Removing record.",
+  "fileNotFound": "File not found",
+  "deleteDownload": "Delete Download",
+  "confirmDeleteDownload": "Are you sure you want to delete this download and its file?",
+  "libraryEmpty": "Your library is empty",
+  "language": "Language",
+  "english": "English",
+  "hindi": "Hindi (हिंदी)",
+  "kannada": "Kannada (ಕನ್ನಡ)",
+  "unknown": "Unknown",
+  "recommended": "Recommended",
+  "on": "On",
+  "off": "Off",
+  "installRemoveProviders": "Install or remove providers",
+  "resetDataSubtitle": "Clear settings & database, keep plugin",
+  "factoryResetSubtitle": "Delete all data, settings, and extensions",
+  "developerOptionsSubtitle": "Debug tools & local play",
+  "loading": "Loading...",
+  "sec": "sec",
+  "min": "min",
+  "playerRewindSeconds": "{count, plural, =1{Rewind 1 second} other{Rewind {count} seconds}}",
+  "@playerRewindSeconds": {
+    "description": "Tooltip on the player's rewind button, which Tooltip also publishes as the button's screen-reader label - so it names the action rather than showing a signed amount. {count} is the viewer's configured seek step: the picker offers 5, 10, 15, 20, 30, 60 and 120, so nothing here may hardcode ten. Counted in seconds at every step, including 60 and 120, because seconds are what the seek toast, the seek burst and the D-pad chain already count in; the settings row is the only place that says \"2 min\". Keep it to two or three words plus the number - it sits under a 48 dp glyph in a crowded transport row.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerForwardSeconds": "{count, plural, =1{Forward 1 second} other{Forward {count} seconds}}",
+  "@playerForwardSeconds": {
+    "description": "Tooltip on the player's fast-forward button, and its screen-reader label. The mirror of playerRewindSeconds in every respect: same {count}, same unit, same length budget.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "internalPlayer": "Internal (VLC)",
+  "builtInPlayer": "Built-in player",
+  "customNotSet": "Custom (not set)",
+  "selectGesture": "Select {side} Gesture",
+  "@selectGesture": {
+    "placeholders": {
+      "side": {
+        "type": "String"
+      }
+    }
+  },
+  "left": "Left",
+  "right": "Right",
+  "selectSeekDuration": "Select Seek Duration",
+  "subtitleSettings": "Subtitle Settings",
+  "size": "Size: {size}",
+  "@size": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "background": "Background",
+  "customDohUrlLabel": "Custom DoH URL",
+  "enterCustomDohUrl": "Enter your own DoH URL",
+  "chooseTheme": "Choose Theme",
+  "resetDataDialogTitle": "Reset Data?",
+  "resetDataDialogContent": "This will clear Settings, Favorites, and History. Your installed Extensions will NOT be deleted.",
+  "factoryResetDialogTitle": "Factory Reset?",
+  "factoryResetDialogContent": "This will delete EVERYTHING: Favorites, History, Settings, and ALL Extensions. This cannot be undone.",
+  "selectLanguage": "Select Language",
+  "synopsis": "Synopsis",
+  "noDescription": "No description available.",
+  "videoAlreadyDownloadedPrompt": "This video is already downloaded. What would you like to do?",
+  "playNow": "Play Now",
+  "upNext": "Up Next",
+  "deleteDownloadPrompt": "Delete Download?",
+  "deleteDownloadConfirmation": "Are you sure you want to delete this file? This cannot be undone.",
+  "no": "No",
+  "yesDelete": "Yes, Delete",
+  "downloadPaused": "Download Paused",
+  "downloading": "Downloading",
+  "speed": "Speed",
+  "remaining": "Remaining",
+  "resume": "Resume",
+  "pause": "Pause",
+  "torrentContent": "Torrent Content",
+  "audioTracks": "Audio Tracks",
+  "noAudioTracks": "No audio tracks found",
+  "subtitles": "Subtitles",
+  "options": "Options",
+  "noSubtitlesFound": "No subtitle tracks found",
+  "playbackSpeed": "Playback Speed",
+  "subtitleOptions": "Subtitle Options",
+  "hlsSubtitleWarning": "External subtitle files are not supported on the active HLS player on this platform.",
+  "loadFromDevice": "Load from Device",
+  "syncDelay": "Sync / Delay",
+  "styleSettings": "Style Settings",
+  "searchOnline": "Search Online (Subtitle Search)",
+  "subtitleSync": "Subtitle Sync",
+  "subtitleDelayWarning": "Subtitle delay is not supported by the active playback engine.",
+  "resetDelay": "Reset Delay",
+  "subtitleStyles": "Subtitle Styles",
+  "resetToDefault": "Reset to Default",
+  "fontSize": "Font Size",
+  "verticalPosition": "Vertical Position",
+  "textColor": "Text Color",
+  "backgroundColor": "Background Color",
+  "backgroundOpacity": "Background Opacity",
+  "subtitleSearch": "Subtitle Search",
+  "searchSubtitleNameHint": "Search subtitle name...",
+  "enterSearchSubtitlePrompt": "Enter a name or search to find subtitles.",
+  "noSubtitleResults": "No results found. Try another query.",
+  "downloadingApplyingSubtitle": "Downloading & applying subtitle...",
+  "failedToDownloadSubtitle": "Failed to download subtitle.",
+  "failedToLoadSubtitles": "Failed to load subtitles. Please try again.",
+  "noReposFound": "No repositories or plugins found",
+  "downloadAllProviders": "Download All",
+  "removeRepository": "Remove Repository",
+  "addRepo": "Add Repo",
+  "extensionsNotInRepos": "Extensions Not in Repositories",
+  "noLongerInRepo": "No longer listed in any repository",
+  "addRepoToBrowse": "Add a repository to browse and update plugins",
+  "debugExtensions": "Debug Extensions",
+  "removeRepoConfirm": "Remove {repoName}?",
+  "@removeRepoConfirm": {
+    "placeholders": {
+      "repoName": {
+        "type": "String"
+      }
+    }
+  },
+  "removeRepoWarning": "This will remove the repository and uninstall ALL its plugins.",
+  "addRepository": "Add Repository",
+  "repoUrlOrShortcode": "Repository URL or Shortcode",
+  "assetPlugin": "Asset Plugin",
+  "installed": "Installed",
+  "repositories": "Repositories",
+  "noExtensionsInstalled": "No Extensions Installed",
+  "browseRepositoriesToInstall": "Browse the Repositories tab to discover and install extensions.",
+  "browseRepositories": "Browse Repositories",
+  "addRepoDescription": "Add a repository URL or shortcode to discover and install extension plugins.",
+  "updateTo": "Update to {version}",
+  "@updateTo": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "install": "Install",
+  "installFromThisRepository": "Install from this repository",
+  "@installFromThisRepository": {
+    "description": "Extensions screen, a repository's plugin row: the button for a plugin the user installed from another repository. It installs this repository's copy in its place, and its updates then come from this repository."
+  },
+  "installFromThisRepositoryTitle": "Install {pluginName} from this repository?",
+  "@installFromThisRepositoryTitle": {
+    "description": "Title of the dialog that confirms installing a repository's copy of a plugin the user installed from another repository.",
+    "placeholders": {
+      "pluginName": {
+        "type": "String"
+      }
+    }
+  },
+  "installFromThisRepositoryMessage": "The copy you have came from {source}. This installs version {version} from {repoName} in its place, and from then on its updates come from {repoName} only.",
+  "@installFromThisRepositoryMessage": {
+    "description": "Body of the same dialog. {source} is the web address of the repository the installed copy came from, {version} the version this repository lists, {repoName} this repository's name.",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      },
+      "repoName": {
+        "type": "String"
+      }
+    }
+  },
+  "discoverSearchHint": "Search community add-ons",
+  "discoverClearSearch": "Clear",
+  "discoverNeedsWebSetup": "Needs quick setup on the add-on's website",
+  "discoverOpenSetup": "Set up on the add-on website",
+  "error": "Error",
+  "ok": "OK",
+  "pluginSettings": "{pluginName} Settings",
+  "@pluginSettings": {
+    "placeholders": {
+      "pluginName": {
+        "type": "String"
+      }
+    }
+  },
+  "movies": "Movies",
+  "series": "Series",
+  "anime": "Anime",
+  "liveStreams": "Live Streams",
+  "debug": "DEBUG",
+  "extensionsUpdated": "{count, plural, =1{Updated 1 extension} other{Updated {count} extensions}}",
+  "extensionsNewRepositories": "{count, plural, =1{New repository in {source}} other{{count} new repositories in {source}}}",
+  "@extensionsNewRepositories": {
+    "description": "Title of a toast shown after launch: a repository collection the user follows (a repository that lists other repositories, like the one the 'universe' shortcode adds) listed repositories it had not listed before, and the app added them. {source} is the collection's name, or a few names separated by commas; names are proper nouns and never translated. The toast's body lists the new repositories' names.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "extensionsNewPlugins": "{count, plural, =1{New plugin in {repository}} other{{count} new plugins in {repository}}}",
+  "@extensionsNewPlugins": {
+    "description": "Title of a toast shown after launch: a repository the user has added lists plugins it did not list before. They are available to install, not installed. {repository} is the repository's name, or a few names separated by commas; names are proper nouns and never translated. The toast's body lists the new plugins' names.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "repository": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidNavigation": "Invalid navigation. Please go back.",
+  "startOver": "Start Over",
+  "goBack": "Go Back",
+  "restartApp": "Restart App",
+  "@restartApp": {
+    "description": "Button on the app-wide error screen that tears the widget tree down and rebuilds it. Recovery action, not a device reboot and not a retry of one request; sits next to goBack."
+  },
+  "resolving": "Resolving...",
+  "downloaded": "Downloaded",
+  "download": "Download",
+  "debugOnlyFeature": "This feature is only available in Debug builds",
+  "streamUrl": "Stream URL",
+  "play": "Play",
+  "verifyingSourceSize": "Verifying source & size...",
+  "fileSaveLocationNotification": "The file will be saved in your Downloads folder.",
+  "resumingPlayback": "Resuming Playback",
+  "pausedAt": "Paused at {time}",
+  "@pausedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "resumesAutomatically": "{count, plural, =1{Resumes automatically in 1 second} other{Resumes automatically in {count} seconds}}",
+  "@resumesAutomatically": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resumeNow": "Resume Now",
+  "playbackError": "Playback Error",
+  "confirmClearHistory": "Are you sure you want to remove all items from your watch history?",
+  "seasonWithNumber": "Season {number}",
+  "@seasonWithNumber": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      }
+    }
+  },
+  "starting": "Starting...",
+  "percentWatched": "{percent}% watched",
+  "@percentWatched": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "sub": "Sub",
+  "dub": "Dub",
+  "playEpisode": "{label} S{season} E{episode}",
+  "@playEpisode": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "season": {
+        "type": "Object"
+      },
+      "episode": {
+        "type": "Object"
+      }
+    }
+  },
+  "playEpisodeOnly": "{label} E{episode}",
+  "@playEpisodeOnly": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "episode": {
+        "type": "int"
+      }
+    }
+  },
+  "debugTools": "Debug Tools",
+  "playLocalVideo": "Play local video file",
+  "playLocalVideoSubtitle": "Play any video from device",
+  "streamUrlSubtitle": "Play from network URL",
+  "streamTorrent": "Stream torrent",
+  "streamTorrentSubtitle": "Select a local torrent file to play",
+  "loadPluginFromAssets": "Load plugin from assets",
+  "enterVideoUrlHint": "Enter video URL (http, magnet, etc.)",
+  "networkStream": "Network Stream",
+  "removedFromHistory": "Removed {title} from history",
+  "@removedFromHistory": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "custom": "Custom",
+  "refreshingLiveStream": "Refreshing live stream...",
+  "removeFromHistory": "Remove from History",
+  "live": "LIVE",
+  "volume": "Volume",
+  "decrease": "Decrease",
+  "@decrease": {
+    "description": "Tooltip on the minus button of the player's speed and volume dialog."
+  },
+  "increase": "Increase",
+  "@increase": {
+    "description": "Tooltip on the plus button of the player's speed and volume dialog."
+  },
+  "brightness": "Brightness",
+  "fit": "Fit",
+  "zoom": "Zoom",
+  "stretch": "Stretch",
+  "titleWithParam": "Title: {title}",
+  "@titleWithParam": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceWithParam": "Source: {source}",
+  "@sourceWithParam": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "sizeWithParam": "Size: {size}",
+  "@sizeWithParam": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "usingInternalPlayerError": "Error: {error}. Using internal player.",
+  "@usingInternalPlayerError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "externalPlayerCannotSendHeaders": "{playerName} cannot send {headers}. Using internal player.",
+  "@externalPlayerCannotSendHeaders": {
+    "description": "Shown instead of handing a source to an external player, when the request the source only answers to cannot survive the hand-off. {headers} is a comma-separated list of HTTP header names - Referer, User-Agent, Cookie - left untranslated because they are protocol field names. Distinct from playerNotDetected: the other player may well be installed, and the reason is the request rather than the app.",
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      },
+      "headers": {
+        "type": "String"
+      }
+    }
+  },
+  "playerNotDetected": "{playerName} not detected. Starting internal player.",
+  "@playerNotDetected": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "seasonWithEpisodes": "Season {number} ({count} Episodes)",
+  "@seasonWithEpisodes": {
+    "placeholders": {
+      "number": {
+        "type": "Object"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cloudflare": "Cloudflare",
+  "google": "Google",
+  "adguard": "AdGuard",
+  "dnsWatch": "DNS.Watch",
+  "quad9": "Quad9",
+  "dnsSb": "DNS.SB",
+  "canadianShield": "Canadian Shield",
+  "tmdb": "TMDB",
+  "selectSourceForPlayer": "Select Source for {playerName}",
+  "noPluginsInstalled": "No plugins installed",
+  "noPluginsMessage": "Install extensions to browse and stream content.",
+  "goToExtensions": "Go to Extensions",
+  "availableSources": "Available Sources",
+  "seasons": "Seasons",
+  "episodes": "Episodes",
+  "selectSourceToPlay": "Please select a source from 'Available Sources' above to play.",
+  "episodeCountOnly": "{count, plural, =1{1 Episode} other{{count} Episodes}}",
+  "noEpisodesFound": "No episodes found",
+  "local": "Local",
+  "remote": "Remote",
+  "torrent": "Torrent",
+  "unlock": "Unlock",
+  "lock": "Lock",
+  "sources": "Sources",
+  "tracks": "Tracks",
+  "content": "Content",
+  "stats": "Stats",
+  "resize": "Resize",
+  "next": "Next",
+  "previous": "Previous",
+  "@previous": {
+    "description": "Tooltip on the player control that plays the episode before this one."
+  },
+  "pip": "PiP",
+  "rotate": "Rotate",
+  "windowed": "Windowed",
+  "fullscreen": "Fullscreen",
+  "movieDetails": "Movie Details",
+  "showDetails": "Show Details",
+  "tagline": "Tagline",
+  "status": "Status",
+  "releaseDate": "Release Date",
+  "firstAirDate": "First Air Date",
+  "originalLanguage": "Original Language",
+  "originCountry": "Origin Country",
+  "budgetLabel": "Budget",
+  "revenueLabel": "Revenue",
+  "paused": "Paused",
+  "@selectSourceForPlayer": {
+    "placeholders": {
+      "playerName": {
+        "type": "String"
+      }
+    }
+  },
+  "watched": "Watched",
+  "watching": "Watching",
+  "lastWatched": "Last Watched",
+  "movie": "Movie",
+  "tvShow": "TV Show",
+  "failedToLoadContent": "Failed to load content",
+  "director": "Director",
+  "creator": "Creator",
+  "showMore": "Show More",
+  "showLess": "Show Less",
+  "viewAll": "View All",
+  "seasonsCount": "{count} Seasons",
+  "@seasonsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noInternetError": "No internet connection",
+  "timeoutError": "Request timed out. Please try again.",
+  "serverError": "Server error. Please try again later.",
+  "contentNotFoundError": "Content not found.",
+  "accessDeniedError": "Access denied. Check your credentials.",
+  "serviceUnavailableError": "Server is unavailable. Try again later.",
+  "generalError": "Something went wrong. Please try again.",
+  "skip": "Skip",
+  "skipIntro": "Skip Intro",
+  "skipOutro": "Skip Outro",
+  "skipRecap": "Skip Recap",
+  "goLive": "Go Live",
+  "dismiss": "Dismiss",
+  "nextUp": "Next Up",
+  "sourceAttempt": "Source {index} of {total}",
+  "@sourceAttempt": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "trying": "Trying",
+  "failed": "Failed",
+  "selected": "Selected",
+  "playing": "Playing",
+  "pending": "Pending",
+  "openSubtitles": "OpenSubtitles",
+  "subDl": "SubDL",
+  "subSource": "SubSource",
+  "unmeteredQualityPreference": "Wi-Fi & Wired Quality Preference",
+  "@unmeteredQualityPreference": {
+    "description": "Player settings row: the quality tier to prefer on a connection the viewer does not pay for by the byte. Named for the two transports a viewer recognises; the branch behind it is metered vs unmetered, so it also covers a VPN tunnel and offline playback. Its pair is mobileQualityPreference. Also the title of the dialog the row opens."
+  },
+  "playerNotOnThisDevice": "Not offered on this device",
+  "@playerNotOnThisDevice": {
+    "description": "Subtitle on the Default Player row for a player the settings still point at but this platform does not list - a build that dropped it, or a settings box carried over. Shown so the choice the user made is still visible and still the selected one, rather than the dialog opening with nothing selected."
+  },
+  "mobileQualityPreference": "Mobile Quality Preference",
+  "anyNoPreference": "Any (no preference)",
+  "subtitleAccounts": "Subtitle Accounts",
+  "accounts": "Accounts",
+  "notLoggedIn": "Not logged in",
+  "loggedInAs": "Logged in as {username}",
+  "@loggedInAs": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "apiKeyConfigured": "API Key configured",
+  "keyNotSet": "Key not set",
+  "testConnection": "Test Connection",
+  "connectedSuccessfully": "Connected Successfully",
+  "connectionFailed": "Connection Failed",
+  "username": "Username",
+  "password": "Password",
+  "noAccountRegister": "Don't have an account? Register here",
+  "apiKey": "API Key",
+  "email": "Email",
+  "fetchMyApiKey": "Fetch My API Key",
+  "keyVerified": "Key Verified",
+  "invalidApiKey": "Invalid API Key",
+  "openSubtitlesAuthSubtitle": "Enter your account credentials for higher limits and ad-free subtitles.",
+  "subDlAuthSubtitle": "Enter your SubDL API Key directly, or fetch it using your account credentials below.",
+  "orFetchViaAccount": "OR FETCH VIA ACCOUNT",
+  "subSourceAuthSubtitle": "SubSource works out-of-the-box, but you can add a personal official API key to override the default for better reliability.",
+  "apiKeyOptionalOverride": "API Key (Optional Override)",
+  "enterKeyToOverrideDefault": "Enter key to override default",
+  "getApiKeyFromProfile": "Get your API Key from SubSource Profile",
+  "qualityNotGuaranteed": "Quality is not guaranteed. Sources are sorted by this preference, and a stream that offers several qualities plays at it, or the nearest below. Playback depends on what the provider actually offers.",
+  "keepSourcesOriginalOrder": "Keep sources in original order",
+  "openLink": "Open link",
+  "diagnostics": "Diagnostics",
+  "viewLogs": "View Logs",
+  "viewLogsSubtitle": "View application activity & errors",
+  "clearCache": "Clear image and video cache",
+  "clearCacheSubtitle": "Frees up storage used by cached images and videos",
+  "clearCacheDialogTitle": "Clear cache?",
+  "clearCacheDialogContent": "This will delete cached images and video files. Your settings, history, and extensions will not be affected.",
+  "clearCacheNow": "Clear Cache",
+  "cacheCleared": "Cache cleared",
+  "calculating": "Calculating…",
+  "playerControls": "Player Controls",
+  "playerControlsSubtitle": "Show or hide player control buttons",
+  "showPip": "Picture-in-Picture button",
+  "showResize": "Resize button",
+  "showRotate": "Rotate button",
+  "showPlaybackSpeed": "Playback speed button",
+  "showVolume": "Volume button",
+  "@showVolume": {
+    "description": "Player Controls toggle for the volume button. Does not disable volume gestures or keyboard shortcuts."
+  },
+  "showEpisodeNavigation": "Previous / next episode buttons",
+  "@showEpisodeNavigation": {
+    "description": "Player Controls toggle for previous and next episode transport buttons. The Episodes tab in Options remains available."
+  },
+  "playerNoProviderSelected": "No provider selected.",
+  "@playerNoProviderSelected": {
+    "description": "Playback cannot start because no extension is selected to resolve the link."
+  },
+  "playerNothingToPlay": "Nothing to play.",
+  "@playerNothingToPlay": {
+    "description": "Playback was requested with neither a link nor any already-resolved sources."
+  },
+  "playerCouldNotLoadSources": "Could not load sources: {error}",
+  "@playerCouldNotLoadSources": {
+    "description": "The extension threw while listing sources. {error} is the raw, untranslated plugin message.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "playerResolutionCancelled": "Cancelled.",
+  "@playerResolutionCancelled": {
+    "description": "Source resolution was abandoned because the viewer left the player before it finished."
+  },
+  "playerNoStreamsFound": "No streams found.",
+  "@playerNoStreamsFound": {
+    "description": "The extension answered, but with nothing playable for this title."
+  },
+  "playerDrmWidevine": "This channel uses Widevine DRM, which needs a licence module this player does not have.",
+  "@playerDrmWidevine": {
+    "description": "Why an encrypted stream will never open. Naming the scheme matters: Widevine is permanently out of reach."
+  },
+  "playerDrmPlayReady": "This channel uses PlayReady DRM, which needs a licence module this player does not have.",
+  "@playerDrmPlayReady": {
+    "description": "Why an encrypted stream will never open. Naming the scheme matters: PlayReady is permanently out of reach."
+  },
+  "playerDrmLicenceServer": "This channel needs a decryption key from a licence server, and the server did not provide a usable one.",
+  "@playerDrmLicenceServer": {
+    "description": "Why an encrypted stream will not open: the player did ask the licence server, and what came back was not a key it could use."
+  },
+  "playerDrmUnknown": "This channel is encrypted and no usable decryption key was provided.",
+  "@playerDrmUnknown": {
+    "description": "Why an encrypted stream will not open: it is encrypted but nothing says how, so no key can be found."
+  },
+  "playerPlaybackFailed": "Playback failed: {error}",
+  "@playerPlaybackFailed": {
+    "description": "A failure during setup that carries no better explanation. {error} is a raw, untranslated engine message.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "playerNoSourcesPlayable": "{count, plural, =1{The only source would not play.} other{None of the {count} sources would play.}}",
+  "@playerNoSourcesPlayable": {
+    "description": "Every candidate has been tried and failed, with no single reason worth naming. {count} is how many were tried.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerNoSourcesPlayableWithReason": "{count, plural, =1{The only source would not play - {reason}} other{None of the {count} sources would play - {reason}}}",
+  "@playerNoSourcesPlayableWithReason": {
+    "description": "Every candidate has been tried and failed. {reason} is why the last one gave up - one of the playerReason* or playerDrm* strings.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "playerPreparingTorrent": "Preparing torrent…",
+  "@playerPreparingTorrent": {
+    "description": "Progress note while a magnet is being seeded, before the engine has anything to open."
+  },
+  "playerTorrentPeers": "{connected}/{total} peers · {speed} · {loaded} loaded",
+  "@playerTorrentPeers": {
+    "description": "Under 'Preparing torrent…' while a torrent gets ready: peers connected out of those known, the download speed (for example '1.4 MB/s') and how much of the torrent is loaded (for example '24 MB').",
+    "placeholders": {
+      "connected": {"type": "int"},
+      "total": {"type": "int"},
+      "speed": {"type": "String"},
+      "loaded": {"type": "String"}
+    }
+  },
+  "playerReasonTorrentNotPrepared": "torrent could not be prepared",
+  "@playerReasonTorrentNotPrepared": {
+    "description": "Why one source gave up. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonNoPlayableAddress": "source has no playable address",
+  "@playerReasonNoPlayableAddress": {
+    "description": "Why one source gave up. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonLiveFeedDropped": "live feed dropped repeatedly",
+  "@playerReasonLiveFeedDropped": {
+    "description": "Why one source gave up. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonStreamEndedEarly": "stream ended before its duration",
+  "@playerReasonStreamEndedEarly": {
+    "description": "Why one source gave up. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonPlaybackError": "playback error",
+  "@playerReasonPlaybackError": {
+    "description": "Why one source gave up, when the engine reported a failure but described it in no way. A lowercase fragment, used like the other playerReason strings."
+  },
+  "playerReasonSourceStoppedResponding": "the source stopped responding",
+  "@playerReasonSourceStoppedResponding": {
+    "description": "Why one source gave up: it played and then went quiet. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonSourceNeverStarted": "the source never started",
+  "@playerReasonSourceNeverStarted": {
+    "description": "Why one source gave up: it never produced a frame at all. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonNetworkDropped": "the network dropped",
+  "@playerReasonNetworkDropped": {
+    "description": "Why one source gave up: the device lost connectivity while it was playing. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerReasonSkipped": "you skipped this source",
+  "@playerReasonSkipped": {
+    "description": "Why one source gave up: the viewer pressed Skip rather than wait for it to open. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerSkipSource": "Skip source",
+  "@playerSkipSource": {
+    "description": "Button that stops waiting on the source the player is opening and moves to the next candidate. Named for the source rather than just Skip, which on this screen already means Skip Intro."
+  },
+  "playerSourceReachable": "Reachable",
+  "@playerSourceReachable": {
+    "description": "Badge on a candidate whose health probe answered. Sits beside the existing trying and failed badges in the startup source list."
+  },
+  "playerReasonStreamEndedBeforePlaying": "stream ended before it played",
+  "@playerReasonStreamEndedBeforePlaying": {
+    "description": "Why one source gave up: the engine reported the end of the media without ever showing a frame. A lowercase fragment: it is shown alone when there is only one source, or after a dash in playerNoSourcesPlayableWithReason."
+  },
+  "playerFinished": "You've finished {title}",
+  "@playerFinished": {
+    "description": "Headline on the card that replaces the frozen last frame when playback runs out with nothing queued behind it: a film, the last episode of a series, or an episode whose automatic advance the viewer declined during the credits. Below it sit startOver and close, plus a next-episode action when one was declined.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "playerReconnecting": "Reconnecting…",
+  "@playerReconnecting": {
+    "description": "Status pill over a picture that has stopped moving while the player recovers the same source: from the moment it first re-issues its request, or checks the source after a failure, until the position moves again or another source is opened."
+  },
+  "playerWaitingForNetwork": "Waiting for network…",
+  "@playerWaitingForNetwork": {
+    "description": "Status pill over the last picture while the device reports no network and the player waits for it to come back; also the start-up view's status line when nothing has played yet."
+  },
+  "playerSpeedNormal": "Normal",
+  "@playerSpeedNormal": {
+    "description": "The 1x entry in the playback speed list, named rather than numbered."
+  },
+  "torrentStats": "Torrent stats",
+  "@torrentStats": {
+    "description": "Tooltip for the button that reveals peer and download figures for a torrent source."
+  },
+  "original": "Original",
+  "@original": {
+    "description": "Video fit mode that presents the picture at its native size. Sits alongside fit, zoom and stretch."
+  },
+  "playerCouldNotReadTracks": "Could not read tracks: {error}",
+  "@playerCouldNotReadTracks": {
+    "description": "The engine refused to list its audio and subtitle tracks. {error} is a raw, untranslated engine message.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "playerTrackNumber": "Track {id}",
+  "@playerTrackNumber": {
+    "description": "Fallback name for an audio or subtitle track the stream left unnamed. {id} is the engine's track number.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "subtitleDelay": "Subtitle delay",
+  "@subtitleDelay": {
+    "description": "Label for the control that shifts subtitles earlier or later against the picture."
+  },
+  "playerSourceRestoredPrevious": "That source would not play. Restored the previous one.",
+  "@playerSourceRestoredPrevious": {
+    "description": "A source the viewer picked by hand failed, so the session it interrupted was put back. Shown as a brief notice over the video."
+  },
+  "playerTorrentFileNotReady": "That file is not ready to stream yet.",
+  "@playerTorrentFileNotReady": {
+    "description": "A file picked out of a torrent pack has no seeded bytes yet, so the torrent server cannot serve it."
+  },
+  "torrentFiles": "Torrent files",
+  "@torrentFiles": {
+    "description": "Tooltip for the button that lists the files inside the torrent being played, so another one can be opened."
+  },
+  "audio": "Audio",
+  "@audio": {
+    "description": "Section heading over the audio tracks in the track sheet. Sits above the subtitles heading."
+  },
+  "noAudioTracksReported": "No audio tracks reported",
+  "@noAudioTracksReported": {
+    "description": "The engine answered the track query with an empty audio list, which is not the same as the query failing."
+  },
+  "loadSubtitleFile": "Load subtitle file",
+  "@loadSubtitleFile": {
+    "description": "Opens the device file picker to add a subtitle from storage as a track."
+  },
+  "searchSubtitlesOnline": "Search online",
+  "@searchSubtitlesOnline": {
+    "description": "Opens the online subtitle search from the track sheet. Sits directly under loadSubtitleFile, hence the short wording."
+  },
+  "searchOnlineSubtitles": "Search online subtitles",
+  "@searchOnlineSubtitles": {
+    "description": "Label on the query field of the online subtitle search sheet."
+  },
+  "subtitleLanguage": "Subtitle language",
+  "@subtitleLanguage": {
+    "description": "Title of the dialog that picks which language the online subtitle search asks for."
+  },
+  "subtitleDownloadFailed": "That subtitle could not be downloaded. Try another result.",
+  "@subtitleDownloadFailed": {
+    "description": "A chosen search result could not be fetched or unpacked. The other results are still worth trying, so this says so."
+  },
+  "subtitleSearchFailed": "Search failed: {error}",
+  "@subtitleSearchFailed": {
+    "description": "The online subtitle search itself failed rather than one provider within it. {error} is a raw, untranslated message.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "subtitleSearchPrompt": "Search for a title to find subtitles for it.",
+  "@subtitleSearchPrompt": {
+    "description": "The online subtitle search has not been run yet, so there is nothing to list."
+  },
+  "noSubtitlesFoundTryAnother": "No subtitles found. Try a different title or language.",
+  "@noSubtitlesFoundTryAnother": {
+    "description": "The online subtitle search ran and matched nothing. Names both things worth changing, because the language filter is the usual culprit."
+  },
+  "seedsPeers": "Seeds / Peers",
+  "@seedsPeers": {
+    "description": "Label under the seed and peer counts on the torrent stats card, shown as \"12 / 34\"."
+  },
+  "subtitleAppearanceNote": "Changes show at once. While a video plays, Subtitle style in the player's Subtitles tab changes them too.",
+  "@subtitleAppearanceNote": {
+    "description": "Under the subtitle preview in Subtitle Settings. A change takes effect at once, and the same settings are on the player's Subtitle style page (subtitleStyle), opened from its Subtitles tab, for changing them while watching."
+  },
+  "textSize": "Text size",
+  "@textSize": {
+    "description": "The subtitle font size row, and the title of the dialog it opens."
+  },
+  "subtitleTextColour": "Text colour",
+  "@subtitleTextColour": {
+    "description": "The subtitle glyph colour row, and the title of the dialog it opens."
+  },
+  "resetSubtitleAppearance": "Reset subtitle appearance",
+  "@resetSubtitleAppearance": {
+    "description": "Puts every subtitle appearance setting - size, text colour, background, outline, position, bold, font, text opacity and encoding - back to what a fresh install uses."
+  },
+  "resetSubtitleAppearanceSubtitle": "Back to white text at size 22",
+  "@resetSubtitleAppearanceSubtitle": {
+    "description": "What resetSubtitleAppearance will actually do, named rather than left to be discovered."
+  },
+  "subtitlePreviewSample": "The quick brown fox",
+  "@subtitlePreviewSample": {
+    "description": "The caption drawn in the appearance preview. A pangram-style phrase in the reader's own script is worth more than a translation of this one."
+  },
+  "subtitleBackgroundSummary": "{color} · {percent}%",
+  "@subtitleBackgroundSummary": {
+    "description": "One-line summary of the subtitle background box. {color} is one of the color* strings, {percent} its opacity.",
+    "placeholders": {
+      "color": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "opacityOff": "Opacity: off",
+  "@opacityOff": {
+    "description": "Zero opacity is the only way to get no background box at all, so it is spelled out rather than shown as 0%."
+  },
+  "opacityPercent": "Opacity: {percent}%",
+  "@opacityPercent": {
+    "description": "Live readout above the subtitle background opacity slider. {percent} is 0 to 100.",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "colorWhite": "White",
+  "@colorWhite": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorYellow": "Yellow",
+  "@colorYellow": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorCyan": "Cyan",
+  "@colorCyan": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorGreen": "Green",
+  "@colorGreen": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorMagenta": "Magenta",
+  "@colorMagenta": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorRed": "Red",
+  "@colorRed": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorBlack": "Black",
+  "@colorBlack": {
+    "description": "A caption colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "colorDarkGrey": "Dark grey",
+  "@colorDarkGrey": {
+    "description": "A caption background colour the viewer can pick. Named, not shown as a hex value."
+  },
+  "subtitleStyle": "Subtitle style",
+  "@subtitleStyle": {
+    "description": "The row in the player's Subtitles tab that opens a page of every subtitle look setting, and that page's title. Style here is how subtitles look: size, colours, outline, position, font."
+  },
+  "subtitleStyleSummary": "{size} · {color}",
+  "@subtitleStyleSummary": {
+    "description": "Second line of the Subtitle style row in the player: the text size and the text colour's name, for example \"22 · White\". {color} is one of the color* strings.",
+    "placeholders": {
+      "size": {
+        "type": "int"
+      },
+      "color": {
+        "type": "String"
+      }
+    }
+  },
+  "subtitleBackgroundOpacity": "Background opacity",
+  "@subtitleBackgroundOpacity": {
+    "description": "How see-through the box behind subtitle text is. A row of the player's Subtitle style page, shown only while the box is on."
+  },
+  "subtitleOutline": "Outline",
+  "@subtitleOutline": {
+    "description": "How thick the dark edge drawn around each subtitle letter is. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog."
+  },
+  "subtitleOutlineNone": "None",
+  "@subtitleOutlineNone": {
+    "description": "Outline choice: no edge around the letters."
+  },
+  "subtitleOutlineThin": "Thin",
+  "@subtitleOutlineThin": {
+    "description": "Outline choice: a thin edge around the letters. What a fresh install uses."
+  },
+  "subtitleOutlineNormal": "Normal",
+  "@subtitleOutlineNormal": {
+    "description": "Outline choice: a medium edge around the letters."
+  },
+  "subtitleOutlineThick": "Thick",
+  "@subtitleOutlineThick": {
+    "description": "Outline choice: a thick edge around the letters."
+  },
+  "subtitlePosition": "Position",
+  "@subtitlePosition": {
+    "description": "How high subtitles sit above the bottom of the picture. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog."
+  },
+  "subtitlePositionBottom": "Bottom",
+  "@subtitlePositionBottom": {
+    "description": "Position choice: subtitles in their usual place at the bottom of the picture, not lifted."
+  },
+  "subtitlePositionRaised": "+{percent}%",
+  "@subtitlePositionRaised": {
+    "description": "Position choice: subtitles lifted from the bottom by {percent} percent of the picture's height, for example \"+10%\".",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "subtitleBold": "Bold",
+  "@subtitleBold": {
+    "description": "Whether subtitle letters are bold. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog; its choices are the existing Off and On."
+  },
+  "subtitleFont": "Font",
+  "@subtitleFont": {
+    "description": "The typeface subtitles are drawn in. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog."
+  },
+  "subtitleFontDefault": "Default",
+  "@subtitleFontDefault": {
+    "description": "Font choice: the device's own typeface for subtitles. What a fresh install uses."
+  },
+  "subtitleFontSerif": "Serif",
+  "@subtitleFontSerif": {
+    "description": "Font choice: a typeface with serifs, such as Times New Roman."
+  },
+  "subtitleFontMonospace": "Monospace",
+  "@subtitleFontMonospace": {
+    "description": "Font choice: a typeface whose letters are all the same width, such as Courier."
+  },
+  "subtitleTextOpacity": "Text opacity",
+  "@subtitleTextOpacity": {
+    "description": "How see-through subtitle letters are. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog."
+  },
+  "subtitlePercent": "{percent}%",
+  "@subtitlePercent": {
+    "description": "An opacity as a percentage, for example \"75%\": the value of the opacity rows and the choices in their dialog.",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "subtitleEncoding": "Encoding",
+  "@subtitleEncoding": {
+    "description": "The character set subtitle files that are not Unicode are read in. Only old files need it: a wrong one shows letters as gibberish. A row of the player's Subtitle style page and of Subtitle Settings, and the title of its dialog."
+  },
+  "subtitleEncodingAuto": "Auto",
+  "@subtitleEncodingAuto": {
+    "description": "Encoding choice and the default: Unicode files are read as Unicode, and any other file as Western."
+  },
+  "subtitleEncodingCentralEuropean": "Central European",
+  "@subtitleEncodingCentralEuropean": {
+    "description": "Encoding choice: the Windows-1250 code page, for Polish, Czech, Slovak, Hungarian, Croatian, Romanian and the like."
+  },
+  "subtitleEncodingCyrillic": "Cyrillic",
+  "@subtitleEncodingCyrillic": {
+    "description": "Encoding choice: the Windows-1251 code page, for Russian, Ukrainian, Bulgarian, Serbian and the like."
+  },
+  "subtitleEncodingWestern": "Western",
+  "@subtitleEncodingWestern": {
+    "description": "Encoding choice: the Windows-1252 code page, for English, French, German, Spanish and the like."
+  },
+  "subtitleEncodingGreek": "Greek",
+  "@subtitleEncodingGreek": {
+    "description": "Encoding choice: the Windows-1253 code page."
+  },
+  "subtitleEncodingTurkish": "Turkish",
+  "@subtitleEncodingTurkish": {
+    "description": "Encoding choice: the Windows-1254 code page."
+  },
+  "subtitleEncodingHebrew": "Hebrew",
+  "@subtitleEncodingHebrew": {
+    "description": "Encoding choice: the Windows-1255 code page."
+  },
+  "subtitleEncodingArabic": "Arabic",
+  "@subtitleEncodingArabic": {
+    "description": "Encoding choice: the Windows-1256 code page, for Arabic, Persian and Urdu."
+  },
+  "subtitleEncodingBaltic": "Baltic",
+  "@subtitleEncodingBaltic": {
+    "description": "Encoding choice: the Windows-1257 code page, for Estonian, Latvian and Lithuanian."
+  },
+  "subtitleEncodingVietnamese": "Vietnamese",
+  "@subtitleEncodingVietnamese": {
+    "description": "Encoding choice: the Windows-1258 code page."
+  },
+  "subtitleNextTime": "Next time the player opens",
+  "@subtitleNextTime": {
+    "description": "Heading over the subtitle settings that reach subtitles inside a video only when the player next opens: bold, font, text opacity and encoding."
+  },
+  "subtitleNextTimeNote": "These change subtitle files at once, and subtitles inside the video the next time the player opens.",
+  "@subtitleNextTimeNote": {
+    "description": "Note under subtitleNextTime, and above the same four rows in Subtitle Settings. Subtitle files are the ones the app draws itself; subtitles inside the video are drawn by the video engine, which takes these four only when it starts."
+  },
+  "resetSubtitleStyle": "Reset subtitle style",
+  "@resetSubtitleStyle": {
+    "description": "Last row of the player's Subtitle style page: puts every subtitle look setting back to what a fresh install uses."
+  },
+  "stepperDecrease": "Decrease",
+  "@stepperDecrease": {
+    "description": "What a screen reader says for the minus button beside a value stepped with Left/Right in the player's side panel - a subtitle size, a delay, a colour."
+  },
+  "stepperIncrease": "Increase",
+  "@stepperIncrease": {
+    "description": "What a screen reader says for the plus button beside a value stepped with Left/Right in the player's side panel - a subtitle size, a delay, a colour."
+  },
+  "playerNowPlaying": "Now playing",
+  "@playerNowPlaying": {
+    "description": "Marks the source row the player is actually on, in the side panel's Sources tab."
+  },
+  "playerQualityFilterDropped": "Nothing matched your quality preference, so every source is listed.",
+  "@playerQualityFilterDropped": {
+    "description": "Shown above the source list when the quality filter matched no source and was dropped."
+  },
+  "playerSeeders": "{count, plural, =1{1 seeder} other{{count} seeders}}",
+  "@playerSeeders": {
+    "description": "Seeder count badge on a torrent source row.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "playerFiles": "Files",
+  "@playerFiles": {
+    "description": "Side-panel tab listing the video files inside the torrent being played."
+  },
+  "playerSeasonEpisode": "S{season} E{episode}",
+  "@playerSeasonEpisode": {
+    "description": "Compact episode number for a series with seasons.",
+    "placeholders": {
+      "season": {
+        "type": "int"
+      },
+      "episode": {
+        "type": "int"
+      }
+    }
+  },
+  "playerEpisodeNumber": "E{episode}",
+  "@playerEpisodeNumber": {
+    "description": "Compact episode number where the series has no seasons.",
+    "placeholders": {
+      "episode": {
+        "type": "int"
+      }
+    }
+  },
+  "playerRuntimeMinutes": "{count} min",
+  "@playerRuntimeMinutes": {
+    "description": "Episode runtime, in minutes, on a side-panel episode row.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "audioDelay": "Audio delay",
+  "@audioDelay": {
+    "description": "Label for the stepper that shifts the audio track earlier or later against the picture. Sits beside subtitleDelay."
+  },
+  "subtitleSearchTitleFallback": "Nothing matched this title's ID. Showing title matches instead.",
+  "@subtitleSearchTitleFallback": {
+    "description": "Note above online subtitle results when the ID lookup returned nothing and the search fell back to matching the title text. Must not claim the ID was wrong: some providers answer an empty list when no key is configured."
+  },
+  "subtitleSearchSeasonFallback": "No subtitles for this episode. These are for the whole season, so check the episode number in the file name.",
+  "@subtitleSearchSeasonFallback": {
+    "description": "Note above online subtitle results when the episode-scoped search returned nothing and the search widened to the whole season. Distinct from subtitleSearchTitleFallback: it must warn that the list covers other episodes too, because the viewer has to pick their own episode's file by name, and it must not mention an ID (the season pass is reached with no ID in play)."
+  },
+  "sourcesSearching": "Searching scrapers…",
+  "@sourcesSearching": {
+    "description": "Centre of the sources sheet while scrapers are still running."
+  },
+  "sourcesEmptyFiltered": "No links match the current filters.",
+  "@sourcesEmptyFiltered": {
+    "description": "Links were found but the quality/provider/verified filters hide all of them. The user has to relax a filter, not fix anything."
+  },
+  "sourcesEmptyNoTmdbId": "No TMDB id for this title. Use 'Search manually' to enter one.",
+  "@sourcesEmptyNoTmdbId": {
+    "description": "The title carries no TMDB id, so no scraper was ever asked. 'Search manually' is the sheet's own control and stays untranslated."
+  },
+  "sourcesEmptyNoScrapers": "No scrapers enabled. Add one in 'Nuvio Plugins'.",
+  "@sourcesEmptyNoScrapers": {
+    "description": "No enabled scraper supports this media type. 'Nuvio Plugins' is the screen title and stays untranslated."
+  },
+  "sourcesEmptyAllFailed": "Every scraper failed. Check your connection or update your scrapers.",
+  "@sourcesEmptyAllFailed": {
+    "description": "Every scraper threw. Nothing at this layer can tell being offline from the scrapers being broken, so both are named, connection first."
+  },
+  "sourcesEmptySomeFailed": "No links found. {failed} of {total} scrapers failed.",
+  "@sourcesEmptySomeFailed": {
+    "description": "Some scrapers threw and the rest found nothing, so the empty list is not a verdict. {failed} is always at least 1 and always less than {total}.",
+    "placeholders": {
+      "failed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "sourcesEmptyNothingFound": "None of your scrapers have this title.",
+  "@sourcesEmptyNothingFound": {
+    "description": "Every scraper answered and none of them has this title. The one case where nothing is broken and there is nothing to fix."
+  },
+  "subtitleDefault": "Subtitles by default",
+  "@subtitleDefault": {
+    "description": "Player settings row: whether a video starts with a subtitle showing. A default for newly opened media only - it never stops the viewer choosing a track from the player's Subtitles menu. Also the title of the dialog the row opens."
+  },
+  "subtitleDefaultAuto": "Auto",
+  "@subtitleDefaultAuto": {
+    "description": "One of two choices for subtitleDefault, and the shipped default. 'Auto' means the app does not interfere: whatever subtitle the source and the player select is what plays."
+  },
+  "subtitleDefaultAutoDetail": "A video starts with the subtitle its source selects, preferring your subtitle language when the source offers it.",
+  "@subtitleDefaultAutoDetail": {
+    "description": "Explanatory line under the 'Auto' choice in the subtitleDefault dialog. 'Your subtitle language' is the preference set in the player's own subtitle search, not the app language."
+  },
+  "subtitleDefaultOffDetail": "A video starts with no subtitle. You can still turn one on from the Subtitles menu in the player.",
+  "@subtitleDefaultOffDetail": {
+    "description": "Explanatory line under the 'Off' choice in the subtitleDefault dialog. The second sentence is load-bearing: Off is a default, not a lock, and the row must not read as 'subtitles are disabled'. The choice itself reuses the existing 'off' key."
+  },
+  "audioLanguage": "Audio language",
+  "@audioLanguage": {
+    "description": "Player settings row: the language whose audio track a video starts on, when the video has one. A default for newly opened media only - it never stops the viewer choosing a track from the player's Audio menu. Also the title of the dialog the row opens, which lists Auto and then the languages by their English names."
+  },
+  "audioLanguageAuto": "Auto",
+  "@audioLanguageAuto": {
+    "description": "The first choice in the audioLanguage dialog, and the shipped default. 'Auto' means the app does not interfere: whatever audio track the source selects is what plays."
+  },
+  "audioLanguageAutoDetail": "A video starts with the audio its source selects.",
+  "@audioLanguageAutoDetail": {
+    "description": "Explanatory line under the 'Auto' choice in the audioLanguage dialog."
+  },
+  "networkBuffer": "Network buffer",
+  "@networkBuffer": {
+    "description": "Title of the player setting controlling how much of a network stream is held in memory ahead of and behind playback."
+  },
+  "networkBufferSubtitle": "How much of a stream to hold in memory. A larger buffer makes seeking smoother and rides out a shaky connection, at the cost of memory.",
+  "@networkBufferSubtitle": {
+    "description": "Explains the trade-off of the network buffer setting: smoother seeking and resilience, in exchange for memory."
+  },
+  "selectNetworkBuffer": "Select network buffer",
+  "@selectNetworkBuffer": {
+    "description": "Title of the dialog for choosing the network buffer size."
+  },
+  "playerGettingLinks": "Getting links from {plugin}…",
+  "@playerGettingLinks": {
+    "description": "Startup screen status while the plugin is still being asked for this title's links. {plugin} is the plugin's name, a proper noun.",
+    "placeholders": {
+      "plugin": {
+        "type": "String",
+        "example": "HubCloud"
+      }
+    }
+  },
+  "playerSourceChecking": "Checking…",
+  "@playerSourceChecking": {
+    "description": "Status on one row of the source list: its reachability check is running."
+  },
+  "playerSourceOpening": "Opening…",
+  "@playerSourceOpening": {
+    "description": "Status on the row of the source list the player is opening right now, before its first picture."
+  },
+  "playerSourceNotChecked": "Not checked",
+  "@playerSourceNotChecked": {
+    "description": "Reachability column of the source list, for a link nobody has checked: the check only looks at the top few links, and cannot look at torrents or local files at all. Deliberately not 'Unknown', which reads as a verdict that something is wrong."
+  },
+  "playerReasonNoAnswer": "no answer from the link",
+  "@playerReasonNoAnswer": {
+    "description": "Why one source gave up: it was opened without having been checked, the reachability check then got no answer from it, and the player went back to a source the check had vouched for. Matches the row's \"Unknown\": no answer is not proof the link is dead. A lowercase fragment, like the other playerReason strings: shown after the source's name."
+  },
+  "playerSourceUnplayable": "Unplayable",
+  "@playerSourceUnplayable": {
+    "description": "Status on a row of the source list for a link that was opened and would not play, or stopped playing. It may still be reachable - the reachability column says so separately."
+  },
+  "playerSourceCannotSeek": "Can't seek",
+  "@playerSourceCannotSeek": {
+    "description": "Reachability column of the source list, beside 'Reachable', for a link whose server answered but ignores byte ranges: it plays, but only from its start, so the viewer cannot jump ahead and a resume starts over. Keep it as short as 'Reachable'."
+  },
+  "playerSourceNotVideo": "Not a video",
+  "@playerSourceNotVideo": {
+    "description": "Reachability column of the source list, for a link that answered with a web page - a link generator, a login or a missing-file page - rather than anything that plays. Keep it as short as 'Reachable'."
+  },
+  "nuvioPlugins": "Nuvio plugins",
+  "@nuvioPlugins": {
+    "description": "Title of the Nuvio source card on a TMDB details screen. Sits beside the 'Available sources' card, which is the SkyStream plugin system; the two are peers. 'Nuvio' is the name of the third-party scraper project and is never translated."
+  },
+  "nuvioSearchForStreams": "Search for streams",
+  "@nuvioSearchForStreams": {
+    "description": "Action inside the Nuvio card on a MOVIE, which opens the sources sheet and starts the scrapers."
+  },
+  "nuvioChooseEpisode": "Choose an episode",
+  "@nuvioChooseEpisode": {
+    "description": "Action inside the Nuvio card on a SERIES. A series needs a season and an episode before there is anything to scrape, so this opens the episode picker rather than the sources sheet."
+  },
+  "nuvioScraperCount": "{count, plural, =1{1 scraper} other{{count} scrapers}}",
+  "@nuvioScraperCount": {
+    "description": "Pill in the Nuvio card header saying how many scrapers are switched on and supported on this platform. The card is hidden entirely when the count would be zero, so the zero case never renders.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "stremioAddons": "Stremio add-ons",
+  "@stremioAddons": {
+    "description": "Title of the Stremio source card on an add-on details screen. Sits in the same place, and is drawn the same way, as the Nuvio card on a TMDB details screen. 'Stremio' is the name of the third-party add-on ecosystem and is never translated."
+  },
+  "stremioSearchAddons": "Search Stremio add-ons",
+  "@stremioSearchAddons": {
+    "description": "Action inside the Stremio card on a MOVIE, which opens the sources sheet and asks every installed stream add-on."
+  },
+  "stremioSearchAddonsForEpisode": "Search add-ons: S{season} E{episode}",
+  "@stremioSearchAddonsForEpisode": {
+    "description": "Action inside the Stremio card on a SERIES. The card is a shortcut to one episode - the first of the selected season - and names it, because the episode list further down the page is how any other episode is reached. Replaced 'Play S1 E1', which claimed the tap would start playback when it opens a list of links.",
+    "placeholders": {
+      "season": { "type": "int" },
+      "episode": { "type": "int" }
+    }
+  },
+  "stremioAddonCount": "{count, plural, =1{1 add-on} other{{count} add-ons}}",
+  "@stremioAddonCount": {
+    "description": "Pill in the Stremio card header saying how many installed add-ons can answer a stream request. Catalog-only add-ons are not counted, and the card is hidden entirely when the count would be zero, so the zero case never renders.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+"addonSourcesSearchTooltip": "Search links",
+  "@addonSourcesSearchTooltip": {
+    "description": "Stremio sources sheet header: opens the free-text filter over add-on and provider names."
+  },
+  "addonSourcesCloseSearchTooltip": "Close search",
+  "@addonSourcesCloseSearchTooltip": {
+    "description": "Stremio sources sheet header: hides the search field and clears the query."
+  },
+  "addonSourcesSearchHint": "Add-on, provider, quality…",
+  "@addonSourcesSearchHint": {
+    "description": "Stremio sources sheet search field placeholder. Users type an add-on name (Torrentio), an inner provider (VegaMovies), or a quality token."
+  },
+  "addonSourcesNoMatchFilter": "No links match. Clear search or try \"All\".",
+  "@addonSourcesNoMatchFilter": {
+    "description": "Stremio sources sheet empty state when HD/kind chips or the text search hide every link."
+  },
+  "addonManageSearchHint": "Search installed add-ons…",
+  "@addonManageSearchHint": {
+    "description": "Installed add-ons list on the Manage tab: placeholder for filtering by name, id, or resource."
+  },
+  "addonManageNoMatch": "No installed add-on matches \"{query}\".",
+  "@addonManageNoMatch": {
+    "description": "Installed add-ons list empty state when the search box filters everything out.",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "torrentio"
+      }
+    }
+  },
+  "cloudStream": "CloudStream",
+  "@cloudStream": {
+    "description": "Name of CloudStream, the app whose extensions SkyStream runs; a proper noun, never translated. Shown on the CloudStream screen and on badges marking its providers."
+  },
+  "searchTagSkyStream": "SkyStream",
+  "@searchTagSkyStream": {
+    "description": "Search: tag on a section of SkyStream extensions' results; the app's name, never translated."
+  },
+  "searchTagStremio": "Stremio",
+  "@searchTagStremio": {
+    "description": "Search: tag on a section of a Stremio add-on's results; a proper noun, never translated."
+  },
+  "searchTagNuvio": "Nuvio",
+  "@searchTagNuvio": {
+    "description": "Search: tag on Nuvio's section, whose results open Nuvio's sources; a proper noun, never translated."
+  },
+  "searchNuvioSeriesFailed": "Couldn't load this series' episodes",
+  "@searchNuvioSeriesFailed": {
+    "description": "Search: a Nuvio series result couldn't load its seasons from TMDB, so its episode picker can't open."
+  },
+  "cloudStreamExtensions": "CloudStream Extensions",
+  "@cloudStreamExtensions": {
+    "description": "Title of the screen, and of its Settings tile, for managing CloudStream extensions."
+  },
+  "cloudStreamExtensionsSubtitle": "Install and manage CloudStream (.cs3) extensions",
+  "@cloudStreamExtensionsSubtitle": {
+    "description": "Subtitle of the Settings tile that opens the CloudStream screen. \".cs3\" is a file extension; keep it."
+  },
+  "cloudStreamOn": "Providers from installed extensions appear on Home, in search and in the provider list.",
+  "@cloudStreamOn": {
+    "description": "Explains the CloudStream screen's switch while it is on."
+  },
+  "cloudStreamOff": "Off: no CloudStream extension is loaded, and their providers are hidden everywhere. Nothing is uninstalled.",
+  "@cloudStreamOff": {
+    "description": "Explains the CloudStream screen's switch while it is off."
+  },
+  "cloudStreamCheckUpdates": "Check Updates",
+  "@cloudStreamCheckUpdates": {
+    "description": "Button that checks every CloudStream repository for new extension versions."
+  },
+  "cloudStreamCheckUpdatesCount": "Check Updates ({count})",
+  "@cloudStreamCheckUpdatesCount": {
+    "description": "The same button when updates are known; count is how many installed extensions have one.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cloudStreamChecking": "Checking…",
+  "@cloudStreamChecking": {
+    "description": "The check-updates button while the check runs."
+  },
+  "cloudStreamAddRepositoryTitle": "Add CloudStream Repository",
+  "@cloudStreamAddRepositoryTitle": {
+    "description": "Title of the dialog that adds a CloudStream repository."
+  },
+  "cloudStreamAddRepositoryMessage": "Paste a repository URL (repo.json), a plugin list URL (plugins.json) or a cloudstreamrepo:// link, or enter a shortcode such as megarepo.",
+  "@cloudStreamAddRepositoryMessage": {
+    "description": "Body of the add-repository dialog. repo.json, plugins.json, cloudstreamrepo:// and megarepo are literal names; keep them."
+  },
+  "cloudStreamAdd": "Add",
+  "@cloudStreamAdd": {
+    "description": "Confirms the add-repository dialog."
+  },
+  "cloudStreamRepositoryAdded": "{count, plural, =1{Added {name} · 1 extension} other{Added {name} · {count} extensions}}",
+  "@cloudStreamRepositoryAdded": {
+    "description": "Message after a CloudStream repository was added: its name (a proper noun) and how many extensions it offers.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamCouldNotAdd": "Could not add repository: {error}",
+  "@cloudStreamCouldNotAdd": {
+    "description": "Adding a CloudStream repository failed; error is the reason, in English.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamUpToDate": "Everything is up to date",
+  "@cloudStreamUpToDate": {
+    "description": "After checking for updates: no installed CloudStream extension has a newer version."
+  },
+  "cloudStreamUpdatesAvailable": "{count, plural, =1{1 update available} other{{count} updates available}}",
+  "@cloudStreamUpdatesAvailable": {
+    "description": "After checking for updates: how many installed CloudStream extensions have a newer version.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cloudStreamCouldNotCheck": "Could not check {names}",
+  "@cloudStreamCouldNotCheck": {
+    "description": "After checking for updates: the repositories that could not be reached, by name (proper nouns), separated by commas.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamCouldNotCheckRepository": "Could not check {name}: {error}",
+  "@cloudStreamCouldNotCheckRepository": {
+    "description": "Refreshing one CloudStream repository failed: its name (a proper noun) and the reason, in English.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamRemove": "Remove",
+  "@cloudStreamRemove": {
+    "description": "Confirms removing a CloudStream repository."
+  },
+  "cloudStreamCouldNotRemove": "Could not remove {name}: {error}",
+  "@cloudStreamCouldNotRemove": {
+    "description": "Removing a CloudStream repository failed: its name (a proper noun) and the reason, in English.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamNoRepositories": "No repositories yet",
+  "@cloudStreamNoRepositories": {
+    "description": "The CloudStream screen's repositories tab before any repository was added."
+  },
+  "cloudStreamRepositorySummary": "{count, plural, =1{1 extension} other{{count} extensions}} · {installed} installed",
+  "@cloudStreamRepositorySummary": {
+    "description": "Under a CloudStream repository's name: how many extensions it offers, and how many of them are installed.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "installed": {
+        "type": "int"
+      }
+    }
+  },
+  "cloudStreamLastCheckFailed": "last check failed",
+  "@cloudStreamLastCheckFailed": {
+    "description": "Added to a CloudStream repository's summary when it could not be reached the last time it was checked."
+  },
+  "cloudStreamRefreshRepository": "Refresh Repository",
+  "@cloudStreamRefreshRepository": {
+    "description": "Tooltip of the button that fetches a CloudStream repository again."
+  },
+  "cloudStreamProviders": "Providers: {names}",
+  "@cloudStreamProviders": {
+    "description": "Under an installed CloudStream extension: the providers (sites) it adds, by name (proper nouns), separated by commas.",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamCouldNotLoad": "Could not load: {error}",
+  "@cloudStreamCouldNotLoad": {
+    "description": "Under an installed CloudStream extension that the engine could not load; error is the reason, in English.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamUpdate": "Update",
+  "@cloudStreamUpdate": {
+    "description": "Tooltip of the button that installs a newer version of a CloudStream extension."
+  },
+  "cloudStreamUninstall": "Uninstall",
+  "@cloudStreamUninstall": {
+    "description": "Tooltip of the button that removes an installed CloudStream extension."
+  },
+  "cloudStreamInstalled": "Installed {name}",
+  "@cloudStreamInstalled": {
+    "description": "A CloudStream extension, by name (a proper noun), was installed.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamUpdated": "Updated {name}",
+  "@cloudStreamUpdated": {
+    "description": "A CloudStream extension, by name (a proper noun), was updated.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamUninstalled": "Removed {name}",
+  "@cloudStreamUninstalled": {
+    "description": "A CloudStream extension, by name (a proper noun), was uninstalled.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamInstalledNotLoading": "{name} is installed, but it does not load: {error}",
+  "@cloudStreamInstalledNotLoading": {
+    "description": "A CloudStream extension downloaded but the engine could not load it: its name (a proper noun) and the reason, in English.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamFailed": "Failed: {error}",
+  "@cloudStreamFailed": {
+    "description": "An action on a CloudStream extension failed; error is the reason, in English.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "cloudStreamStatusDown": "down",
+  "@cloudStreamStatusDown": {
+    "description": "Tag on a CloudStream extension its repository marks as not working."
+  },
+  "cloudStreamStatusSlow": "slow",
+  "@cloudStreamStatusSlow": {
+    "description": "Tag on a CloudStream extension its repository marks as slow."
+  },
+  "cloudStreamStatusBeta": "beta",
+  "@cloudStreamStatusBeta": {
+    "description": "Tag on a CloudStream extension its repository marks as a beta."
+  },
+  "clearanceVerify": "Verify",
+  "checksCheckingAll": "{count, plural, =1{Checking 1 site automatically…} other{Checking {count} sites automatically…}}",
+  "@checksCheckingAll": {"description": "Above search results, while every bot check the search met is still being tried in a hidden page.", "placeholders": {"count": {"type": "int"}}},
+  "checksNeedYou": "{count, plural, =1{1 site needs you} other{{count} sites need you}}",
+  "@checksNeedYou": {"description": "Part of the summary above search results: sites whose bot check wants a person.", "placeholders": {"count": {"type": "int"}}},
+  "checksCleared": "{count} cleared",
+  "@checksCleared": {"description": "Part of the summary above search results: sites whose bot check cleared.", "placeholders": {"count": {"type": "int"}}},
+  "checksChecking": "{count} checking",
+  "@checksChecking": {"description": "Part of the summary above search results: sites still being checked automatically.", "placeholders": {"count": {"type": "int"}}},
+  "checksFailed": "{count, plural, =1{1 couldn't be checked} other{{count} couldn't be checked}}",
+  "@checksFailed": {"description": "Part of the summary above search results: sites that were unreachable, blocked, or sent the browser elsewhere.", "placeholders": {"count": {"type": "int"}}},
+  "checksOpening": "Opening {site}'s check…",
+  "@checksOpening": {"description": "Above search results, while Verify gets a site's check.", "placeholders": {"site": {"type": "String", "example": "5movierulz.works"}}},
+  "checksVerifyAll": "Verify all",
+  "@checksVerifyAll": {"description": "Shows each site that needs a person, one after another."},
+  "checksShow": "Show the sites",
+  "@checksShow": {"description": "Tooltip: opens the list of sites being checked."},
+  "checksHide": "Hide the sites",
+  "@checksHide": {"description": "Tooltip: closes the list of sites being checked."},
+  "checkStateChecking": "Checking automatically… {seconds} s",
+  "@checkStateChecking": {"description": "A site's row: an automatic try is running.", "placeholders": {"seconds": {"type": "int"}}},
+  "checkStateNeedsYou": "Needs a quick check from you",
+  "@checkStateNeedsYou": {"description": "A site's row: the automatic try wants a person."},
+  "checkStateOpening": "Opening the check… {seconds} s",
+  "@checkStateOpening": {"description": "A site's row: Verify is getting its check.", "placeholders": {"seconds": {"type": "int"}}},
+  "checkStateCleared": "Cleared",
+  "@checkStateCleared": {"description": "A site's row: its check cleared."},
+  "checkStateSearchingAgain": "Cleared · searching again…",
+  "@checkStateSearchingAgain": {"description": "A site's row: its check cleared, and its extensions are searching again."},
+  "checkStateUnreachable": "Couldn't reach the site",
+  "@checkStateUnreachable": {"description": "A site's row: its page didn't load."},
+  "checkStateBlocked": "Blocked by the site; try without a VPN",
+  "@checkStateBlocked": {"description": "A site's row: a block page, which no check clears."},
+  "checkStateSentElsewhere": "Sends the browser to {host}; the extension may need updating",
+  "@checkStateSentElsewhere": {"description": "A site's row: after its check, the site sent the browser to another site.", "placeholders": {"host": {"type": "String", "example": "zinkmovies.org"}}},
+  "checkStateStillNotCleared": "Still not cleared",
+  "@checkStateStillNotCleared": {"description": "A site's row: the person pressed Done, but the check is still there."},
+  "checkStateOutdated": "Update Android System WebView to clear this site's check",
+  "@checkStateOutdated": {"description": "A site's row: Android System WebView is too old for its check; nothing is tried until it's updated."},
+  "checkStateTooOld": "This device's browser is too old for this site's check",
+  "@checkStateTooOld": {"description": "A site's row: Android System WebView is too old for its check, and this Android version can't update it."},
+  "checkStateIneffective": "The check passed, but this site still refuses SkyStream. Trying again in a few minutes.",
+  "@checkStateIneffective": {"description": "A site's row: its check passed, but the site still refuses requests; SkyStream waits before trying again."},
+  "checkStateKeepsAsking": "This site keeps asking. Try later, or without a VPN.",
+  "@checkStateKeepsAsking": {"description": "A site's row: its check came back after every clearance, even after a fresh start."},
+  "checkUpdateWebView": "Update",
+  "@checkUpdateWebView": {"description": "Button on an outdated-WebView row: opens Android System WebView in the Play Store."},
+  "checkAskAgain": "Ask again",
+  "@checkAskAgain": {"description": "A site's row: undo \"Don't open this automatically\"."},
+  "checkQuietNote": "Won't open by itself",
+  "@checkQuietNote": {"description": "A site's row: its check won't open the sheet by itself, at the person's request."},
+  "checkMovedFrom": "moved from {site}",
+  "@checkMovedFrom": {"description": "After a site's name: the site it moved from.", "placeholders": {"site": {"type": "String", "example": "5movierulz.pictures"}}},
+  "checkCloudStreamExtension": "A CloudStream extension",
+  "@checkCloudStreamExtension": {"description": "In a site's row, when the engine couldn't say which CloudStream extension met its check."},
+  "checkLineChecking": "Checking {site} automatically… {seconds} s",
+  "@checkLineChecking": {"description": "Under a spinner: the one site the screen waits on is being checked automatically.", "placeholders": {"site": {"type": "String"}, "seconds": {"type": "int"}}},
+  "checkLineNeedsYou": "{site} needs a quick check",
+  "@checkLineNeedsYou": {"description": "Home, or under a spinner: the one site the screen waits on needs a person.", "placeholders": {"site": {"type": "String"}}},
+  "extensionSheetCantShow": "This part can't be shown in SkyStream yet.",
+  "@extensionSheetCantShow": {"description": "In an extension's settings sheet, in place of a part SkyStream can't draw yet (a web page)."},
+  "extensionSheetClose": "Close",
+  "@extensionSheetClose": {"description": "Closes the top window of an extension's settings sheet."},
+  "extensionSheetForceClose": "Force close",
+  "@extensionSheetForceClose": {"description": "In an extension's settings sheet's menu: closes every window, even one the extension won't let close."},
+  "extensionSheetMore": "More",
+  "@extensionSheetMore": {"description": "Tooltip of an extension's settings sheet's menu button."},
+  "extensionSheetError": "The extension didn't take that: {error}",
+  "@extensionSheetError": {"description": "In an extension's settings sheet, when the extension's code failed on the person's action.", "placeholders": {"error": {"type": "String"}}},
+  "extensionCopied": "Copied",
+  "@extensionCopied": {"description": "A toast titled with an extension's name: the extension put text on the clipboard."},
+  "extensionOpenLink": "Open link",
+  "@extensionOpenLink": {"description": "Action of a toast showing a link an extension opened while its screen wasn't open: opens the link in the browser."},
+  "cloudStreamSettings": "Settings",
+  "@cloudStreamSettings": {"description": "Tooltip of the button that opens an installed CloudStream extension's own settings screen."},
+  "cloudStreamSettingsApplying": "Applying settings…",
+  "@cloudStreamSettingsApplying": {"description": "On an installed CloudStream extension's row while it reloads with its new settings."},
+  "cloudStreamSettingsApplied": "{name}'s settings applied",
+  "@cloudStreamSettingsApplied": {"description": "Snackbar once an extension reloaded with its new settings.", "placeholders": {"name": {"type": "String"}}},
+  "cloudStreamSettingsFailed": "Couldn't open {name}'s settings: {error}",
+  "@cloudStreamSettingsFailed": {"description": "Snackbar when an extension's settings screen didn't open.", "placeholders": {"name": {"type": "String"}, "error": {"type": "String"}}},
+  "cloudStreamSettingsApplyFailed": "{name}'s settings are saved, but it didn't reload: {error}",
+  "@cloudStreamSettingsApplyFailed": {"description": "Snackbar when an extension didn't reload after its settings changed.", "placeholders": {"name": {"type": "String"}, "error": {"type": "String"}}},
+  "cloudStreamSupport": "Support",
+  "@cloudStreamSupport": {"description": "Button on an installed extension: opens the messages it showed while the app was busy (support, donate, notices)."},
+  "cloudStreamSupportFailed": "Couldn't open {name}'s messages: {error}",
+  "@cloudStreamSupportFailed": {"description": "Snackbar when an extension's kept messages didn't open.", "placeholders": {"name": {"type": "String"}, "error": {"type": "String"}}},
+  "cloudStreamSettingsStopped": "{name}'s settings stopped: {error}",
+  "@cloudStreamSettingsStopped": {"description": "Snackbar when an extension's code crashed while its settings screen was open.", "placeholders": {"name": {"type": "String"}, "error": {"type": "String"}}},
+  "swipeAgainToBoost": "Swipe up again to go past 100%",
+  "@swipeAgainToBoost": {"description": "Player toast when a volume swipe that started under 100% stops at 100%: going past it into the boost takes a second swipe."},
+  "showStatusOngoing": "Ongoing",
+  "@showStatusOngoing": {"description": "Details page: a show still airing new episodes."},
+  "showStatusCompleted": "Completed",
+  "@showStatusCompleted": {"description": "Details page: a show that has finished airing."},
+  "comingSoon": "Coming soon",
+  "@comingSoon": {"description": "Details page: shown instead of Play for a title not out yet."},
+  "episodeAirsOn": "Airs {date}",
+  "@episodeAirsOn": {"description": "Episode card: an episode not out yet, with its air date.", "placeholders": {"date": {"type": "String"}}},
+  "seasonNumberAndName": "Season {number}: {name}",
+  "@seasonNumberAndName": {"description": "Season chip for a season with its own name.", "placeholders": {"number": {"type": "Object"}, "name": {"type": "String"}}},
+  "castLine": "Cast: {names}",
+  "@castLine": {"description": "Details page: the cast as one line, when there are no photos.", "placeholders": {"names": {"type": "String"}}},
+  "actorRoleMain": "Main",
+  "@actorRoleMain": {"description": "Cast card: a main character."},
+  "actorRoleSupporting": "Supporting",
+  "@actorRoleSupporting": {"description": "Cast card: a supporting character."},
+  "actorRoleBackground": "Background",
+  "@actorRoleBackground": {"description": "Cast card: a background (minor) character."},
+  "playerQuality": "Quality",
+  "playerQualityAuto": "Auto",
+  "playerQualityAutoPlaying": "Auto · {height}",
+  "@playerQuality": {"description": "Player side panel: the tab that chooses which of an HLS stream's qualities plays (Auto, or a height such as 1080p)."},
+  "@playerQualityAuto": {"description": "Player's Quality tab: the row that lets the player choose, following the device and the viewer's quality preference."},
+  "@playerQualityAutoPlaying": {"description": "Player's Quality tab: the Auto row while Auto is on, naming the quality it plays now.", "placeholders": {"height": {"type": "String", "example": "1080p"}}},
+  "@qualityNotGuaranteed": {"description": "Note under the Wi-Fi & Wired and Mobile quality preference pickers: sources are sorted by the preference, and a stream offering several qualities (HLS) plays at it or the nearest below."},
+  "networkBufferAuto": "Auto (recommended)",
+  "networkBufferAutoHint": "Sized for each video from its bitrate and this device's memory.",
+  "devQoeLog": "QoE log",
+  "devQoeLogSubtitle": "Writes playback timings to the app log",
+  "playerGoLive": "Go to live",
+  "playerBehindLive": "{time} behind live",
+  "@networkBufferAuto": {"description": "Player settings, network buffer: the choice that sizes the buffer for each video by itself. It is the default."},
+  "@networkBufferAutoHint": {"description": "Player settings, network buffer dialog: the line under the Auto choice, saying how Auto sizes the buffer."},
+  "@devQoeLog": {"description": "Developer options: the switch that writes playback-quality (QoE) events to the app log. \"QoE\" stays as it is."},
+  "@devQoeLogSubtitle": {"description": "Developer options: the line under the QoE log switch."},
+  "@playerGoLive": {"description": "Player, live stream: the button that jumps back to the live edge."},
+  "@playerBehindLive": {"description": "Player, live stream: spoken label for how far behind the live edge playback is, such as \"0:42 behind live\".", "placeholders": {"time": {"type": "String", "example": "0:42"}}}
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SkyStream Test sign-in</title>
+</head>
+<body>
+<h1>Signing in…</h1>
+<p>The test extension's sign-in page: it signs itself in.</p>
+<script>
+  document.cookie = "cs3test_session=signed-in; path=/";
+  fetch("api/me", {headers: {"Authorization": "Bearer cs3test-token"}})
+    .catch(function () {})
+    .then(function () {
+      if (window.SkyStreamTest) SkyStreamTest.signedIn("Test Person", navigator.userAgent);
+      // After the page has finished: the extension reads its cookie and title first.
+      setTimeout(function () { location.href = "signed-in.html?code=cs3test-code"; }, 1500);
+    });
+</script>
+</body>
+</html>

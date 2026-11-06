@@ -1,0 +1,12 @@
+{
+  "name": "skystream-tool",
+  "private": true,
+  "description": "Node dependencies of the developer tools in this folder (nuvio_qjs_harness.js). Not part of the app. Install with: npm ci --prefix tool",
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "dependencies": {
+    "cheerio": "1.2.0",
+    "quickjs-emscripten": "0.32.0"
+  }
+}

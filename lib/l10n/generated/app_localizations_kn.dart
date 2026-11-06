@@ -1,0 +1,2444 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Kannada (`kn`).
+class AppLocalizationsKn extends AppLocalizations {
+  AppLocalizationsKn([String locale = 'kn']) : super(locale);
+
+  @override
+  String get appTitle => 'SkyStream';
+
+  @override
+  String get languageName => 'ಕನ್ನಡ';
+
+  @override
+  String get addonHealthChecking => 'ಆಡ್-ಆನ್ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String addonHealthWorking(int ms) {
+    return 'ಕೆಲಸ ಮಾಡುತ್ತಿದೆ · $ms ಮಿ.ಸೆ.';
+  }
+
+  @override
+  String get addonHealthUnavailable => 'ಲಭ್ಯವಿಲ್ಲ';
+
+  @override
+  String get home => 'ಮುಖಪುಟ';
+
+  @override
+  String get search => 'ಹುಡುಕಿ';
+
+  @override
+  String get explore => 'ಅನ್ವೇಷಿಸಿ';
+
+  @override
+  String get exploreAnime => 'ಅನಿಮೆ ಅನ್ವೇಷಿಸಿ';
+
+  @override
+  String get exploreMovies => 'ಚಲನಚಿತ್ರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ';
+
+  @override
+  String get library => 'ಸಂಗ್ರಹ';
+
+  @override
+  String get settings => 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
+
+  @override
+  String get extensions => 'ವಿಸ್ತರಣೆಗಳು';
+
+  @override
+  String get updateAvailable => 'ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ';
+
+  @override
+  String get retry => 'ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ';
+
+  @override
+  String get factoryReset => 'ಫ್ಯಾಕ್ಟರಿ ರಿಸೆಟ್';
+
+  @override
+  String get startupError => 'ಪ್ರಾರಂಭದ ದೋಷ';
+
+  @override
+  String get general => 'ಸಾಮಾನ್ಯ';
+
+  @override
+  String get appTheme => 'ಆಪ್ ಥೀಮ್';
+
+  @override
+  String get recordWatchHistory => 'ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸವನ್ನು ದಾಖಲಿಸಿ';
+
+  @override
+  String get fullScreenMode => 'ಪೂರ್ಣ ಪರದೆ ಮೋಡ್';
+
+  @override
+  String get fullScreenModeSubtitle =>
+      'ಟಿವಿಗೆ ಸಂಪರ್ಕಿಸಿದ ಕಂಪ್ಯೂಟರ್‌ಗಾಗಿ, ಪೂರ್ಣ ಪರದೆಯೊಂದಿಗೆ ಟಿವಿಯ ದೊಡ್ಡ ವಿನ್ಯಾಸವೂ ಬರುತ್ತದೆ. ಆಫ್ ಇದ್ದಾಗ ಆ್ಯಪ್ ವಿಂಡೋದಲ್ಲಿಯೇ ಇರುತ್ತದೆ.';
+
+  @override
+  String get defaultHomeScreen => 'ಡೀಫಾಲ್ಟ್ ಮುಖಪುಟ';
+
+  @override
+  String get titlePosition => 'ಶೀರ್ಷಿಕೆಯ ಸ್ಥಾನ';
+
+  @override
+  String get titlePositionBelowPoster => 'ಪೋಸ್ಟರ್ ಕೆಳಗೆ';
+
+  @override
+  String get titlePositionInsidePoster => 'ಪೋಸ್ಟರ್ ಒಳಗೆ';
+
+  @override
+  String get player => 'ಪ್ಲೇಯರ್';
+
+  @override
+  String get defaultPlayer => 'ಡೀಫಾಲ್ಟ್ ಪ್ಲೇಯರ್';
+
+  @override
+  String get leftGesture => 'ಎಡ ಗೆಸ್ಚರ್';
+
+  @override
+  String get rightGesture => 'ಬಲ ಗೆಸ್ಚರ್';
+
+  @override
+  String get doubleTapToSeek => 'ಸೀಕ್ ಮಾಡಲು ಡಬಲ್ ಟ್ಯಾಪ್ ಮಾಡಿ';
+
+  @override
+  String get swipeToSeek => 'ಸೀಕ್ ಮಾಡಲು ಸ್ವೈಪ್ ಮಾಡಿ';
+
+  @override
+  String get seekDuration => 'ಸೀಕ್ ಅವಧಿ';
+
+  @override
+  String get defaultResizeMode => 'ಡೀಫಾಲ್ಟ್ ರಿಸೈಜ್ ಮೋಡ್';
+
+  @override
+  String get hardwareDecoding => 'ಹಾರ್ಡ್‌ವೇರ್ ಡಿಕೋಡಿಂಗ್';
+
+  @override
+  String get network => 'ನೆಟ್‌ವರ್ಕ್';
+
+  @override
+  String get dnsOverHttps => 'HTTPS ಮೂಲಕ DNS';
+
+  @override
+  String get dohProvider => 'DoH ಪ್ರೊವೈಡರ್';
+
+  @override
+  String get githubProxy => 'GitHub ಪ್ರಾಕ್ಸಿ';
+
+  @override
+  String get githubProxySubtitle =>
+      'ISP ನಿರ್ಬಂಧಗಳನ್ನು ತಪ್ಪಿಸಲು ವಿಸ್ತರಣೆ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು jsDelivr ಮೂಲಕ ಕಳುಹಿಸಿ.';
+
+  @override
+  String get manageExtensions => 'ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ';
+
+  @override
+  String get appData => 'ಆಪ್ ಡೇಟಾ';
+
+  @override
+  String get resetDataKeepExtensions =>
+      'ಡೇಟಾ ರಿಸೆಟ್ ಮಾಡಿ (ವಿಸ್ತರಣೆಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳಿ)';
+
+  @override
+  String get developer => 'ಡೆವಲಪರ್';
+
+  @override
+  String get developerOptions => 'ಡೆವಲಪರ್ ಆಯ್ಕೆಗಳು';
+
+  @override
+  String get about => 'ಬಗ್ಗೆ';
+
+  @override
+  String get version => 'ಆವೃತ್ತಿ';
+
+  @override
+  String get openSourceLicences => 'ಓಪನ್-ಸೋರ್ಸ್ ಪರವಾನಗಿಗಳು';
+
+  @override
+  String get openSourceLicencesSubtitle =>
+      'SkyStream, GNU GPL v3 ಅಡಿಯಲ್ಲಿ ಉಚಿತ ತಂತ್ರಾಂಶವಾಗಿದೆ';
+
+  @override
+  String get appLegalese =>
+      'ಹಕ್ಕುಸ್ವಾಮ್ಯ © 2025–2026 SkyStream ಕೊಡುಗೆದಾರರು.\nSkyStream ಉಚಿತ ತಂತ್ರಾಂಶ: GNU ಜನರಲ್ ಪಬ್ಲಿಕ್ ಲೈಸೆನ್ಸ್, ಆವೃತ್ತಿ 3 ರ ನಿಯಮಗಳ ಅಡಿಯಲ್ಲಿ ನೀವು ಇದನ್ನು ಮರುಹಂಚಿಕೆ ಮಾಡಬಹುದು ಮತ್ತು ಮಾರ್ಪಡಿಸಬಹುದು. ಇದು ಯಾವುದೇ ಖಾತರಿ ಇಲ್ಲದೆ ಬರುತ್ತದೆ. ಇದರ ಮೂಲ ಕೋಡ್ github.com/akashdh11/skystream ನಲ್ಲಿದೆ.';
+
+  @override
+  String get enabled => 'ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get disabled => 'ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get discord => 'Discord';
+
+  @override
+  String get discordSubtitle => 'ನಮ್ಮ ಸರ್ವರ್‌ಗೆ ಸೇರಿ';
+
+  @override
+  String get telegram => 'Telegram';
+
+  @override
+  String get telegramSubtitle => 'ನಮ್ಮ ಚಾನಲ್‌ಗೆ ಸೇರಿ';
+
+  @override
+  String developedBy(String name) {
+    return '$name ರಿಂದ ಅಭಿವೃದ್ಧಿಪಡಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String get system => 'ಸಿಸ್ಟಮ್';
+
+  @override
+  String get dark => 'ಡಾರ್ಕ್';
+
+  @override
+  String get light => 'ಲೈಟ್';
+
+  @override
+  String get later => 'ನಂತರ';
+
+  @override
+  String get updateNow => 'ಈಗ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
+
+  @override
+  String get save => 'ಉಳಿಸಿ';
+
+  @override
+  String get cancel => 'ರದ್ದುಮಾಡಿ';
+
+  @override
+  String get close => 'ಮುಚ್ಚಿ';
+
+  @override
+  String get delete => 'ಅಳಿಸಿ';
+
+  @override
+  String get viewDetails => 'ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ';
+
+  @override
+  String get clearAll => 'ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ';
+
+  @override
+  String get clearAllHistory => 'ಎಲ್ಲಾ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಿ';
+
+  @override
+  String get all => 'ಎಲ್ಲಾ';
+
+  @override
+  String get none => 'ಯಾವುದೂ ಇಲ್ಲ';
+
+  @override
+  String get confirmDownload => 'ಡೌನ್‌ಲೋಡ್ ಖಚಿತಪಡಿಸಿ';
+
+  @override
+  String get downloadNow => 'ಈಗಲೇ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get selectSource => 'ಮೂಲವನ್ನು ಆರಿಸಿ';
+
+  @override
+  String get downloadUnavailable => 'ಡೌನ್‌ಲೋಡ್ ಲಭ್ಯವಿಲ್ಲ';
+
+  @override
+  String get selectAnotherSource => 'ಮತ್ತೊಂದು ಮೂಲವನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get watchHistoryCleared => 'ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get downloadingUpdate => 'ಅಪ್‌ಡೇಟ್ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ...';
+
+  @override
+  String errorPrefix(String message) {
+    return 'ದೋಷ: $message';
+  }
+
+  @override
+  String updateAvailableTag(String tag) {
+    return 'ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ: $tag';
+  }
+
+  @override
+  String get selectProviderToStart =>
+      'ವೀಕ್ಷಿಸಲು ಪ್ರಾರಂಭಿಸಲು ಪ್ರೊವೈಡರ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get tapExtensionIcon =>
+      'ಮೂಲೆಯಲ್ಲಿರುವ ವಿಸ್ತರಣೆ (extension) ಚಿಹ್ನೆಯನ್ನು ಒತ್ತಿ';
+
+  @override
+  String get continueWatching => 'ನೋಡುವುದನ್ನು ಮುಂದುವರಿಸಿ';
+
+  @override
+  String get noInternetConnection => 'ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವಿಲ್ಲ';
+
+  @override
+  String get siteNotReachable => 'ಸೈಟ್ ತಲುಪಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ';
+
+  @override
+  String get checkConnectionOrDownloads =>
+      'ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರೀಕ್ಷಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ವಿಷಯವನ್ನು ನೋಡಿ.';
+
+  @override
+  String get tryVpnOrConnection =>
+      'ದಯವಿಟ್ಟು VPN ನೊಂದಿಗೆ ಸೈಟ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರೀಕ್ಷಿಸಿ.';
+
+  @override
+  String errorDetails(String error) {
+    return 'ದೋಷದ ವಿವರಗಳು: $error';
+  }
+
+  @override
+  String get goToDownloads => 'ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಹೋಗಿ';
+
+  @override
+  String get selectProvider => 'ಪ್ರೊವೈಡರ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get searchHint => 'ಸಿನಿಮಾಗಳು, ಸರಣಿಗಳನ್ನು ಹುಡುಕಿ...';
+
+  @override
+  String get searchFavoriteContent => 'ನಿಮಗೆ ಬೇಕಾದ ವಿಷಯವನ್ನು ಹುಡುಕಿ';
+
+  @override
+  String get pressSearchOrEnter => 'ಪ್ರಾರಂಭಿಸಲು ಸರ್ಚ್ ಕೀ ಅಥವಾ ಎಂಟರ್ ಒತ್ತಿ';
+
+  @override
+  String get recentSearches => 'Recent searches';
+
+  @override
+  String removeFromSearchHistory(String query) {
+    return 'Remove $query from search history';
+  }
+
+  @override
+  String get noResultsFound => 'ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ.';
+
+  @override
+  String get couldNotLoadTrending =>
+      'ಟ್ರೆಂಡಿಂಗ್ ಐಟಂಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ';
+
+  @override
+  String get popularMovies => 'ಜನಪ್ರಿಯ ಸಿನಿಮಾಗಳು';
+
+  @override
+  String get popularTVShows => 'ಜನಪ್ರಿಯ ಟಿವಿ ಶೋಗಳು';
+
+  @override
+  String get newMovies => 'ಹೊಸ ಸಿನಿಮಾಗಳು';
+
+  @override
+  String get newTVShows => 'ಹೊಸ ಟಿವಿ ಶೋಗಳು';
+
+  @override
+  String get featuredMovies => 'ವಿಶೇಷ ಸಿನಿಮಾಗಳು';
+
+  @override
+  String get featuredTVShows => 'ವಿಶೇಷ ಟಿವಿ ಶೋಗಳು';
+
+  @override
+  String get lastVideosTVShows => 'ಇತ್ತೀಚಿನ ಟಿವಿ ಶೋಗಳು';
+
+  @override
+  String get downloads => 'ಡೌನ್‌ಲೋಡ್‌ಗಳು';
+
+  @override
+  String get bookmarks => 'ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು';
+
+  @override
+  String get noDownloadsYet => 'ಇನ್ನೂ ಯಾವುದೇ ಡೌನ್‌ಲೋಡ್‌ಗಳಿಲ್ಲ';
+
+  @override
+  String episodesCount(int count, int done) {
+    return '$count ಸಂಚಿಕೆಗಳು • $done ಪೂರ್ಣಗೊಂಡಿವೆ';
+  }
+
+  @override
+  String get deleteAllEpisodes => 'ಎಲ್ಲಾ ಸಂಚಿಕೆಗಳನ್ನು ಅಳಿಸಿ';
+
+  @override
+  String confirmDeleteAllEpisodes(int count, String title) {
+    return 'ನೀವು ನಿಜವಾಗಿಯೂ \"$title\" ನ ಎಲ್ಲಾ $count ಸಂಚಿಕೆಗಳನ್ನು ಮತ್ತು ಅವುಗಳ ಫೈಲ್‌ಗಳನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?';
+  }
+
+  @override
+  String get deleteAll => 'ಎಲ್ಲವನ್ನೂ ಅಳಿಸಿ';
+
+  @override
+  String get completed => 'ಪೂರ್ಣಗೊಂಡಿದೆ';
+
+  @override
+  String get statusQueued => 'ಸರತಿಯಲ್ಲಿದೆ...';
+
+  @override
+  String get statusDownloading => 'ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ...';
+
+  @override
+  String get statusFinished => 'ಮುಗಿದಿದೆ';
+
+  @override
+  String get statusFailed => 'ವಿಫಲವಾಗಿದೆ';
+
+  @override
+  String get statusCanceled => 'ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get statusPaused => 'ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get statusWaiting => 'ಕಾಯುತ್ತಿದೆ...';
+
+  @override
+  String get fileNotFoundRemoving =>
+      'ಡಿಸ್ಕ್‌ನಲ್ಲಿ ಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಾಖಲೆಯನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ.';
+
+  @override
+  String get fileNotFound => 'ಫೈಲ್ ಕಂಡುಬಂದಿಲ್ಲ';
+
+  @override
+  String get deleteDownload => 'ಡೌನ್‌ಲೋಡ್ ಅಳಿಸಿ';
+
+  @override
+  String get confirmDeleteDownload =>
+      'ನೀವು ನಿಜವಾಗಿಯೂ ಈ ಡೌನ್‌ಲೋಡ್ ಮತ್ತು ಅದರ ಫೈಲ್ ಅನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?';
+
+  @override
+  String get libraryEmpty => 'ನಿಮ್ಮ ಸಂಗ್ರಹ ಖಾಲಿಯಿದೆ';
+
+  @override
+  String get language => 'ಭಾಷೆ';
+
+  @override
+  String get english => 'ಇಂಗ್ಲಿಷ್ (English)';
+
+  @override
+  String get hindi => 'ಹಿಂದಿ (Hindi)';
+
+  @override
+  String get kannada => 'ಕನ್ನಡ (ಕನ್ನಡ)';
+
+  @override
+  String get unknown => 'ಅಜ್ಞಾತ';
+
+  @override
+  String get recommended => 'ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ';
+
+  @override
+  String get on => 'ಆನ್';
+
+  @override
+  String get off => 'ಆಫ್';
+
+  @override
+  String get installRemoveProviders =>
+      'ಪ್ರೊವೈಡರ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ ಅಥವಾ ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String get resetDataSubtitle =>
+      'ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ಡೇಟಾಬೇಸ್ ಅಳಿಸಿ, ಪ್ಲಗಿನ್ ಉಳಿಸಿಕೊಳ್ಳಿ';
+
+  @override
+  String get factoryResetSubtitle =>
+      'ಎಲ್ಲಾ ಡೇಟಾ, ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ವಿಸ್ತರಣೆಗಳನ್ನು ಅಳಿಸಿ';
+
+  @override
+  String get developerOptionsSubtitle => 'ಡಿಬಗ್ ಪರಿಕರಗಳು ಮತ್ತು ಲೋಕಲ್ ಪ್ಲೇ';
+
+  @override
+  String get loading => 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...';
+
+  @override
+  String get sec => 'ಸೆಕೆಂಡ್';
+
+  @override
+  String get min => 'ನಿಮಿಷ';
+
+  @override
+  String playerRewindSeconds(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೆಕೆಂಡ್ ಹಿಂದಕ್ಕೆ ಹೋಗಿ',
+      one: '1 ಸೆಕೆಂಡ್ ಹಿಂದಕ್ಕೆ ಹೋಗಿ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String playerForwardSeconds(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೆಕೆಂಡ್ ಮುಂದಕ್ಕೆ ಹೋಗಿ',
+      one: '1 ಸೆಕೆಂಡ್ ಮುಂದಕ್ಕೆ ಹೋಗಿ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get internalPlayer => 'ಆಂತರಿಕ (VLC)';
+
+  @override
+  String get builtInPlayer => 'ಬಿಲ್ಟ್-ಇನ್ ಪ್ಲೇಯರ್';
+
+  @override
+  String get customNotSet => 'ಕಸ್ಟಮ್ (ಸೆಟ್ ಮಾಡಿಲ್ಲ)';
+
+  @override
+  String selectGesture(String side) {
+    return '$side ಗೆಸ್ಚರ್ ಆಯ್ಕೆಮಾಡಿ';
+  }
+
+  @override
+  String get left => 'ಎಡ';
+
+  @override
+  String get right => 'ಬಲ';
+
+  @override
+  String get selectSeekDuration => 'ಸೀಕ್ ಅವಧಿಯನ್ನು ಆರಿಸಿ';
+
+  @override
+  String get subtitleSettings => 'ಉಪಶೀರ್ಷಿಕೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
+
+  @override
+  String size(int size) {
+    return 'ಗಾತ್ರ: $size';
+  }
+
+  @override
+  String get background => 'ಹಿನ್ನೆಲೆ';
+
+  @override
+  String get customDohUrlLabel => 'ಕಸ್ಟಮ್ DoH URL';
+
+  @override
+  String get enterCustomDohUrl => 'ನಿಮ್ಮ ಸ್ವಂತ DoH URL ಅನ್ನು ನಮೂದಿಸಿ';
+
+  @override
+  String get chooseTheme => 'ಥೀಮ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get resetDataDialogTitle => 'ಡೇಟಾವನ್ನು ಮರುಹೊಂದಿಸಬೇಕೆ?';
+
+  @override
+  String get resetDataDialogContent =>
+      'ಇದು ಸೆಟ್ಟಿಂಗ್‌ಗಳು, ಮೆಚ್ಚಿನವುಗಳು ಮತ್ತು ಇತಿಹಾಸವನ್ನು ಅಳಿಸುತ್ತದೆ. ನಿಮ್ಮ ವಿಸ್ತರಣೆಗಳನ್ನು ಅಳಿಸಲಾಗುವುದಿಲ್ಲ.';
+
+  @override
+  String get factoryResetDialogTitle => 'ಫ್ಯಾಕ್ಟರಿ ರಿಸೆಟ್ ಮಾಡಬೇಕೆ?';
+
+  @override
+  String get factoryResetDialogContent =>
+      'ಇದು ಎಲ್ಲವನ್ನೂ ಅಳಿಸುತ್ತದೆ: ಮೆಚ್ಚಿನವುಗಳು, ಇತಿಹಾಸ, ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಮತ್ತು ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳು. ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.';
+
+  @override
+  String get selectLanguage => 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get synopsis => 'ಸಾರಾಂಶ';
+
+  @override
+  String get noDescription => 'ಯಾವುದೇ ವಿವರಣೆ ಲಭ್ಯವಿಲ್ಲ.';
+
+  @override
+  String get videoAlreadyDownloadedPrompt =>
+      'ಈ ವೀಡಿಯೊ ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್ ಆಗಿದೆ. ನೀವು ಏನು ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?';
+
+  @override
+  String get playNow => 'ಈಗಲೇ ಪ್ಲೇ ಮಾಡಿ';
+
+  @override
+  String get upNext => 'ಮುಂದೆ';
+
+  @override
+  String get deleteDownloadPrompt => 'ಡೌನ್‌ಲೋಡ್ ಅಳಿಸಬೇಕೆ?';
+
+  @override
+  String get deleteDownloadConfirmation =>
+      'ನೀವು ನಿಜವಾಗಿಯೂ ಈ ಫೈಲ್ ಅನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ? ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ.';
+
+  @override
+  String get no => 'ಇಲ್ಲ';
+
+  @override
+  String get yesDelete => 'ಹೌದು, ಅಳಿಸಿ';
+
+  @override
+  String get downloadPaused => 'ಡೌನ್‌ಲೋಡ್ ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get downloading => 'ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ';
+
+  @override
+  String get speed => 'ವೇಗ';
+
+  @override
+  String get remaining => 'ಉಳಿದಿರುವ ಸಮಯ';
+
+  @override
+  String get resume => 'ಪುನರಾರಂಭಿಸಿ';
+
+  @override
+  String get pause => 'ವಿರಾಮಗೊಳಿಸಿ';
+
+  @override
+  String get torrentContent => 'ಟೊರೆಂಟ್ ವಿಷಯ';
+
+  @override
+  String get audioTracks => 'ಆಡಿಯೋ ಟ್ರ್ಯಾಕ್‌ಗಳು';
+
+  @override
+  String get noAudioTracks => 'ಯಾವುದೇ ಆಡಿಯೋ ಟ್ರ್ಯಾಕ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ';
+
+  @override
+  String get subtitles => 'ಉಪಶೀರ್ಷಿಕೆಗಳು';
+
+  @override
+  String get options => 'ಆಯ್ಕೆಗಳು';
+
+  @override
+  String get noSubtitlesFound => 'ಯಾವುದೇ ಉಪಶೀರ್ಷಿಕೆ ಟ್ರ್ಯಾಕ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ';
+
+  @override
+  String get playbackSpeed => 'ಪ್ಲೇಬ್ಯಾಕ್ ವೇಗ';
+
+  @override
+  String get subtitleOptions => 'ಉಪಶೀರ್ಷಿಕೆ ಆಯ್ಕೆಗಳು';
+
+  @override
+  String get hlsSubtitleWarning =>
+      'ಈ ವೇದಿಕೆಯಲ್ಲಿ ಸಕ್ರಿಯ HLS ಪ್ಲೇಯರ್‌ನಲ್ಲಿ ಬಾಹ್ಯ ಉಪಶೀರ್ಷಿಕೆ ಫೈಲ್‌ಗಳು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.';
+
+  @override
+  String get loadFromDevice => 'ಸಾಧನರಿಂದ ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get syncDelay => 'ಸಿಂಕ್ / ವಿಳಂಬ';
+
+  @override
+  String get styleSettings => 'ಶೈಲಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
+
+  @override
+  String get searchOnline => 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಹುಡುಕಿ (ಉಪಶೀರ್ಷಿಕೆ ಹುಡುಕಾಟ)';
+
+  @override
+  String get subtitleSync => 'ಉಪಶೀರ್ಷಿಕೆ ಸಿಂಕ್';
+
+  @override
+  String get subtitleDelayWarning =>
+      'ಸಕ್ರಿಯ ಪ್ಲೇಬ್ಯಾಕ್ ಎಂಜಿನ್‌ನಿಂದ ಉಪಶೀರ್ಷಿಕೆ ವಿಳಂಬ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.';
+
+  @override
+  String get resetDelay => 'ವಿಳಂಬ ಮರುಹೊಂದಿಸಿ';
+
+  @override
+  String get subtitleStyles => 'ಉಪಶೀರ್ಷಿಕೆ ಶೈಲಿಗಳು';
+
+  @override
+  String get resetToDefault => 'ಡೀಫಾಲ್ಟ್‌ಗೆ ಮರುಹೊಂದಿಸಿ';
+
+  @override
+  String get fontSize => 'ಫಾಂಟ್ ಗಾತ್ರ';
+
+  @override
+  String get verticalPosition => 'ಲಂಬ ಸ್ಥಾನ';
+
+  @override
+  String get textColor => 'ಪಠ್ಯದ ಬಣ್ಣ';
+
+  @override
+  String get backgroundColor => 'ಹಿನ್ನೆಲೆ ಬಣ್ಣ';
+
+  @override
+  String get backgroundOpacity => 'ಹಿನ್ನೆಲೆ ಅಪಾರದರ್ಶಕತೆ';
+
+  @override
+  String get subtitleSearch => 'ಉಪಶೀರ್ಷಿಕೆ ಹುಡುಕಾಟ';
+
+  @override
+  String get searchSubtitleNameHint => 'ಉಪಶೀರ್ಷಿಕೆ ಹೆಸರನ್ನು ಹುಡುಕಿ...';
+
+  @override
+  String get enterSearchSubtitlePrompt =>
+      'ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಹುಡುಕಲು ಹೆಸರನ್ನು ನಮೂದಿಸಿ.';
+
+  @override
+  String get noSubtitleResults =>
+      'ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ. ಮತ್ತೊಂದು ವಿಚಾರಣೆಯನ್ನು ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get downloadingApplyingSubtitle =>
+      'ಉಪಶೀರ್ಷಿಕೆಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ಮತ್ತು ಅಳವಡಿಸಲಾಗುತ್ತಿದೆ...';
+
+  @override
+  String get failedToDownloadSubtitle =>
+      'ಉಪಶೀರ್ಷಿಕೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ.';
+
+  @override
+  String get failedToLoadSubtitles =>
+      'ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get noReposFound => 'ಯಾವುದೇ ರೆಪೊಸಿಟರಿಗಳು ಅಥವಾ ಪ್ಲಗಿನ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ';
+
+  @override
+  String get downloadAllProviders => 'ಎಲ್ಲವನ್ನೂ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get removeRepository => 'ರೆಪೊಸಿಟರಿಯನ್ನು ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String get addRepo => 'ರೆಪೊಸಿಟರಿ ಸೇರಿಸಿ';
+
+  @override
+  String get extensionsNotInRepos => 'ರೆಪೊಸಿಟರಿಗಳಲ್ಲಿ ಇಲ್ಲದ ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು';
+
+  @override
+  String get noLongerInRepo =>
+      'ಇನ್ನು ಮುಂದೆ ಯಾವುದೇ ರೆಪೊಸಿಟರಿಯಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾಗಿಲ್ಲ';
+
+  @override
+  String get addRepoToBrowse =>
+      'ಪ್ಲಗಿನ್‌ಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಲು ಮತ್ತು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ರೆಪೊಸಿಟರಿಯನ್ನು ಸೇರಿಸಿ';
+
+  @override
+  String get debugExtensions => 'ಡಿಬಗ್ ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು';
+
+  @override
+  String removeRepoConfirm(String repoName) {
+    return '$repoName ತೆಗೆದುಹಾಕುವುದೇ?';
+  }
+
+  @override
+  String get removeRepoWarning =>
+      'ಇದು ರೆಪೊಸಿಟರಿಯನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ ಮತ್ತು ಅದರ ಎಲ್ಲಾ ಪ್ಲಗಿನ್‌ಗಳನ್ನು ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುತ್ತದೆ.';
+
+  @override
+  String get addRepository => 'ರೆಪೊಸಿಟರಿ ಸೇರಿಸಿ';
+
+  @override
+  String get repoUrlOrShortcode => 'ರೆಪೊಸಿಟರಿ URL ಅಥವಾ ಶಾರ್ಟ್‌ಕೋಡ್';
+
+  @override
+  String get assetPlugin => 'ಅಸೆಟ್ ಪ್ಲಗಿನ್';
+
+  @override
+  String get installed => 'ಇನ್‌ಸ್ಟಾಲ್ ಆಗಿದೆ';
+
+  @override
+  String get repositories => 'ರೆಪೊಸಿಟರಿಗಳು';
+
+  @override
+  String get noExtensionsInstalled => 'ಯಾವುದೇ ವಿಸ್ತರಣೆ ಅನುಸ್ಥಾಪಿಸಿಲ್ಲ';
+
+  @override
+  String get browseRepositoriesToInstall =>
+      'ವಿಸ್ತರಣೆಗಳನ್ನು ಹುಡುಕಿ ಅನುಸ್ಥಾಪಿಸಲು ರೆಪೊಸಿಟರಿಗಳ ಟ್ಯಾಬ್ ನೋಡಿ.';
+
+  @override
+  String get browseRepositories => 'ರೆಪೊಸಿಟರಿಗಳನ್ನು ವೀಕ್ಷಿಸಿ';
+
+  @override
+  String get addRepoDescription =>
+      'ವಿಸ್ತರಣೆ ಪ್ಲಗಿನ್‌ಗಳನ್ನು ಹುಡುಕಿ ಅನುಸ್ಥಾಪಿಸಲು ರೆಪೊಸಿಟರಿ URL ಅಥವಾ ಶಾರ್ಟ್‌ಕೋಡ್ ಸೇರಿಸಿ.';
+
+  @override
+  String updateTo(String version) {
+    return '$version ಗೆ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
+  }
+
+  @override
+  String get install => 'ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ';
+
+  @override
+  String get installFromThisRepository => 'ಈ ರೆಪೊಸಿಟರಿಯಿಂದ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ';
+
+  @override
+  String installFromThisRepositoryTitle(String pluginName) {
+    return '$pluginName ಅನ್ನು ಈ ರೆಪೊಸಿಟರಿಯಿಂದ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುವುದೇ?';
+  }
+
+  @override
+  String installFromThisRepositoryMessage(
+    String source,
+    String version,
+    String repoName,
+  ) {
+    return 'ನಿಮ್ಮಲ್ಲಿರುವ ಪ್ರತಿ $source ನಿಂದ ಬಂದಿದೆ. ಇದು ಅದರ ಬದಲಿಗೆ $repoName ನಿಂದ ಆವೃತ್ತಿ $version ಅನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುತ್ತದೆ, ಮತ್ತು ಅಲ್ಲಿಂದ ಮುಂದೆ ಇದರ ಅಪ್‌ಡೇಟ್‌ಗಳು $repoName ನಿಂದ ಮಾತ್ರ ಬರುತ್ತವೆ.';
+  }
+
+  @override
+  String get discoverSearchHint => 'Search community add-ons';
+
+  @override
+  String get discoverClearSearch => 'Clear';
+
+  @override
+  String get discoverNeedsWebSetup =>
+      'Needs quick setup on the add-on\'s website';
+
+  @override
+  String get discoverOpenSetup => 'Set up on the add-on website';
+
+  @override
+  String get error => 'ದೋಷ';
+
+  @override
+  String get ok => 'ಸರಿ';
+
+  @override
+  String pluginSettings(String pluginName) {
+    return '$pluginName ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
+  }
+
+  @override
+  String get movies => 'ಸಿನಿಮಾಗಳು';
+
+  @override
+  String get series => 'ಸರಣಿಗಳು';
+
+  @override
+  String get anime => 'ಅನಿಮೆ';
+
+  @override
+  String get liveStreams => 'ಲೈವ್ ಸ್ಟ್ರೀಮ್‌ಗಳು';
+
+  @override
+  String get debug => 'ಡಿಬಗ್';
+
+  @override
+  String extensionsUpdated(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ',
+      one: '1 ಎಕ್ಸ್‌ಟೆನ್ಶನ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String extensionsNewRepositories(int count, String source) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$source-ನಲ್ಲಿ $count ಹೊಸ ರೆಪೊಸಿಟರಿಗಳು',
+      one: '$source-ನಲ್ಲಿ 1 ಹೊಸ ರೆಪೊಸಿಟರಿ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String extensionsNewPlugins(int count, String repository) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$repository-ನಲ್ಲಿ $count ಹೊಸ ಪ್ಲಗಿನ್‌ಗಳು',
+      one: '$repository-ನಲ್ಲಿ 1 ಹೊಸ ಪ್ಲಗಿನ್',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get invalidNavigation => 'ಅಮಾನ್ಯ ನ್ಯಾವಿಗೇಶನ್. ದಯವಿಟ್ಟು ಹಿಂತಿರುಗಿ.';
+
+  @override
+  String get startOver => 'ಮೊದಲಿನಿಂದ ಪ್ರಾರಂಭಿಸಿ';
+
+  @override
+  String get goBack => 'ಹಿಂದೆ ಹೋಗಿ';
+
+  @override
+  String get restartApp => 'ಆ್ಯಪ್ ಮರುಪ್ರಾರಂಭಿಸಿ';
+
+  @override
+  String get resolving => 'ಪರಿಹರಿಸಲಾಗುತ್ತಿದೆ...';
+
+  @override
+  String get downloaded => 'ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ';
+
+  @override
+  String get download => 'ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get debugOnlyFeature =>
+      'ಈ ವೈಶಿಷ್ಟ್ಯವು ಕೇವಲ ಡಿಬಗ್ ಬಿಲ್ಡ್‌ಗಳಲ್ಲಿ ಮಾತ್ರ ಲಭ್ಯವಿದೆ';
+
+  @override
+  String get streamUrl => 'ಸ್ಟ್ರೀಮ್ URL';
+
+  @override
+  String get play => 'ಪ್ಲೇ ಮಾಡಿ';
+
+  @override
+  String get verifyingSourceSize =>
+      'ಮೂಲ ಮತ್ತು ಗಾತ್ರವನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...';
+
+  @override
+  String get fileSaveLocationNotification =>
+      'ಫೈಲ್ ಅನ್ನು ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ.';
+
+  @override
+  String get resumingPlayback => 'ಪ್ಲೇಬ್ಯಾಕ್ ಪುನರಾರಂಭವಾಗುತ್ತಿದೆ';
+
+  @override
+  String pausedAt(String time) {
+    return '$time ನಲ್ಲಿ ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String resumesAutomatically(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪುನರಾರಂಭವಾಗುತ್ತದೆ',
+      one: '1 ಸೆಕೆಂಡ್‌ನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪುನರಾರಂಭವಾಗುತ್ತದೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get resumeNow => 'ಈಗಲೇ ಪುನರಾರಂಭಿಸಿ';
+
+  @override
+  String get playbackError => 'ಪ್ಲೇಬ್ಯಾಕ್ ದೋಷ';
+
+  @override
+  String get confirmClearHistory =>
+      'ನಿಮ್ಮ ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸದಿಂದ ಎಲ್ಲಾ ಐಟಂಗಳನ್ನು ತೆಗೆದುಹಾಕಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?';
+
+  @override
+  String seasonWithNumber(Object number) {
+    return 'ಸೀಸನ್ $number';
+  }
+
+  @override
+  String get starting => 'ಪ್ರಾರಂಭವಾಗುತ್ತಿದೆ...';
+
+  @override
+  String percentWatched(int percent) {
+    return '%$percent ನೋಡಲಾಗಿದೆ';
+  }
+
+  @override
+  String get sub => 'ಸಬ್';
+
+  @override
+  String get dub => 'ಡಬ್';
+
+  @override
+  String playEpisode(String label, Object season, Object episode) {
+    return '$label S$season E$episode';
+  }
+
+  @override
+  String playEpisodeOnly(String label, int episode) {
+    return '$label E$episode';
+  }
+
+  @override
+  String get debugTools => 'ಡಿಬಗ್ ಪರಿಕರಗಳು';
+
+  @override
+  String get playLocalVideo => 'ಸ್ಥಳೀಯ ವೀಡಿಯೊ ಫೈಲ್ ಪ್ಲೇ ಮಾಡಿ';
+
+  @override
+  String get playLocalVideoSubtitle => 'ಸಾಧನದಿಂದ ಯಾವುದೇ ವೀಡಿಯೊವನ್ನು ಪ್ಲೇ ಮಾಡಿ';
+
+  @override
+  String get streamUrlSubtitle => 'ನೆಟ್‌ವರ್ಕ್ URL ನಿಂದ ಪ್ಲೇ ಮಾಡಿ';
+
+  @override
+  String get streamTorrent => 'ಟೊರೆಂಟ್ ಸ್ಟ್ರೀಮ್ ಮಾಡಿ';
+
+  @override
+  String get streamTorrentSubtitle =>
+      'ಪ್ಲೇ ಮಾಡಲು ಸ್ಥಳೀಯ ಟೊರೆಂಟ್ ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get loadPluginFromAssets => 'ಆಸ್ತಿಗಳಿಂದ ಪ್ಲಗಿನ್ ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get enterVideoUrlHint => 'ವೀಡಿಯೊ URL ನಮೂದಿಸಿ (http, magnet, ಇತ್ಯಾದಿ)';
+
+  @override
+  String get networkStream => 'ನೆಟ್‌ವರ್ಕ್ ಸ್ಟ್ರೀಮ್';
+
+  @override
+  String removedFromHistory(String title) {
+    return 'ಇತಿಹಾಸದಿಂದ $title ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ';
+  }
+
+  @override
+  String get custom => 'ಕಸ್ಟಮ್';
+
+  @override
+  String get refreshingLiveStream => 'ಲೈವ್ ಸ್ಟ್ರೀಮ್ ರಿಫ್ರೆಶ್ ಆಗುತ್ತಿದೆ...';
+
+  @override
+  String get removeFromHistory => 'ಇತಿಹಾಸದಿಂದ ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String get live => 'ಲೈವ್';
+
+  @override
+  String get volume => 'ಧ್ವನಿ';
+
+  @override
+  String get decrease => 'Decrease';
+
+  @override
+  String get increase => 'Increase';
+
+  @override
+  String get brightness => 'ಪ್ರಕಾಶಮಾನ';
+
+  @override
+  String get fit => 'ಫಿಟ್';
+
+  @override
+  String get zoom => 'ಜೂಮ್';
+
+  @override
+  String get stretch => 'ಸ್ಟ್ರೆಚ್';
+
+  @override
+  String titleWithParam(String title) {
+    return 'ಶೀರ್ಷಿಕೆ: $title';
+  }
+
+  @override
+  String sourceWithParam(String source) {
+    return 'ಮೂಲ: $source';
+  }
+
+  @override
+  String sizeWithParam(String size) {
+    return 'ಗಾತ್ರ: $size';
+  }
+
+  @override
+  String usingInternalPlayerError(String error) {
+    return 'ದೋಷ: $error. ಆಂತರಿಕ ಪ್ಲೇಯರ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತಿದೆ.';
+  }
+
+  @override
+  String externalPlayerCannotSendHeaders(String playerName, String headers) {
+    return '$playerName $headers ಕಳುಹಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಆಂತರಿಕ ಪ್ಲೇಯರ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತಿದೆ.';
+  }
+
+  @override
+  String playerNotDetected(String playerName) {
+    return '$playerName ಪತ್ತೆಯಾಗಿಲ್ಲ. ಆಂತರಿಕ ಪ್ಲೇಯರ್ ಪ್ರಾರಂಭವಾಗುತ್ತಿದೆ.';
+  }
+
+  @override
+  String seasonWithEpisodes(Object number, int count) {
+    return 'ಸೀಸನ್ $number ($count ಎಪಿಸೋಡ್‌ಗಳು)';
+  }
+
+  @override
+  String get cloudflare => 'ಕ್ಲೌಡ್‌ಫ್ಲೇರ್';
+
+  @override
+  String get google => 'ಗೂಗಲ್';
+
+  @override
+  String get adguard => 'ಆಡ್‌ಗಾರ್ಡ್';
+
+  @override
+  String get dnsWatch => 'ಡಿಎನ್‌ಎಸ್.ವಾಚ್';
+
+  @override
+  String get quad9 => 'ಕ್ವಾಡ್9';
+
+  @override
+  String get dnsSb => 'ಡಿಎನ್‌ಎಸ್.ಎಸ್‌ಬಿ';
+
+  @override
+  String get canadianShield => 'ಕೆನಡಿಯನ್ ಶೀಲ್ಡ್';
+
+  @override
+  String get tmdb => 'ಟಿಎಂಡಿಬಿ';
+
+  @override
+  String selectSourceForPlayer(String playerName) {
+    return '$playerName ಗಾಗಿ ಮೂಲವನ್ನು ಆರಿಸಿ';
+  }
+
+  @override
+  String get noPluginsInstalled => 'ಯಾವುದೇ ಪ್ಲಗಿನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಲಾಗಿಲ್ಲ';
+
+  @override
+  String get noPluginsMessage =>
+      'ವಿಷಯವನ್ನು ಬ್ರೌಸ್ ಮಾಡಲು ಮತ್ತು ಸ್ಟ್ರೀಮ್ ಮಾಡಲು ವಿಸ್ತರಣೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ.';
+
+  @override
+  String get goToExtensions => 'ವಿಸ್ತರಣೆಗಳಿಗೆ ಹೋಗಿ';
+
+  @override
+  String get availableSources => 'ಲಭ್ಯವಿರುವ ಮೂಲಗಳು';
+
+  @override
+  String get seasons => 'ಸೀಸನ್‌ಗಳು';
+
+  @override
+  String get episodes => 'ಸಂಚಿಕೆಗಳು';
+
+  @override
+  String get selectSourceToPlay =>
+      'ಪ್ಲೇ ಮಾಡಲು ದಯವಿಟ್ಟು ಮೇಲಿನ \'ಲಭ್ಯವಿರುವ ಮೂಲಗಳು\' ಇಂದ ಒಂದು ಮೂಲವನ್ನು ಆಯ್ಕೆಮಾಡಿ.';
+
+  @override
+  String episodeCountOnly(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸಂಚಿಕೆಗಳು',
+      one: '1 ಸಂಚಿಕೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noEpisodesFound => 'ಯಾವುದೇ ಸಂಚಿಕೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ';
+
+  @override
+  String get local => 'ಸ್ಥಳೀಯ';
+
+  @override
+  String get remote => 'ರಿಮೋಟ್';
+
+  @override
+  String get torrent => 'ಟೊರೆಂಟ್';
+
+  @override
+  String get unlock => 'ಅನ್ಲಾಕ್';
+
+  @override
+  String get lock => 'ಲಾಕ್';
+
+  @override
+  String get sources => 'ಮೂಲಗಳು';
+
+  @override
+  String get tracks => 'ಟ್ರ್ಯಾಕ್‌ಗಳು';
+
+  @override
+  String get content => 'ವಿಷಯ';
+
+  @override
+  String get stats => 'ಅಂಕಿಅಂಶ';
+
+  @override
+  String get resize => 'ಮರುಗಾತ್ರಗೊಳಿಸಿ';
+
+  @override
+  String get next => 'ಮುಂದಿನದು';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get pip => 'ಪಿಐಪಿ';
+
+  @override
+  String get rotate => 'ತಿರುಗಿಸಿ';
+
+  @override
+  String get windowed => 'ವಿಂಡೋಡ್';
+
+  @override
+  String get fullscreen => 'ಫುಲ್ ಸ್ಕ್ರೀನ್';
+
+  @override
+  String get movieDetails => 'ಚಲನಚಿತ್ರ ವಿವರಗಳು';
+
+  @override
+  String get showDetails => 'ಶೋ ವಿವರಗಳು';
+
+  @override
+  String get tagline => 'ಟ್ಯಾಗ್‌ಲೈನ್';
+
+  @override
+  String get status => 'ಸ್ಥಿತಿ';
+
+  @override
+  String get releaseDate => 'ಬಿಡುಗಡೆ ದಿನಾಂಕ';
+
+  @override
+  String get firstAirDate => 'ಮೊದಲ ಪ್ರಸಾರ ದಿನಾಂಕ';
+
+  @override
+  String get originalLanguage => 'ಮೂಲ ಭಾಷೆ';
+
+  @override
+  String get originCountry => 'ಮೂಲ ದೇಶ';
+
+  @override
+  String get budgetLabel => 'ಬಜೆಟ್';
+
+  @override
+  String get revenueLabel => 'ಆದಾಯ';
+
+  @override
+  String get paused => 'ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get watched => 'ನೋಡಲಾಗಿದೆ';
+
+  @override
+  String get watching => 'ನೋಡಲಾಗುತ್ತಿದೆ';
+
+  @override
+  String get lastWatched => 'ಕೊನೆಯದಾಗಿ ನೋಡಲಾಗಿದೆ';
+
+  @override
+  String get movie => 'ಚಲನಚಿತ್ರ';
+
+  @override
+  String get tvShow => 'ಟಿವಿ ಶೋ';
+
+  @override
+  String get failedToLoadContent => 'ವಿಷಯವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ';
+
+  @override
+  String get director => 'ನಿರ್ದೇಶಕ';
+
+  @override
+  String get creator => 'ಸೃಷ್ಟಿಕರ್ತ';
+
+  @override
+  String get showMore => 'ಹೆಚ್ಚು ತೋರಿಸಿ';
+
+  @override
+  String get showLess => 'ಕಡಿಮೆ ತೋರಿಸಿ';
+
+  @override
+  String get viewAll => 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ';
+
+  @override
+  String seasonsCount(int count) {
+    return '$count ಸೀಸನ್‌ಗಳು';
+  }
+
+  @override
+  String get noInternetError => 'ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವಿಲ್ಲ';
+
+  @override
+  String get timeoutError => 'ವಿನಂತಿಯ ಸಮಯ ಮೀರಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get serverError => 'ಸರ್ವರ್ ದೋಷ. ದಯವಿಟ್ಟು ನಂತರ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get contentNotFoundError => 'ವಿಷಯ ಕಂಡುಬಂದಿಲ್ಲ.';
+
+  @override
+  String get accessDeniedError =>
+      'ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ರುಜುವಾತುಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.';
+
+  @override
+  String get serviceUnavailableError =>
+      'ಸರ್ವರ್ ಅಲಭ್ಯವಾಗಿದೆ. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get generalError => 'ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get skip => 'ಬಿಟ್ಟುಬಿಡಿ';
+
+  @override
+  String get skipIntro => 'ಪ್ರಾರಂಭ ಬಿಟ್ಟುಬಿಡಿ';
+
+  @override
+  String get skipOutro => 'ಅಂತ್ಯ ಬಿಟ್ಟುಬಿಡಿ';
+
+  @override
+  String get skipRecap => 'ಸಾರಾಂಶ ಬಿಟ್ಟುಬಿಡಿ';
+
+  @override
+  String get goLive => 'ಲೈವ್ ಹೋಗಿ';
+
+  @override
+  String get dismiss => 'ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String get nextUp => 'ಮುಂದಿನದು';
+
+  @override
+  String sourceAttempt(int index, int total) {
+    return 'ಮೂಲ $index (ಒಟ್ಟು $total)';
+  }
+
+  @override
+  String get trying => 'ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ';
+
+  @override
+  String get failed => 'ವಿಫಲವಾಗಿದೆ';
+
+  @override
+  String get selected => 'ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ';
+
+  @override
+  String get playing => 'ಪ್ಲೇ ಆಗುತ್ತಿದೆ';
+
+  @override
+  String get pending => 'ಬಾಕಿ ಇದೆ';
+
+  @override
+  String get openSubtitles => 'OpenSubtitles';
+
+  @override
+  String get subDl => 'SubDL';
+
+  @override
+  String get subSource => 'SubSource';
+
+  @override
+  String get unmeteredQualityPreference => 'Wi-Fi ಮತ್ತು ವೈರ್ಡ್ ಗುಣಮಟ್ಟದ ಆದ್ಯತೆ';
+
+  @override
+  String get playerNotOnThisDevice => 'ಈ ಸಾಧನದಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ';
+
+  @override
+  String get mobileQualityPreference => 'ಮೊಬೈಲ್ ಗುಣಮಟ್ಟದ ಆದ್ಯತೆ';
+
+  @override
+  String get anyNoPreference => 'ಯಾವುದಾದರೂ (ಆದ್ಯತೆ ಇಲ್ಲ)';
+
+  @override
+  String get subtitleAccounts => 'ಉಪಶೀರ್ಷಿಕೆ ಖಾತೆಗಳು';
+
+  @override
+  String get accounts => 'ಖಾತೆಗಳು';
+
+  @override
+  String get notLoggedIn => 'ಲಾಗಿನ್ ಆಗಿಲ್ಲ';
+
+  @override
+  String loggedInAs(String username) {
+    return '$username ಆಗಿ ಲಾಗಿನ್ ಆಗಿದ್ದೀರಿ';
+  }
+
+  @override
+  String get apiKeyConfigured => 'API ಕೀ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿದೆ';
+
+  @override
+  String get keyNotSet => 'ಕೀ ಹೊಂದಿಸಿಲ್ಲ';
+
+  @override
+  String get testConnection => 'ಸಂಪರ್ಕ ಪರೀಕ್ಷಿಸಿ';
+
+  @override
+  String get connectedSuccessfully => 'ಯಶಸ್ವಿಯಾಗಿ ಸಂಪರ್ಕಗೊಂಡಿದೆ';
+
+  @override
+  String get connectionFailed => 'ಸಂಪರ್ಕ ವಿಫಲವಾಗಿದೆ';
+
+  @override
+  String get username => 'ಬಳಕೆದಾರಹೆಸರು';
+
+  @override
+  String get password => 'ಪಾಸ್ವರ್ಡ್';
+
+  @override
+  String get noAccountRegister => 'ಖಾತೆ ಇಲ್ಲವೇ? ಇಲ್ಲಿ ನೋಂದಾಯಿಸಿ';
+
+  @override
+  String get apiKey => 'API ಕೀ';
+
+  @override
+  String get email => 'ಇಮೇಲ್';
+
+  @override
+  String get fetchMyApiKey => 'ನನ್ನ API ಕೀಲಿಯನ್ನು ಪಡೆದುಕೊಳ್ಳಿ';
+
+  @override
+  String get keyVerified => 'ಕೀ ಪರಿಶೀಲಿಸಲಾಗಿದೆ';
+
+  @override
+  String get invalidApiKey => 'ಅಮಾನ್ಯವಾದ API ಕೀ';
+
+  @override
+  String get openSubtitlesAuthSubtitle =>
+      'ಹೆಚ್ಚಿನ ಮಿತಿಗಳು ಮತ್ತು ಜಾಹೀರಾತು ರಹಿತ ಉಪಶೀರ್ಷಿಕೆಗಳಿಗಾಗಿ ನಿಮ್ಮ ಖಾತೆಯ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ.';
+
+  @override
+  String get subDlAuthSubtitle =>
+      'ನಿಮ್ಮ SubDL API ಕೀಲಿಯನ್ನು ನೇರವಾಗಿ ನಮೂದಿಸಿ, ಅಥವಾ ಕೆಳಗಿನ ನಿಮ್ಮ ಖಾತೆಯ ವಿವರಗಳನ್ನು ಬಳಸಿಕೊಂಡು ಅದನ್ನು ಪಡೆದುಕೊಳ್ಳಿ.';
+
+  @override
+  String get orFetchViaAccount => 'ಅಥವಾ ಖಾತೆಯ ಮೂಲಕ ಪಡೆಯಿರಿ';
+
+  @override
+  String get subSourceAuthSubtitle =>
+      'SubSource ಯಾವುದೇ ಹೆಚ್ಚಿನ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಲ್ಲದೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ, ಆದರೆ ಉತ್ತಮ ವಿಶ್ವಾಸಾರ್ಹತೆಗಾಗಿ ಡೀಫಾಲ್ಟ್ ಅನ್ನು ಅತಿಕ್ರಮಿಸಲು ನೀವು ವೈಯಕ್ತಿಕ ಅಧಿಕೃತ API ಕೀಲಿಯನ್ನು ಸೇರಿಸಬಹುದು.';
+
+  @override
+  String get apiKeyOptionalOverride => 'API ಕೀ (ಐಚ್ಛಿಕ ಅತಿಕ್ರಮಣ)';
+
+  @override
+  String get enterKeyToOverrideDefault =>
+      'ಡೀಫಾಲ್ಟ್ ಅತಿಕ್ರಮಿಸಲು ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ';
+
+  @override
+  String get getApiKeyFromProfile =>
+      'SubSource ಪ್ರೊಫೈಲ್‌ನಿಂದ ನಿಮ್ಮ API ಕೀಲಿಯನ್ನು ಪಡೆಯಿರಿ';
+
+  @override
+  String get qualityNotGuaranteed =>
+      'ಗುಣಮಟ್ಟದ ಭರವಸೆ ಇಲ್ಲ. ಮೂಲಗಳನ್ನು ಈ ಆದ್ಯತೆಯ ಪ್ರಕಾರ ವಿಂಗಡಿಸಲಾಗುತ್ತದೆ, ಮತ್ತು ಹಲವು ಗುಣಮಟ್ಟಗಳಿರುವ ಸ್ಟ್ರೀಮ್ ಈ ಗುಣಮಟ್ಟದಲ್ಲಿ ಅಥವಾ ಇದಕ್ಕಿಂತ ಕಡಿಮೆ ಇರುವ ಅತಿ ಹತ್ತಿರದ ಗುಣಮಟ್ಟದಲ್ಲಿ ಪ್ಲೇ ಆಗುತ್ತದೆ. ಪ್ಲೇಬ್ಯಾಕ್ ಪೂರೈಕೆದಾರರು ವಾಸ್ತವವಾಗಿ ಏನು ನೀಡುತ್ತಾರೆ ಎಂಬುದನ್ನು ಅವಲಂಬಿಸಿರುತ್ತದೆ.';
+
+  @override
+  String get keepSourcesOriginalOrder => 'ಮೂಲಗಳನ್ನು ಮೂಲ ಕ್ರಮದಲ್ಲಿ ಇರಿಸಿ';
+
+  @override
+  String get openLink => 'ಲಿಂಕ್ ತೆರೆಯಿರಿ';
+
+  @override
+  String get diagnostics => 'ಡಯಾಗ್ನೋಸ್ಟಿಕ್ಸ್';
+
+  @override
+  String get viewLogs => 'ಲಾಗ್‌ಗಳನ್ನು ನೋಡಿ';
+
+  @override
+  String get viewLogsSubtitle => 'ಅಪ್ಲಿಕೇಶನ್ ಚಟುವಟಿಕೆ ಮತ್ತು ದೋಷಗಳನ್ನು ನೋಡಿ';
+
+  @override
+  String get clearCache => 'Clear image and video cache';
+
+  @override
+  String get clearCacheSubtitle =>
+      'Frees up storage used by cached images and videos';
+
+  @override
+  String get clearCacheDialogTitle => 'Clear cache?';
+
+  @override
+  String get clearCacheDialogContent =>
+      'This will delete cached images and video files. Your settings, history, and extensions will not be affected.';
+
+  @override
+  String get clearCacheNow => 'Clear Cache';
+
+  @override
+  String get cacheCleared => 'Cache cleared';
+
+  @override
+  String get calculating => 'Calculating…';
+
+  @override
+  String get playerControls => 'Player Controls';
+
+  @override
+  String get playerControlsSubtitle => 'Show or hide player control buttons';
+
+  @override
+  String get showPip => 'Picture-in-Picture button';
+
+  @override
+  String get showResize => 'Resize button';
+
+  @override
+  String get showRotate => 'ತಿರುಗಿಸುವ ಬಟನ್';
+
+  @override
+  String get showPlaybackSpeed => 'Playback speed button';
+
+  @override
+  String get showVolume => 'ಧ್ವನಿಮಟ್ಟದ ಬಟನ್';
+
+  @override
+  String get showEpisodeNavigation => 'ಹಿಂದಿನ / ಮುಂದಿನ ಸಂಚಿಕೆಯ ಬಟನ್‌ಗಳು';
+
+  @override
+  String get playerNoProviderSelected => 'No provider selected.';
+
+  @override
+  String get playerNothingToPlay => 'Nothing to play.';
+
+  @override
+  String playerCouldNotLoadSources(String error) {
+    return 'Could not load sources: $error';
+  }
+
+  @override
+  String get playerResolutionCancelled => 'Cancelled.';
+
+  @override
+  String get playerNoStreamsFound => 'No streams found.';
+
+  @override
+  String get playerDrmWidevine =>
+      'This channel uses Widevine DRM, which needs a licence module this player does not have.';
+
+  @override
+  String get playerDrmPlayReady =>
+      'This channel uses PlayReady DRM, which needs a licence module this player does not have.';
+
+  @override
+  String get playerDrmLicenceServer =>
+      'This channel needs a decryption key from a licence server, and the server did not provide a usable one.';
+
+  @override
+  String get playerDrmUnknown =>
+      'This channel is encrypted and no usable decryption key was provided.';
+
+  @override
+  String playerPlaybackFailed(String error) {
+    return 'Playback failed: $error';
+  }
+
+  @override
+  String playerNoSourcesPlayable(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'None of the $count sources would play.',
+      one: 'The only source would not play.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String playerNoSourcesPlayableWithReason(int count, String reason) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'None of the $count sources would play - $reason',
+      one: 'The only source would not play - $reason',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get playerPreparingTorrent => 'ಟೊರೆಂಟ್ ಸಿದ್ಧವಾಗುತ್ತಿದೆ…';
+
+  @override
+  String playerTorrentPeers(
+    int connected,
+    int total,
+    String speed,
+    String loaded,
+  ) {
+    return '$connected/$total ಪೀರ್‌ಗಳು · $speed · $loaded ಲೋಡ್ ಆಗಿದೆ';
+  }
+
+  @override
+  String get playerReasonTorrentNotPrepared => 'torrent could not be prepared';
+
+  @override
+  String get playerReasonNoPlayableAddress => 'source has no playable address';
+
+  @override
+  String get playerReasonLiveFeedDropped => 'live feed dropped repeatedly';
+
+  @override
+  String get playerReasonStreamEndedEarly => 'stream ended before its duration';
+
+  @override
+  String get playerReasonPlaybackError => 'playback error';
+
+  @override
+  String get playerReasonSourceStoppedResponding =>
+      'the source stopped responding';
+
+  @override
+  String get playerReasonSourceNeverStarted => 'the source never started';
+
+  @override
+  String get playerReasonNetworkDropped => 'the network dropped';
+
+  @override
+  String get playerReasonSkipped => 'you skipped this source';
+
+  @override
+  String get playerSkipSource => 'Skip source';
+
+  @override
+  String get playerSourceReachable => 'ಲಭ್ಯವಿದೆ';
+
+  @override
+  String get playerReasonStreamEndedBeforePlaying =>
+      'stream ended before it played';
+
+  @override
+  String playerFinished(String title) {
+    return 'ನೀವು $title ಮುಗಿಸಿದ್ದೀರಿ';
+  }
+
+  @override
+  String get playerReconnecting => 'ಮರುಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get playerWaitingForNetwork => 'ನೆಟ್‌ವರ್ಕ್‌ಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get playerSpeedNormal => 'Normal';
+
+  @override
+  String get torrentStats => 'Torrent stats';
+
+  @override
+  String get original => 'Original';
+
+  @override
+  String playerCouldNotReadTracks(String error) {
+    return 'ಟ್ರ್ಯಾಕ್‌ಗಳನ್ನು ಓದಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String playerTrackNumber(int id) {
+    return 'ಟ್ರ್ಯಾಕ್ $id';
+  }
+
+  @override
+  String get subtitleDelay => 'ಉಪಶೀರ್ಷಿಕೆ ವಿಳಂಬ';
+
+  @override
+  String get playerSourceRestoredPrevious =>
+      'That source would not play. Restored the previous one.';
+
+  @override
+  String get playerTorrentFileNotReady =>
+      'That file is not ready to stream yet.';
+
+  @override
+  String get torrentFiles => 'ಟೊರೆಂಟ್ ಫೈಲ್‌ಗಳು';
+
+  @override
+  String get audio => 'ಆಡಿಯೋ';
+
+  @override
+  String get noAudioTracksReported => 'ಯಾವುದೇ ಆಡಿಯೋ ಟ್ರ್ಯಾಕ್ ವರದಿಯಾಗಿಲ್ಲ';
+
+  @override
+  String get loadSubtitleFile => 'ಉಪಶೀರ್ಷಿಕೆ ಫೈಲ್ ಲೋಡ್ ಮಾಡಿ';
+
+  @override
+  String get searchSubtitlesOnline => 'ಆನ್‌ಲೈನ್ ಹುಡುಕಿ';
+
+  @override
+  String get searchOnlineSubtitles => 'ಆನ್‌ಲೈನ್ ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಹುಡುಕಿ';
+
+  @override
+  String get subtitleLanguage => 'ಉಪಶೀರ್ಷಿಕೆ ಭಾಷೆ';
+
+  @override
+  String get subtitleDownloadFailed =>
+      'ಈ ಉಪಶೀರ್ಷಿಕೆಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಲಿಲ್ಲ. ಬೇರೆ ಫಲಿತಾಂಶವನ್ನು ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String subtitleSearchFailed(String error) {
+    return 'ಹುಡುಕಾಟ ವಿಫಲವಾಗಿದೆ: $error';
+  }
+
+  @override
+  String get subtitleSearchPrompt =>
+      'ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಹುಡುಕಲು ಶೀರ್ಷಿಕೆಯನ್ನು ಹುಡುಕಿ.';
+
+  @override
+  String get noSubtitlesFoundTryAnother =>
+      'ಯಾವುದೇ ಉಪಶೀರ್ಷಿಕೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ. ಬೇರೆ ಶೀರ್ಷಿಕೆ ಅಥವಾ ಭಾಷೆಯನ್ನು ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get seedsPeers => 'Seeds / Peers';
+
+  @override
+  String get subtitleAppearanceNote =>
+      'Changes show at once. While a video plays, Subtitle style in the player\'s Subtitles tab changes them too.';
+
+  @override
+  String get textSize => 'ಪಠ್ಯದ ಗಾತ್ರ';
+
+  @override
+  String get subtitleTextColour => 'ಪಠ್ಯದ ಬಣ್ಣ';
+
+  @override
+  String get resetSubtitleAppearance => 'Reset subtitle appearance';
+
+  @override
+  String get resetSubtitleAppearanceSubtitle => 'Back to white text at size 22';
+
+  @override
+  String get subtitlePreviewSample => 'The quick brown fox';
+
+  @override
+  String subtitleBackgroundSummary(String color, int percent) {
+    return '$color · $percent%';
+  }
+
+  @override
+  String get opacityOff => 'Opacity: off';
+
+  @override
+  String opacityPercent(int percent) {
+    return 'Opacity: $percent%';
+  }
+
+  @override
+  String get colorWhite => 'ಬಿಳಿ';
+
+  @override
+  String get colorYellow => 'ಹಳದಿ';
+
+  @override
+  String get colorCyan => 'ಸಯಾನ್';
+
+  @override
+  String get colorGreen => 'ಹಸಿರು';
+
+  @override
+  String get colorMagenta => 'ಮೆಜೆಂಟಾ';
+
+  @override
+  String get colorRed => 'ಕೆಂಪು';
+
+  @override
+  String get colorBlack => 'ಕಪ್ಪು';
+
+  @override
+  String get colorDarkGrey => 'ಗಾಢ ಬೂದು';
+
+  @override
+  String get subtitleStyle => 'ಉಪಶೀರ್ಷಿಕೆ ಶೈಲಿ';
+
+  @override
+  String subtitleStyleSummary(int size, String color) {
+    return '$size · $color';
+  }
+
+  @override
+  String get subtitleBackgroundOpacity => 'ಹಿನ್ನೆಲೆಯ ಅಪಾರದರ್ಶಕತೆ';
+
+  @override
+  String get subtitleOutline => 'ಔಟ್‌ಲೈನ್';
+
+  @override
+  String get subtitleOutlineNone => 'ಯಾವುದೂ ಇಲ್ಲ';
+
+  @override
+  String get subtitleOutlineThin => 'ತೆಳು';
+
+  @override
+  String get subtitleOutlineNormal => 'ಸಾಮಾನ್ಯ';
+
+  @override
+  String get subtitleOutlineThick => 'ದಪ್ಪ';
+
+  @override
+  String get subtitlePosition => 'ಸ್ಥಾನ';
+
+  @override
+  String get subtitlePositionBottom => 'ಕೆಳಗೆ';
+
+  @override
+  String subtitlePositionRaised(int percent) {
+    return '+$percent%';
+  }
+
+  @override
+  String get subtitleBold => 'ಬೋಲ್ಡ್';
+
+  @override
+  String get subtitleFont => 'ಫಾಂಟ್';
+
+  @override
+  String get subtitleFontDefault => 'ಡೀಫಾಲ್ಟ್';
+
+  @override
+  String get subtitleFontSerif => 'ಸೆರಿಫ್';
+
+  @override
+  String get subtitleFontMonospace => 'ಮೊನೊಸ್ಪೇಸ್';
+
+  @override
+  String get subtitleTextOpacity => 'ಪಠ್ಯದ ಅಪಾರದರ್ಶಕತೆ';
+
+  @override
+  String subtitlePercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get subtitleEncoding => 'ಎನ್‌ಕೋಡಿಂಗ್';
+
+  @override
+  String get subtitleEncodingAuto => 'ಸ್ವಯಂ';
+
+  @override
+  String get subtitleEncodingCentralEuropean => 'ಮಧ್ಯ ಯುರೋಪಿಯನ್';
+
+  @override
+  String get subtitleEncodingCyrillic => 'ಸಿರಿಲಿಕ್';
+
+  @override
+  String get subtitleEncodingWestern => 'ಪಾಶ್ಚಾತ್ಯ';
+
+  @override
+  String get subtitleEncodingGreek => 'ಗ್ರೀಕ್';
+
+  @override
+  String get subtitleEncodingTurkish => 'ಟರ್ಕಿಶ್';
+
+  @override
+  String get subtitleEncodingHebrew => 'ಹೀಬ್ರೂ';
+
+  @override
+  String get subtitleEncodingArabic => 'ಅರೇಬಿಕ್';
+
+  @override
+  String get subtitleEncodingBaltic => 'ಬಾಲ್ಟಿಕ್';
+
+  @override
+  String get subtitleEncodingVietnamese => 'ವಿಯೆಟ್ನಾಮೀಸ್';
+
+  @override
+  String get subtitleNextTime => 'ಮುಂದಿನ ಬಾರಿ ಪ್ಲೇಯರ್ ತೆರೆದಾಗ';
+
+  @override
+  String get subtitleNextTimeNote =>
+      'ಇವು ಉಪಶೀರ್ಷಿಕೆ ಫೈಲ್‌ಗಳಿಗೆ ತಕ್ಷಣ ಅನ್ವಯಿಸುತ್ತವೆ, ಮತ್ತು ವೀಡಿಯೊದೊಳಗಿನ ಉಪಶೀರ್ಷಿಕೆಗಳಿಗೆ ಮುಂದಿನ ಬಾರಿ ಪ್ಲೇಯರ್ ತೆರೆದಾಗ.';
+
+  @override
+  String get resetSubtitleStyle => 'ಉಪಶೀರ್ಷಿಕೆ ಶೈಲಿಯನ್ನು ಮರುಹೊಂದಿಸಿ';
+
+  @override
+  String get stepperDecrease => 'ಕಡಿಮೆ ಮಾಡಿ';
+
+  @override
+  String get stepperIncrease => 'ಹೆಚ್ಚಿಸಿ';
+
+  @override
+  String get playerNowPlaying => 'ಈಗ ಪ್ಲೇ ಆಗುತ್ತಿದೆ';
+
+  @override
+  String get playerQualityFilterDropped =>
+      'ನಿಮ್ಮ ಗುಣಮಟ್ಟದ ಆದ್ಯತೆಗೆ ಯಾವುದೇ ಮೂಲ ಹೊಂದಿಕೆಯಾಗಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಎಲ್ಲಾ ಮೂಲಗಳನ್ನು ತೋರಿಸಲಾಗಿದೆ.';
+
+  @override
+  String playerSeeders(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೀಡರ್‌ಗಳು',
+      one: '1 ಸೀಡರ್',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get playerFiles => 'ಫೈಲ್‌ಗಳು';
+
+  @override
+  String playerSeasonEpisode(int season, int episode) {
+    return 'S$season E$episode';
+  }
+
+  @override
+  String playerEpisodeNumber(int episode) {
+    return 'E$episode';
+  }
+
+  @override
+  String playerRuntimeMinutes(int count) {
+    return '$count ನಿಮಿಷ';
+  }
+
+  @override
+  String get audioDelay => 'ಆಡಿಯೋ ವಿಳಂಬ';
+
+  @override
+  String get subtitleSearchTitleFallback =>
+      'ಈ ಶೀರ್ಷಿಕೆಯ ID ಗೆ ಏನೂ ಹೊಂದಿಕೆಯಾಗಲಿಲ್ಲ. ಬದಲಿಗೆ ಶೀರ್ಷಿಕೆಗೆ ಹೊಂದುವ ಫಲಿತಾಂಶಗಳನ್ನು ತೋರಿಸಲಾಗಿದೆ.';
+
+  @override
+  String get subtitleSearchSeasonFallback =>
+      'ಈ ಸಂಚಿಕೆಗೆ ಯಾವುದೇ ಉಪಶೀರ್ಷಿಕೆ ಸಿಗಲಿಲ್ಲ. ಇವು ಇಡೀ ಸೀಸನ್‌ನವು, ಆದ್ದರಿಂದ ಫೈಲ್ ಹೆಸರಿನಲ್ಲಿ ಸಂಚಿಕೆ ಸಂಖ್ಯೆಯನ್ನು ಪರಿಶೀಲಿಸಿ.';
+
+  @override
+  String get sourcesSearching => 'ಸ್ಕ್ರೇಪರ್‌ಗಳಲ್ಲಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get sourcesEmptyFiltered =>
+      'ಪ್ರಸ್ತುತ ಫಿಲ್ಟರ್‌ಗಳಿಗೆ ಯಾವ ಲಿಂಕ್ ಕೂಡ ಹೊಂದಿಕೆಯಾಗಿಲ್ಲ.';
+
+  @override
+  String get sourcesEmptyNoTmdbId =>
+      'ಈ ಶೀರ್ಷಿಕೆಗೆ TMDB ID ಇಲ್ಲ. \'Search manually\' ಮೂಲಕ ನಮೂದಿಸಿ.';
+
+  @override
+  String get sourcesEmptyNoScrapers =>
+      'ಯಾವುದೇ ಸ್ಕ್ರೇಪರ್ ಸಕ್ರಿಯವಾಗಿಲ್ಲ. \'Nuvio Plugins\' ನಲ್ಲಿ ಒಂದನ್ನು ಸೇರಿಸಿ.';
+
+  @override
+  String get sourcesEmptyAllFailed =>
+      'ಎಲ್ಲಾ ಸ್ಕ್ರೇಪರ್‌ಗಳು ವಿಫಲವಾದವು. ನಿಮ್ಮ ಸಂಪರ್ಕ ಪರಿಶೀಲಿಸಿ ಅಥವಾ ಸ್ಕ್ರೇಪರ್ ನವೀಕರಿಸಿ.';
+
+  @override
+  String sourcesEmptySomeFailed(int failed, int total) {
+    return 'ಯಾವುದೇ ಲಿಂಕ್ ಸಿಗಲಿಲ್ಲ. $total ರಲ್ಲಿ $failed ಸ್ಕ್ರೇಪರ್ ವಿಫಲವಾದವು.';
+  }
+
+  @override
+  String get sourcesEmptyNothingFound =>
+      'ನಿಮ್ಮ ಯಾವುದೇ ಸ್ಕ್ರೇಪರ್‌ನಲ್ಲಿ ಈ ಶೀರ್ಷಿಕೆ ಇಲ್ಲ.';
+
+  @override
+  String get subtitleDefault => 'ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ಉಪಶೀರ್ಷಿಕೆಗಳು';
+
+  @override
+  String get subtitleDefaultAuto => 'ಸ್ವಯಂ';
+
+  @override
+  String get subtitleDefaultAutoDetail =>
+      'ವೀಡಿಯೊ ಅದರ ಮೂಲವು ಆಯ್ಕೆ ಮಾಡುವ ಉಪಶೀರ್ಷಿಕೆಯೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ; ಮೂಲದಲ್ಲಿ ಲಭ್ಯವಿದ್ದರೆ ನಿಮ್ಮ ಉಪಶೀರ್ಷಿಕೆ ಭಾಷೆಗೆ ಆದ್ಯತೆ ನೀಡಲಾಗುತ್ತದೆ.';
+
+  @override
+  String get subtitleDefaultOffDetail =>
+      'ವೀಡಿಯೊ ಯಾವುದೇ ಉಪಶೀರ್ಷಿಕೆ ಇಲ್ಲದೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ. ಪ್ಲೇಯರ್‌ನ ಉಪಶೀರ್ಷಿಕೆ ಮೆನುವಿನಿಂದ ನೀವು ಅದನ್ನು ಈಗಲೂ ಆನ್ ಮಾಡಬಹುದು.';
+
+  @override
+  String get audioLanguage => 'ಆಡಿಯೋ ಭಾಷೆ';
+
+  @override
+  String get audioLanguageAuto => 'ಸ್ವಯಂ';
+
+  @override
+  String get audioLanguageAutoDetail =>
+      'ವೀಡಿಯೊ ಅದರ ಮೂಲವು ಆಯ್ಕೆ ಮಾಡುವ ಆಡಿಯೋದೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ.';
+
+  @override
+  String get networkBuffer => 'ನೆಟ್‌ವರ್ಕ್ ಬಫರ್';
+
+  @override
+  String get networkBufferSubtitle =>
+      'ಸ್ಟ್ರೀಮ್‌ನ ಎಷ್ಟು ಭಾಗವನ್ನು ಮೆಮೊರಿಯಲ್ಲಿ ಇರಿಸಬೇಕು. ದೊಡ್ಡ ಬಫರ್ ಸೀಕ್ ಅನ್ನು ಸುಗಮಗೊಳಿಸುತ್ತದೆ ಮತ್ತು ದುರ್ಬಲ ಸಂಪರ್ಕವನ್ನು ನಿಭಾಯಿಸುತ್ತದೆ, ಆದರೆ ಹೆಚ್ಚು ಮೆಮೊರಿ ಬಳಸುತ್ತದೆ.';
+
+  @override
+  String get selectNetworkBuffer => 'ನೆಟ್‌ವರ್ಕ್ ಬಫರ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String playerGettingLinks(String plugin) {
+    return '$plugin ನಿಂದ ಲಿಂಕ್‌ಗಳನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ…';
+  }
+
+  @override
+  String get playerSourceChecking => 'ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get playerSourceOpening => 'ತೆರೆಯಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get playerSourceNotChecked => 'ಪರಿಶೀಲಿಸಿಲ್ಲ';
+
+  @override
+  String get playerReasonNoAnswer => 'ಲಿಂಕ್‌ನಿಂದ ಉತ್ತರ ಬಂದಿಲ್ಲ';
+
+  @override
+  String get playerSourceUnplayable => 'ಪ್ಲೇ ಆಗಲಿಲ್ಲ';
+
+  @override
+  String get playerSourceCannotSeek => 'ಸೀಕ್ ಆಗುವುದಿಲ್ಲ';
+
+  @override
+  String get playerSourceNotVideo => 'ವೀಡಿಯೊ ಅಲ್ಲ';
+
+  @override
+  String get nuvioPlugins => 'Nuvio plugins';
+
+  @override
+  String get nuvioSearchForStreams => 'Search for streams';
+
+  @override
+  String get nuvioChooseEpisode => 'Choose an episode';
+
+  @override
+  String nuvioScraperCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count scrapers',
+      one: '1 scraper',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stremioAddons => 'Stremio add-ons';
+
+  @override
+  String get stremioSearchAddons => 'Search Stremio add-ons';
+
+  @override
+  String stremioSearchAddonsForEpisode(int season, int episode) {
+    return 'Search add-ons: S$season E$episode';
+  }
+
+  @override
+  String stremioAddonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count add-ons',
+      one: '1 add-on',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get addonSourcesSearchTooltip => 'Search links';
+
+  @override
+  String get addonSourcesCloseSearchTooltip => 'Close search';
+
+  @override
+  String get addonSourcesSearchHint => 'Add-on, provider, quality…';
+
+  @override
+  String get addonSourcesNoMatchFilter =>
+      'No links match. Clear search or try \"All\".';
+
+  @override
+  String get addonManageSearchHint => 'Search installed add-ons…';
+
+  @override
+  String addonManageNoMatch(String query) {
+    return 'No installed add-on matches \"$query\".';
+  }
+
+  @override
+  String get cloudStream => 'CloudStream';
+
+  @override
+  String get searchTagSkyStream => 'SkyStream';
+
+  @override
+  String get searchTagStremio => 'Stremio';
+
+  @override
+  String get searchTagNuvio => 'Nuvio';
+
+  @override
+  String get searchNuvioSeriesFailed =>
+      'ಈ ಸರಣಿಯ ಸಂಚಿಕೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ';
+
+  @override
+  String get cloudStreamExtensions => 'CloudStream ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು';
+
+  @override
+  String get cloudStreamExtensionsSubtitle =>
+      'CloudStream (.cs3) ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ';
+
+  @override
+  String get cloudStreamOn =>
+      'ಸ್ಥಾಪಿಸಿದ ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳ ಪ್ರೊವೈಡರ್‌ಗಳು ಹೋಮ್, ಹುಡುಕಾಟ ಮತ್ತು ಪ್ರೊವೈಡರ್ ಪಟ್ಟಿಯಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.';
+
+  @override
+  String get cloudStreamOff =>
+      'ಆಫ್: ಯಾವುದೇ CloudStream ಎಕ್ಸ್‌ಟೆನ್ಶನ್ ಲೋಡ್ ಆಗುವುದಿಲ್ಲ, ಮತ್ತು ಅವುಗಳ ಪ್ರೊವೈಡರ್‌ಗಳು ಎಲ್ಲೆಡೆ ಮರೆಯಾಗುತ್ತವೆ. ಏನನ್ನೂ ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲಾಗುವುದಿಲ್ಲ.';
+
+  @override
+  String get cloudStreamCheckUpdates => 'ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ';
+
+  @override
+  String cloudStreamCheckUpdatesCount(int count) {
+    return 'ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ($count)';
+  }
+
+  @override
+  String get cloudStreamChecking => 'ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get cloudStreamAddRepositoryTitle => 'CloudStream ರೆಪೊಸಿಟರಿ ಸೇರಿಸಿ';
+
+  @override
+  String get cloudStreamAddRepositoryMessage =>
+      'ರೆಪೊಸಿಟರಿ URL (repo.json), ಪ್ಲಗಿನ್ ಪಟ್ಟಿ URL (plugins.json) ಅಥವಾ cloudstreamrepo:// ಲಿಂಕ್ ಅಂಟಿಸಿ, ಅಥವಾ megarepo ನಂತಹ ಶಾರ್ಟ್‌ಕೋಡ್ ನಮೂದಿಸಿ.';
+
+  @override
+  String get cloudStreamAdd => 'ಸೇರಿಸಿ';
+
+  @override
+  String cloudStreamRepositoryAdded(int count, String name) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$name ಸೇರಿಸಲಾಗಿದೆ · $count ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು',
+      one: '$name ಸೇರಿಸಲಾಗಿದೆ · 1 ಎಕ್ಸ್‌ಟೆನ್ಶನ್',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cloudStreamCouldNotAdd(String error) {
+    return 'ರೆಪೊಸಿಟರಿ ಸೇರಿಸಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get cloudStreamUpToDate => 'ಎಲ್ಲವೂ ಅಪ್‌ಡೇಟ್ ಆಗಿದೆ';
+
+  @override
+  String cloudStreamUpdatesAvailable(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಅಪ್‌ಡೇಟ್‌ಗಳು ಲಭ್ಯವಿವೆ',
+      one: '1 ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String cloudStreamCouldNotCheck(String names) {
+    return '$names ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ';
+  }
+
+  @override
+  String cloudStreamCouldNotCheckRepository(String name, String error) {
+    return '$name ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get cloudStreamRemove => 'ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String cloudStreamCouldNotRemove(String name, String error) {
+    return '$name ತೆಗೆದುಹಾಕಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get cloudStreamNoRepositories => 'ಇನ್ನೂ ಯಾವುದೇ ರೆಪೊಸಿಟರಿಗಳಿಲ್ಲ';
+
+  @override
+  String cloudStreamRepositorySummary(int count, int installed) {
+    return '$count ಎಕ್ಸ್‌ಟೆನ್ಶನ್‌ಗಳು · $installed ಸ್ಥಾಪಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String get cloudStreamLastCheckFailed => 'ಕೊನೆಯ ಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ';
+
+  @override
+  String get cloudStreamRefreshRepository => 'ರೆಪೊಸಿಟರಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ';
+
+  @override
+  String cloudStreamProviders(String names) {
+    return 'ಪ್ರೊವೈಡರ್‌ಗಳು: $names';
+  }
+
+  @override
+  String cloudStreamCouldNotLoad(String error) {
+    return 'ಲೋಡ್ ಆಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get cloudStreamUpdate => 'ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
+
+  @override
+  String get cloudStreamUninstall => 'ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ';
+
+  @override
+  String cloudStreamInstalled(String name) {
+    return '$name ಸ್ಥಾಪಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String cloudStreamUpdated(String name) {
+    return '$name ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ';
+  }
+
+  @override
+  String cloudStreamUninstalled(String name) {
+    return '$name ತೆಗೆದುಹಾಕಲಾಗಿದೆ';
+  }
+
+  @override
+  String cloudStreamInstalledNotLoading(String name, String error) {
+    return '$name ಸ್ಥಾಪಿತವಾಗಿದೆ, ಆದರೆ ಲೋಡ್ ಆಗುತ್ತಿಲ್ಲ: $error';
+  }
+
+  @override
+  String cloudStreamFailed(String error) {
+    return 'ವಿಫಲವಾಗಿದೆ: $error';
+  }
+
+  @override
+  String get cloudStreamStatusDown => 'ಸ್ಥಗಿತ';
+
+  @override
+  String get cloudStreamStatusSlow => 'ನಿಧಾನ';
+
+  @override
+  String get cloudStreamStatusBeta => 'ಬೀಟಾ';
+
+  @override
+  String get clearanceVerify => 'ಪರಿಶೀಲಿಸಿ';
+
+  @override
+  String checksCheckingAll(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…',
+      one: '1 ಸೈಟ್ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String checksNeedYou(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಸೈಟ್‌ಗಳಿಗೆ ನಿಮ್ಮ ಅಗತ್ಯವಿದೆ',
+      one: '1 ಸೈಟ್‌ಗೆ ನಿಮ್ಮ ಅಗತ್ಯವಿದೆ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String checksCleared(int count) {
+    return '$count ತೇರ್ಗಡೆ';
+  }
+
+  @override
+  String checksChecking(int count) {
+    return '$count ಪರಿಶೀಲನೆಯಲ್ಲಿ';
+  }
+
+  @override
+  String checksFailed(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ',
+      one: '1 ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String checksOpening(String site) {
+    return '$site ನ ಪರಿಶೀಲನೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ…';
+  }
+
+  @override
+  String get checksVerifyAll => 'ಎಲ್ಲವನ್ನೂ ಪರಿಶೀಲಿಸಿ';
+
+  @override
+  String get checksShow => 'ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ';
+
+  @override
+  String get checksHide => 'ಸೈಟ್‌ಗಳನ್ನು ಮರೆಮಾಡಿ';
+
+  @override
+  String checkStateChecking(int seconds) {
+    return 'ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ… $seconds ಸೆಕೆಂಡ್';
+  }
+
+  @override
+  String get checkStateNeedsYou => 'ನಿಮ್ಮಿಂದ ಒಂದು ಸಣ್ಣ ಪರಿಶೀಲನೆ ಬೇಕು';
+
+  @override
+  String checkStateOpening(int seconds) {
+    return 'ಪರಿಶೀಲನೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ… $seconds ಸೆಕೆಂಡ್';
+  }
+
+  @override
+  String get checkStateCleared => 'ತೇರ್ಗಡೆಯಾಗಿದೆ';
+
+  @override
+  String get checkStateSearchingAgain =>
+      'ತೇರ್ಗಡೆಯಾಗಿದೆ · ಮತ್ತೆ ಹುಡುಕಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get checkStateUnreachable => 'ಸೈಟ್ ತಲುಪಲಾಗಲಿಲ್ಲ';
+
+  @override
+  String get checkStateBlocked => 'ಸೈಟ್ ತಡೆದಿದೆ; VPN ಇಲ್ಲದೆ ಪ್ರಯತ್ನಿಸಿ';
+
+  @override
+  String checkStateSentElsewhere(String host) {
+    return 'ಬ್ರೌಸರ್ ಅನ್ನು $host ಗೆ ಕಳುಹಿಸುತ್ತದೆ; ವಿಸ್ತರಣೆಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕಾಗಬಹುದು';
+  }
+
+  @override
+  String get checkStateStillNotCleared => 'ಇನ್ನೂ ತೇರ್ಗಡೆಯಾಗಿಲ್ಲ';
+
+  @override
+  String get checkStateOutdated =>
+      'ಈ ಸೈಟ್‌ನ ಪರಿಶೀಲನೆ ಪೂರ್ಣಗೊಳಿಸಲು Android System WebView ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
+
+  @override
+  String get checkStateTooOld =>
+      'ಈ ಸಾಧನದ ಬ್ರೌಸರ್ ಈ ಸೈಟ್‌ನ ಪರಿಶೀಲನೆಗೆ ತುಂಬಾ ಹಳೆಯದು';
+
+  @override
+  String get checkStateIneffective =>
+      'ಪರಿಶೀಲನೆ ಪೂರ್ಣವಾಯಿತು, ಆದರೆ ಈ ಸೈಟ್ ಇನ್ನೂ SkyStream ಅನ್ನು ನಿರಾಕರಿಸುತ್ತಿದೆ. ಕೆಲವು ನಿಮಿಷಗಳಲ್ಲಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತದೆ.';
+
+  @override
+  String get checkStateKeepsAsking =>
+      'ಈ ಸೈಟ್ ಪದೇ ಪದೇ ಪರಿಶೀಲನೆ ಕೇಳುತ್ತಿದೆ. ನಂತರ ಅಥವಾ VPN ಇಲ್ಲದೆ ಪ್ರಯತ್ನಿಸಿ.';
+
+  @override
+  String get checkUpdateWebView => 'ಅಪ್‌ಡೇಟ್ ಮಾಡಿ';
+
+  @override
+  String get checkAskAgain => 'ಮತ್ತೆ ಕೇಳಿ';
+
+  @override
+  String get checkQuietNote => 'ತಾನಾಗಿ ತೆರೆಯುವುದಿಲ್ಲ';
+
+  @override
+  String checkMovedFrom(String site) {
+    return 'ಹಿಂದೆ $site ನಲ್ಲಿತ್ತು';
+  }
+
+  @override
+  String get checkCloudStreamExtension => 'ಒಂದು CloudStream ವಿಸ್ತರಣೆ';
+
+  @override
+  String checkLineChecking(String site, int seconds) {
+    return '$site ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ… $seconds ಸೆಕೆಂಡ್';
+  }
+
+  @override
+  String checkLineNeedsYou(String site) {
+    return '$site ಗೆ ಒಂದು ಸಣ್ಣ ಪರಿಶೀಲನೆ ಬೇಕು';
+  }
+
+  @override
+  String get extensionSheetCantShow =>
+      'ಈ ಭಾಗವನ್ನು ಇನ್ನೂ SkyStream ನಲ್ಲಿ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ.';
+
+  @override
+  String get extensionSheetClose => 'ಮುಚ್ಚಿ';
+
+  @override
+  String get extensionSheetForceClose => 'ಬಲವಂತವಾಗಿ ಮುಚ್ಚಿ';
+
+  @override
+  String get extensionSheetMore => 'ಇನ್ನಷ್ಟು';
+
+  @override
+  String extensionSheetError(String error) {
+    return 'ವಿಸ್ತರಣೆ ಇದನ್ನು ಸ್ವೀಕರಿಸಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get extensionCopied => 'ನಕಲಿಸಲಾಗಿದೆ';
+
+  @override
+  String get extensionOpenLink => 'ಲಿಂಕ್ ತೆರೆಯಿರಿ';
+
+  @override
+  String get cloudStreamSettings => 'ಸೆಟ್ಟಿಂಗ್‌ಗಳು';
+
+  @override
+  String get cloudStreamSettingsApplying =>
+      'ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String cloudStreamSettingsApplied(String name) {
+    return '$name ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅನ್ವಯಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String cloudStreamSettingsFailed(String name, String error) {
+    return '$name ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String cloudStreamSettingsApplyFailed(String name, String error) {
+    return '$name ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ, ಆದರೆ ಅದು ಮರುಲೋಡ್ ಆಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String get cloudStreamSupport => 'ಬೆಂಬಲ';
+
+  @override
+  String cloudStreamSupportFailed(String name, String error) {
+    return '$name ಸಂದೇಶಗಳನ್ನು ತೆರೆಯಲಾಗಲಿಲ್ಲ: $error';
+  }
+
+  @override
+  String cloudStreamSettingsStopped(String name, String error) {
+    return '$name ಸೆಟ್ಟಿಂಗ್‌ಗಳು ನಿಂತುಹೋದವು: $error';
+  }
+
+  @override
+  String get swipeAgainToBoost => '100% ಮೀರಿ ಹೋಗಲು ಮತ್ತೆ ಮೇಲಕ್ಕೆ ಸ್ವೈಪ್ ಮಾಡಿ';
+
+  @override
+  String get showStatusOngoing => 'ಪ್ರಸಾರವಾಗುತ್ತಿದೆ';
+
+  @override
+  String get showStatusCompleted => 'ಪೂರ್ಣಗೊಂಡಿದೆ';
+
+  @override
+  String get comingSoon => 'ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ';
+
+  @override
+  String episodeAirsOn(String date) {
+    return '$date ರಂದು ಪ್ರಸಾರ';
+  }
+
+  @override
+  String seasonNumberAndName(Object number, String name) {
+    return 'ಸೀಸನ್ $number: $name';
+  }
+
+  @override
+  String castLine(String names) {
+    return 'ಪಾತ್ರವರ್ಗ: $names';
+  }
+
+  @override
+  String get actorRoleMain => 'ಮುಖ್ಯ';
+
+  @override
+  String get actorRoleSupporting => 'ಪೋಷಕ';
+
+  @override
+  String get actorRoleBackground => 'ಗೌಣ';
+
+  @override
+  String get playerQuality => 'ಗುಣಮಟ್ಟ';
+
+  @override
+  String get playerQualityAuto => 'ಸ್ವಯಂ';
+
+  @override
+  String playerQualityAutoPlaying(String height) {
+    return 'ಸ್ವಯಂ · $height';
+  }
+
+  @override
+  String get networkBufferAuto => 'ಸ್ವಯಂ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)';
+
+  @override
+  String get networkBufferAutoHint =>
+      'ಪ್ರತಿ ವೀಡಿಯೊಗೆ ಅದರ ಬಿಟ್‌ರೇಟ್ ಮತ್ತು ಈ ಸಾಧನದ ಮೆಮೊರಿಗೆ ತಕ್ಕಂತೆ ಗಾತ್ರ ನಿರ್ಧರಿಸಲಾಗುತ್ತದೆ.';
+
+  @override
+  String get devQoeLog => 'QoE ಲಾಗ್';
+
+  @override
+  String get devQoeLogSubtitle =>
+      'ಪ್ಲೇಬ್ಯಾಕ್ ಸಮಯಗಳನ್ನು ಆ್ಯಪ್ ಲಾಗ್‌ಗೆ ಬರೆಯುತ್ತದೆ';
+
+  @override
+  String get playerGoLive => 'ಲೈವ್‌ಗೆ ಹೋಗಿ';
+
+  @override
+  String playerBehindLive(String time) {
+    return 'ಲೈವ್‌ಗಿಂತ $time ಹಿಂದೆ';
+  }
+}

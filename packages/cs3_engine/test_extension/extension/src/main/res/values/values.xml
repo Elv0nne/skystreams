@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The engine's resource tests: one value of each kind extensions read. -->
+<resources>
+    <color name="accent">#FF336699</color>
+    <dimen name="gap">16dp</dimen>
+    <bool name="flag">true</bool>
+    <integer name="count">7</integer>
+</resources>

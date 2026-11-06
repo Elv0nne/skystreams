@@ -1,0 +1,6 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+
+// OpenJDKRuntime (cs3_engine) ships an arm64-only simulator slice; Generated.xcconfig
+// would otherwise put x86_64 back.
+EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386 x86_64

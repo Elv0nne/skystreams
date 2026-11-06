@@ -1,0 +1,155 @@
+# Ayu's games in a release build (R8 on), through the UI, which `flutter test` cannot run (Phase 7c's matrix): add Ayu's
+# repository, install 2048 and Super Mario, and play each from its title page, found through Search.
+# - 2048 opens full screen, takes a swipe, and closes on Back.
+# - Super Mario opens full screen (landscape), starts, and saves and closes on two Backs. Played again, it offers
+#   "RESUME SAVE", which resumes it, and two Backs close it again.
+# After each game its title page shows again, with no "No streams found".
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/extension_games_release.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Settings is the last of five.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/errorcode26/Ayu-CloudStream-Games/builds/repo.json"
+- tapOn: "Add"
+- extendedWaitUntil:
+    visible: "Ayu CloudStream Games.*"
+    timeout: 60000
+- tapOn: "Ayu CloudStream Games.*"
+# In the list's order, scrolling down, slowly and settling before each look: the list's accessibility view lags the
+# screen while it moves, and a quick scroll goes past a row unseen.
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-Game2048"
+    direction: DOWN
+    centerElement: true
+    speed: 20
+    visibilityPercentage: 50
+    waitToSettleTimeoutMs: 1500
+    timeout: 90000
+- tapOn:
+    id: "cs3-install-Game2048"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-uninstall-Game2048"
+    timeout: 180000
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-SuperMario"
+    direction: DOWN
+    centerElement: true
+    speed: 20
+    visibilityPercentage: 50
+    waitToSettleTimeoutMs: 1500
+    timeout: 90000
+- tapOn:
+    id: "cs3-install-SuperMario"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-uninstall-SuperMario"
+    timeout: 180000
+- takeScreenshot: games-installed
+- back
+# Search is the second item of the bottom bar.
+- tapOn:
+    point: "32%,92%"
+- tapOn: "Search movies, series.*"
+- inputText: "2048"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: "2048 \\(Classic Puzz.*"
+    timeout: 60000
+- tapOn: "2048 \\(Classic Puzz.*"
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 60000
+- tapOn: "(Play|Resume)( E[0-9]+)?"
+# 2048's own page, in its full-screen window.
+- extendedWaitUntil:
+    visible: "NEW GAME"
+    timeout: 60000
+- swipe:
+    start: "80%,60%"
+    end: "20%,60%"
+    duration: 300
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: game2048
+- back
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 30000
+- assertNotVisible: "No streams found.*"
+- back
+# The search field, at the top.
+- tapOn:
+    point: "40%,8%"
+- eraseText: 10
+- inputText: "Mario"
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: "Super Mario Bros.*"
+    timeout: 60000
+- tapOn:
+    text: "Super Mario Bros.*"
+    index: 0
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 60000
+- tapOn: "(Play|Resume)( E[0-9]+)?"
+# Super Mario's own page: START GAME, then 15 s of play. Chromium builds the page's accessibility tree only after its
+# first touch here, so START GAME is pressed where it shows: the middle of the screen, a little below centre.
+- extendedWaitUntil:
+    visible: "Super Mario Bros\\. \\(1985\\)"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    point: "50%,55%"
+- waitForAnimationToEnd:
+    timeout: 15000
+- takeScreenshot: supermario-playing
+# Back twice within its 2.5 s saves the game and closes it.
+- back
+- waitForAnimationToEnd:
+    timeout: 1000
+- back
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 30000
+- assertNotVisible: "No streams found.*"
+- tapOn: "(Play|Resume)( E[0-9]+)?"
+- extendedWaitUntil:
+    visible:
+      id: "btn-resume"
+    timeout: 60000
+- assertVisible: "SAVED JOURNEY READY"
+- takeScreenshot: supermario-resume-offered
+- tapOn:
+    id: "btn-resume"
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: supermario-resumed
+- back
+- waitForAnimationToEnd:
+    timeout: 1000
+- back
+- extendedWaitUntil:
+    visible: "(Play|Resume)( E[0-9]+)?"
+    timeout: 30000
+- assertNotVisible: "No streams found.*"

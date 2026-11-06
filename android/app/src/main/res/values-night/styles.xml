@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MaterialComponents (an AppCompat theme): the activity is an AppCompatActivity, which CloudStream
+         extensions cast their context to, and their settings screens are Material bottom sheets, which
+         refuse AppCompat's own themes. Flutter draws everything on screen, so the look doesn't change. -->
+    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+    <style name="LaunchTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             the Flutter engine draws its first frame -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+        <!-- Must match values/styles.xml. Without it a notched or punch-hole
+             phone letterboxes fullscreen video away from the cutout in dark
+             mode and not in light mode - the same handset, the same film, two
+             different pictures depending on a theme setting. -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <!-- No system focus ring around the Flutter view. Android draws one on
+             whatever view holds focus once a key has been pressed - on a
+             television, always - and here that view is the whole app: a
+             coloured band round the edge of the screen that no tap cleared.
+             SkyStream draws its own indicators, and only for a remote or a
+             keyboard (lib/shared/focus/app_focus.dart). Ignored below API 26,
+             where there is no such ring. -->
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+    </style>
+</resources>

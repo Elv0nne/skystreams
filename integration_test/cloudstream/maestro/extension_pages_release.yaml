@@ -1,0 +1,60 @@
+# A real extension's page in a release build (R8 on), through the UI, which `flutter test` cannot run: add the raghav
+# repository, install AnimeWorldIndia, open its settings in SkyStream's sheet, and tap Bypass Cloudflare: its alert
+# shows in the sheet with its own WebView in it (lent by the cs3_engine plugin), its buttons in view below the page.
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/extension_pages_release.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Settings is the last of five.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/KSHITIJ8473/raghav/builds/repo.json"
+- tapOn: "Add"
+- extendedWaitUntil:
+    visible: "raghav repo.*"
+    timeout: 60000
+- tapOn: "raghav repo.*"
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-AnimeWorldIndia"
+    direction: DOWN
+    centerElement: true
+    timeout: 60000
+- tapOn:
+    id: "cs3-install-AnimeWorldIndia"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-settings-AnimeWorldIndia"
+    timeout: 180000
+- tapOn:
+    id: "cs3-settings-AnimeWorldIndia"
+- extendedWaitUntil:
+    visible: "Bypass Cloudflare"
+    timeout: 30000
+- tapOn: "Bypass Cloudflare"
+- extendedWaitUntil:
+    visible: "Solve the CAPTCHA.*"
+    timeout: 30000
+# The page loads for a while: the screenshot shows it in the sheet.
+- waitForAnimationToEnd:
+    timeout: 15000
+- takeScreenshot: animeworldindia-page
+# Done waits for a clearance the extension checks for; Cancel closes the alert, page and all.
+- tapOn: "Cancel"
+- extendedWaitUntil:
+    notVisible: "Solve the CAPTCHA.*"
+    timeout: 10000

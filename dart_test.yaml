@@ -1,0 +1,17 @@
+# Tests tagged `live` reach out to third-party Stremio add-on hosts over the
+# network. They are excluded from the default run so `flutter test` stays
+# hermetic and does not fail when someone else's server is down.
+#
+#   flutter test                                 -> skips them
+#   flutter test --run-skipped --tags live       -> runs them
+# Tests tagged `golden` draw pictures of a layout for review by eye. Text in
+# them renders in the test font, so a pixel diff would fail for reasons that
+# have nothing to do with the layout - they are a drawing tool, not a gate.
+#
+#   flutter test                                 -> skips them
+#   flutter test --run-skipped --tags golden --update-goldens   -> redraws them
+tags:
+  live:
+    skip: "Hits live third-party add-on hosts; run with --run-skipped --tags live"
+  golden:
+    skip: "Draws layout pictures; run with --run-skipped --tags golden --update-goldens"

@@ -1,0 +1,541 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:skystream/core/addons/data/addon_stream_service.dart';
+import 'package:skystream/core/addons/data/debrid_service.dart';
+import 'package:skystream/core/addons/models/addon_manifest.dart';
+import 'package:skystream/core/addons/models/addon_stream_source.dart';
+
+void main() {
+  group('AddonTransport', () {
+    test('normalises the shapes users actually paste', () {
+      expect(
+        AddonTransport.normalizeManifestUrl('torrentio.strem.fun'),
+        'https://torrentio.strem.fun/manifest.json',
+      );
+      expect(
+        AddonTransport.normalizeManifestUrl(
+          'stremio://v3-cinemeta.strem.io/manifest.json',
+        ),
+        'https://v3-cinemeta.strem.io/manifest.json',
+      );
+      expect(
+        AddonTransport.normalizeManifestUrl(
+          'https://example.com/config/manifest.json/',
+        ),
+        'https://example.com/config/manifest.json',
+      );
+      expect(
+        AddonTransport.normalizeManifestUrl('https://example.com/x#frag'),
+        'https://example.com/x/manifest.json',
+      );
+    });
+
+    test('keeps the configuration query string', () {
+      const url = 'https://torrentio.strem.fun/manifest.json?providers=yts';
+      expect(AddonTransport.normalizeManifestUrl(url), url);
+      expect(AddonTransport.baseUrl(url), 'https://torrentio.strem.fun');
+
+      final resource = AddonTransport.resourceUrl(
+        url,
+        resource: 'stream',
+        type: 'series',
+        id: 'tt0944947:1:5',
+      );
+      expect(
+        resource,
+        'https://torrentio.strem.fun/stream/series/tt0944947%3A1%3A5.json'
+        '?providers=yts',
+      );
+    });
+
+    test('appends extra props as a path segment before .json', () {
+      final url = AddonTransport.resourceUrl(
+        'https://v3-cinemeta.strem.io/manifest.json',
+        resource: 'catalog',
+        type: 'movie',
+        id: 'top',
+        extra: {'skip': '100', 'genre': 'Action'},
+      );
+      expect(
+        url,
+        'https://v3-cinemeta.strem.io/catalog/movie/top/skip=100&genre=Action.json',
+      );
+    });
+  });
+
+  group('AddonManifest', () {
+    final manifest = AddonManifest.fromJson(const {
+      'id': 'com.example.addon',
+      'name': 'Example',
+      'version': '1.0.0',
+      'types': ['movie', 'series'],
+      'idPrefixes': ['tt'],
+      'resources': [
+        'catalog',
+        {
+          'name': 'stream',
+          'types': ['movie'],
+        },
+      ],
+      'catalogs': [
+        {
+          'type': 'movie',
+          'id': 'top',
+          'name': 'Popular',
+          'extra': [
+            {'name': 'search', 'isRequired': false},
+            {'name': 'skip'},
+          ],
+        },
+        {
+          'type': 'series',
+          'id': 'search-only',
+          'extra': [
+            {'name': 'search', 'isRequired': true},
+          ],
+        },
+      ],
+    });
+
+    test('parses string and object resources, inheriting defaults', () {
+      expect(manifest.hasResource('catalog'), isTrue);
+      expect(manifest.hasResource('stream'), isTrue);
+      // String resource inherits the manifest-level types/prefixes…
+      expect(manifest.resource('catalog')!.types, ['movie', 'series']);
+      expect(manifest.resource('catalog')!.idPrefixes, ['tt']);
+      // …object resource keeps its own narrowing.
+      expect(manifest.resource('stream')!.types, ['movie']);
+    });
+
+    test('resource types narrow first, manifest types are the fallback', () {
+      expect(manifest.requestTypesFor('catalog', 'series'), contains('series'));
+      expect(manifest.requestTypesFor('stream', 'movie'), contains('movie'));
+      // The stream resource is movie-only, but the manifest still claims
+      // series, so we fall back to it rather than skipping the add-on.
+      expect(manifest.requestTypesFor('stream', 'series'), contains('series'));
+    });
+
+    test('a resource that narrows against a silent manifest is respected', () {
+      final narrow = AddonManifest.fromJson(const {
+        'id': 'n',
+        'name': 'N',
+        'version': '1',
+        'resources': [
+          {
+            'name': 'stream',
+            'types': ['movie'],
+          },
+        ],
+      });
+      expect(narrow.requestTypesFor('stream', 'movie'), ['movie']);
+      expect(narrow.requestTypesFor('stream', 'series'), isEmpty);
+    });
+
+    test('an add-on that declares no types is still asked', () {
+      final loose = AddonManifest.fromJson(const {
+        'id': 'x',
+        'name': 'X',
+        'version': '1',
+        'resources': ['stream'],
+      });
+      expect(loose.requestTypesFor('stream', 'series'), ['series']);
+      expect(loose.supportsId('stream', 'kitsu:42'), isTrue);
+    });
+
+    // CNCVerse catalogs are typed `other`. Asking only movie/series yields
+    // empty /stream answers — `other` must lead the alias list.
+    test('other is asked first, then movie/series fallbacks', () {
+      final bridge = AddonManifest.fromJson(const {
+        'id': 'cnc',
+        'name': 'CNCVerse',
+        'version': '1',
+        'types': ['movie', 'series', 'other', 'tv'],
+        'resources': [
+          {
+            'name': 'stream',
+            'types': ['movie', 'series', 'other', 'tv'],
+          },
+        ],
+      });
+      expect(bridge.requestTypesFor('stream', 'other').first, 'other');
+      expect(bridge.requestTypesFor('stream', 'other'), contains('movie'));
+      expect(AddonManifest.typeAliases('other').first, 'other');
+    });
+
+    test('idPrefixes gate matches prefix and prefix:', () {
+      expect(manifest.supportsId('stream', 'tt0111161'), isTrue);
+      expect(manifest.supportsId('stream', 'kitsu:42'), isFalse);
+
+      final tmdbAddon = AddonManifest.fromJson(const {
+        'id': 'y',
+        'name': 'Y',
+        'version': '1',
+        'idPrefixes': ['tmdb'],
+        'resources': ['stream'],
+      });
+      expect(tmdbAddon.supportsId('stream', 'tmdb:1234'), isTrue);
+    });
+
+    test('search-only catalogs are not browsable rows', () {
+      expect(manifest.catalogs.first.requiresSearch, isFalse);
+      expect(manifest.catalogs.first.supportsSearch, isTrue);
+      expect(manifest.catalogs.last.requiresSearch, isTrue);
+    });
+  });
+
+  group('AddonStreamRequest id candidates', () {
+    test('movie: add-on id first, then IMDb, then tmdb', () {
+      const request = AddonStreamRequest(
+        type: 'movie',
+        contentId: 'kitsu:42',
+        imdbId: 'tt0111161',
+        tmdbId: 278,
+      );
+      expect(request.idCandidates, ['kitsu:42', 'tt0111161', 'tmdb:278']);
+    });
+
+    test('episode: the meta video id wins, then base:S:E, then fallbacks', () {
+      const request = AddonStreamRequest(
+        type: 'series',
+        contentId: 'tt0944947',
+        videoId: 'tt0944947:1:5',
+        season: 1,
+        episode: 5,
+        tmdbId: 1399,
+      );
+      expect(request.idCandidates, ['tt0944947:1:5', 'tmdb:1399:1:5']);
+    });
+
+    test('non-IMDb series still gets an IMDb episode candidate', () {
+      const request = AddonStreamRequest(
+        type: 'series',
+        contentId: 'kitsu:1376',
+        season: 2,
+        episode: 3,
+        imdbId: 'tt2560140',
+      );
+      expect(request.idCandidates, ['kitsu:2:3', 'tt2560140:2:3']);
+    });
+  });
+
+  group('AddonStreamSource', () {
+    AddonStreamSource parse(Map<String, dynamic> json) =>
+        AddonStreamSource.fromJson(json, addonId: 'a', addonName: 'Addon');
+
+    test('reads direct links, including those hidden in behaviorHints', () {
+      final stream = parse(const {
+        'name': 'Server 1',
+        'behaviorHints': {'directUrl': 'https://cdn.example/movie.mp4'},
+      });
+      expect(stream.kind, AddonStreamKind.direct);
+      expect(stream.url, 'https://cdn.example/movie.mp4');
+    });
+
+    test('upgrades protocol-relative urls', () {
+      final stream = parse(const {'url': '//cdn.example/a.mp4'});
+      expect(stream.url, 'https://cdn.example/a.mp4');
+    });
+
+    test('builds a magnet with the add-on trackers', () {
+      final stream = parse(const {
+        'infoHash': 'ABC123',
+        'fileIdx': 2,
+        'sources': ['tracker:udp://tracker.one:80', 'dht:abc123'],
+        'behaviorHints': {'filename': 'Movie.2019.mkv'},
+      });
+      expect(stream.kind, AddonStreamKind.torrent);
+      expect(stream.infoHash, 'abc123');
+      expect(stream.fileIdx, 2);
+      expect(stream.magnetUri, contains('magnet:?xt=urn:btih:abc123'));
+      expect(stream.magnetUri, contains('tracker.one'));
+      expect(stream.magnetUri, isNot(contains('dht:')));
+      // The episode a season pack's row was for (BEP 53's select-only).
+      expect(stream.magnetUri, contains('&so=2'));
+    });
+
+    test('parses quality, HDR, size and seeders from free text', () {
+      final stream = parse(const {
+        'name': 'Torrentio 1080p',
+        'title': 'Movie.2019.1080p.HDR.WEB-DL 👤 42 💾 2.4 GB',
+        'infoHash': 'deadbeef',
+      });
+      expect(stream.qualityScore, 1080);
+      expect(stream.qualityLabel, '1080p');
+      expect(stream.isHdr, isTrue);
+      expect(stream.seeders, 42);
+      expect(stream.sizeLabel, isNotNull);
+    });
+
+    test('videoSize hint wins over parsed text', () {
+      final stream = parse(const {
+        'url': 'https://x/y.mkv',
+        'title': '💾 1.0 GB',
+        'behaviorHints': {'videoSize': 5368709120},
+      });
+      expect(stream.sizeBytes, 5368709120);
+    });
+
+    test('ranking puts resolution first and buries CAM rips', () {
+      final direct1080 = parse(const {
+        'url': 'https://x/a.mkv',
+        'title': '1080p WEB-DL',
+      });
+      final torrent4k = parse(const {
+        'infoHash': 'aa',
+        'title': '2160p BluRay',
+      });
+      final direct720 = parse(const {
+        'url': 'https://x/b.mkv',
+        'title': '720p WEB',
+      });
+      final cachedDebrid4k = parse(const {
+        'url': 'https://x/c.mkv',
+        'name': '[RD+] 4K',
+        'title': '2160p',
+      });
+      final cam = parse(const {'url': 'https://x/cam.mkv', 'title': 'CAM'});
+
+      // Torrents are first-class: a 4K torrent outranks a 1080p direct link.
+      expect(torrent4k.score, greaterThan(direct1080.score));
+      // …but at equal resolution the instantly playable link wins.
+      expect(cachedDebrid4k.score, greaterThan(torrent4k.score));
+      expect(direct1080.score, greaterThan(direct720.score));
+      expect(cam.score, lessThan(direct720.score));
+      expect(cam.score, lessThan(0));
+    });
+
+    test('dedupe keys differ per file index', () {
+      final a = parse(const {'infoHash': 'aa', 'fileIdx': 1, 'name': 'x'});
+      final b = parse(const {'infoHash': 'aa', 'fileIdx': 2, 'name': 'x'});
+      expect(a.dedupeKey, isNot(b.dedupeKey));
+    });
+
+    test('proxy headers are read from behaviorHints', () {
+      final stream = parse(const {
+        'url': 'https://x/a.mkv',
+        'behaviorHints': {
+          'proxyHeaders': {
+            'request': {'Referer': 'https://site'},
+          },
+        },
+      });
+      expect(stream.proxyHeaders, {'Referer': 'https://site'});
+    });
+
+    // Multi-provider bridges (CNCVerse, MovieBox aggregators) put the real
+    // source in `name`. The row must show "Add-on · Provider" and still
+    // surface a resolution badge when the free text only says "1080".
+    test('provider chip and bare resolution for multi-provider bridges', () {
+      final movieBox = AddonStreamSource.fromJson(const {
+        'name': 'MovieBox\n1080p WEB-DL',
+        'title': 'Waiting Hai',
+        'url': 'https://cdn.example/a.mp4',
+      }, addonId: 'cnc', addonName: 'CNCVerse Bridge');
+      expect(movieBox.providerName, 'MovieBox');
+      expect(movieBox.headline, 'CNCVerse Bridge · MovieBox');
+      expect(movieBox.qualityLabel, '1080p');
+
+      final bracket = AddonStreamSource.fromJson(const {
+        'name': '[VegaMovies] 4K',
+        'url': 'https://cdn.example/b.mp4',
+      }, addonId: 'cnc', addonName: 'CNCVerse Bridge');
+      expect(bracket.providerName, 'VegaMovies');
+      expect(bracket.qualityLabel, '4K');
+
+      final bare = AddonStreamSource.fromJson(const {
+        'name': 'MoviesDrive 1080',
+        'url': 'https://cdn.example/c.mp4',
+      }, addonId: 'cnc', addonName: 'CNCVerse Bridge');
+      expect(bare.providerName, 'MoviesDrive');
+      expect(bare.qualityScore, 1080);
+      expect(bare.qualityLabel, '1080p');
+
+      // A pure quality name is NOT a provider — headline stays the add-on.
+      final qualityOnly = AddonStreamSource.fromJson(const {
+        'name': '1080p',
+        'url': 'https://cdn.example/d.mp4',
+      }, addonId: 't', addonName: 'Torrentio');
+      expect(qualityOnly.providerName, isNull);
+      expect(qualityOnly.headline, 'Torrentio');
+      expect(qualityOnly.qualityLabel, '1080p');
+    });
+  });
+
+  group('AddonSubtitleTrack', () {
+    test('rejects non-http urls and prettifies languages', () {
+      expect(
+        AddonSubtitleTrack.fromJson(
+          const {'url': 'ftp://x/a.srt', 'lang': 'eng'},
+          addonName: 'A',
+          index: 0,
+        ),
+        isNull,
+      );
+
+      final track = AddonSubtitleTrack.fromJson(
+        const {'url': 'https://x/a.srt', 'lang': 'urd'},
+        addonName: 'A',
+        index: 0,
+      );
+      expect(track, isNotNull);
+      expect(track!.label, 'Urdu');
+    });
+
+    // As the OpenSubtitles add-on codes them (2026-10-11: 53 codes over 816
+    // subtitles of 13 titles), half of which showed as "Fin" or "Pob".
+    String label(String lang) =>
+        AddonSubtitleTrack(id: 'x', url: 'https://x/a.srt', lang: lang).label;
+
+    test('names every language the player knows, as the player names it', () {
+      expect(label('fin'), 'Finnish');
+      expect(label('hrv'), 'Croatian');
+      expect(label('slo'), 'Slovak');
+      expect(label('tgl'), 'Filipino');
+      expect(label('eng'), 'English');
+    });
+
+    test('and the variants the OpenSubtitles add-on files apart', () {
+      expect(label('pob'), 'Portuguese (Brazil)');
+      expect(label('spl'), 'Spanish (Latin America)');
+      expect(label('spn'), 'Spanish (Spain)');
+      expect(label('zht'), 'Chinese (Traditional)');
+      expect(label('zhe'), 'Chinese (Bilingual)');
+      // And as other add-ons tag them.
+      expect(label('pt-BR'), 'Portuguese (Brazil)');
+      expect(label('zh-TW'), 'Chinese (Traditional)');
+    });
+
+    test('shows a code it does not know as the add-on gave it', () {
+      expect(label('xyz'), 'Xyz');
+    });
+
+    // The OpenSubtitles add-on names the release a subtitle was made for,
+    // and its file; a plain Stremio subtitle names neither.
+    test('takes the release the add-on names, else its file', () {
+      AddonSubtitleTrack? read(Map<String, Object?> extra) =>
+          AddonSubtitleTrack.fromJson(
+            {'url': 'https://x/a.srt', 'lang': 'eng', ...extra},
+            addonName: 'A',
+            index: 0,
+          );
+      expect(
+        read({
+          'movieReleaseName': 'Breaking.Bad.S02E05.720p.BluRay.x264-EbP',
+          'subtitleFileName': 'Breaking.Bad.S02E05.720p.BluRay.x264-EbP.srt',
+        })!.release,
+        'Breaking.Bad.S02E05.720p.BluRay.x264-EbP',
+      );
+      expect(
+        read({'subtitleFileName': 'S02E05 Breakage.srt'})!.release,
+        'S02E05 Breakage',
+      );
+      expect(read({})!.release, isNull);
+    });
+  });
+
+  group('DebridService parsing', () {
+    test('picks the largest video file, skipping samples and extras', () {
+      final id = DebridService.pickBestFileId(const [
+        {'id': 1, 'path': '/Show/readme.txt', 'bytes': 10},
+        {'id': 2, 'path': '/Show/sample.mkv', 'bytes': 50000000},
+        {'id': 3, 'path': '/Show/S01E01.mkv', 'bytes': 900000000},
+        {'id': 4, 'path': '/Show/S01E02.mkv', 'bytes': 1900000000},
+      ]);
+      expect(id, 4);
+    });
+
+    test('honours a preferred filename from the add-on', () {
+      final id = DebridService.pickBestFileId(const [
+        {'id': 3, 'path': '/Show/S01E01.mkv', 'bytes': 900000000},
+        {'id': 4, 'path': '/Show/S01E02.mkv', 'bytes': 1900000000},
+      ], preferredFilename: 'S01E01.mkv');
+      expect(id, 3);
+    });
+
+    test('returns null when a torrent holds no video', () {
+      final id = DebridService.pickBestFileId(const [
+        {'id': 1, 'path': '/pack/notes.nfo', 'bytes': 1000},
+      ]);
+      expect(id, isNull);
+    });
+
+    test('AllDebrid: only a ready magnet yields a link, biggest wins', () {
+      expect(
+        DebridService.parseAllDebridReadyLink(const {
+          'status': 'success',
+          'data': {
+            'magnets': {
+              'status': 'Downloading',
+              'links': [
+                {'link': 'https://a', 'size': 10},
+              ],
+            },
+          },
+        }),
+        isNull,
+      );
+
+      expect(
+        DebridService.parseAllDebridReadyLink(const {
+          'status': 'success',
+          'data': {
+            'magnets': {
+              'status': 'Ready',
+              'links': [
+                {'link': 'https://small', 'size': 100, 'filename': 'a.mkv'},
+                {
+                  'link': 'https://sample',
+                  'size': 900,
+                  'filename': 'sample.mkv',
+                },
+                {'link': 'https://big', 'size': 800, 'filename': 'b.mkv'},
+              ],
+            },
+          },
+        }),
+        'https://big',
+      );
+    });
+
+    test('AllDebrid: an error payload yields nothing', () {
+      expect(
+        DebridService.parseAllDebridReadyLink(const {
+          'status': 'error',
+          'error': {'message': 'bad key'},
+        }),
+        isNull,
+      );
+    });
+
+    test('provider ids round-trip for storage', () {
+      expect(DebridProvider.fromId('real-debrid'), DebridProvider.realDebrid);
+      expect(DebridProvider.fromId('alldebrid'), DebridProvider.allDebrid);
+      expect(DebridProvider.fromId(null), DebridProvider.none);
+      expect(DebridProvider.fromId('nonsense'), DebridProvider.none);
+    });
+  });
+
+group('AddonStreamRequest id ordering', () {
+    test('opaque cnc ids put IMDb first so empty scrapers do not burn the budget', () {
+      const request = AddonStreamRequest(
+        type: 'other',
+        contentId:
+            'cnc:TXVsdGltb3ZpZXM6Omh0dHBzOi8vbXVsdGltb3ZpZXMuY2FzYS9tb3ZpZXMvZGVtb24tc2xheWVyLWtpbWV0c3Utbm8teWFpYmEtdG8tdGhlLWhhc2hpcmEtdHJhaW5pbmcv',
+        imdbId: 'tt30395619',
+        title: 'Demon Slayer: Kimetsu no Yaiba -To the Hashira Training',
+      );
+      expect(request.hasOpaqueContentId, isTrue);
+      expect(request.idCandidates.first, 'tt30395619');
+      expect(request.idCandidates, contains(request.contentId));
+    });
+
+    test('canonical IMDb content ids stay first', () {
+      const request = AddonStreamRequest(
+        type: 'movie',
+        contentId: 'tt0111161',
+        imdbId: 'tt0111161',
+      );
+      expect(request.hasOpaqueContentId, isFalse);
+      expect(request.idCandidates.first, 'tt0111161');
+    });
+  });
+}

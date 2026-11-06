@@ -1,0 +1,10 @@
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-dir: lib/l10n/generated
+
+# Every gen-l10n run drops the per-locale backlog here so the count is a number
+# somebody can act on instead of a wall of warnings scrolling past. The path is
+# under build/ because it is a report, not a source of truth - the ARB files are.
+# CI reads it in the "Translation coverage" step.
+untranslated-messages-file: build/l10n_untranslated.json

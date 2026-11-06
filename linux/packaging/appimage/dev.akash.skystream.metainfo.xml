@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The AppImage's AppStream entry. scripts/build_appimage.sh fills in
+     @VERSION@ and @DATE@. -->
+<component type="desktop-application">
+  <id>dev.akash.skystream</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <name>SkyStream</name>
+  <summary>Cross-platform media streaming client</summary>
+  <description>
+    <p>
+      SkyStream is a media streaming application inspired by CloudStream.
+      It provides no video sources by itself: install extensions to add them.
+    </p>
+    <p>
+      It runs SkyStream plugins, CloudStream extensions, Stremio add-ons and
+      Nuvio scrapers, with one search across all of them and its own player.
+    </p>
+  </description>
+  <launchable type="desktop-id">dev.akash.skystream.desktop</launchable>
+  <developer id="dev.akash">
+    <name>Akash</name>
+  </developer>
+  <url type="homepage">https://github.com/akashdh11/skystream</url>
+  <url type="bugtracker">https://github.com/akashdh11/skystream/issues</url>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@VERSION@" date="@DATE@"/>
+  </releases>
+</component>

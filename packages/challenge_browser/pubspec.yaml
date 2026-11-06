@@ -1,0 +1,37 @@
+name: challenge_browser
+description: "Runs one short-lived page in the platform's own browser engine, hidden or shown: cookies, scripts, in-page requests, request capture, and keyboard and D-pad focus."
+version: 0.1.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.4
+  flutter: '>=3.38.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  pigeon: 29.0.4
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: dev.akash.challenge_browser
+        pluginClass: ChallengeBrowserPlugin
+      ios:
+        pluginClass: ChallengeBrowserPlugin
+        sharedDarwinSource: true
+      linux:
+        pluginClass: ChallengeBrowserPlugin
+      macos:
+        pluginClass: ChallengeBrowserPlugin
+        sharedDarwinSource: true
+      windows:
+        pluginClass: ChallengeBrowserPluginCApi

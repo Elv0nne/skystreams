@@ -1,0 +1,289 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../../../../core/utils/layout_constants.dart';
+import '../../../../shared/focus/app_focus.dart';
+
+class SettingsGroup extends StatelessWidget {
+  final String title;
+  final List<Widget> children;
+
+  /// Whether the rows sit on a card of their own.
+  ///
+  /// True on the Settings page, where the card is what separates a group from
+  /// the scaffold behind it. False inside a dialog: the card fills with
+  /// [ColorScheme.surface], which the dark theme pins to pure black, so on a
+  /// dialog's own surface it reads as a black box floating in a grey panel
+  /// rather than as a group. The tiles keep their dividers either way, which
+  /// is what actually groups them.
+  final bool filled;
+
+  const SettingsGroup({
+    super.key,
+    required this.title,
+    required this.children,
+    this.filled = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: LayoutConstants.spacingMd,
+            vertical: LayoutConstants.spacingSm,
+          ),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: LayoutConstants.spacingMd,
+          ),
+          decoration: filled
+              ? BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Theme.of(context).dividerColor),
+                )
+              : null,
+          child: Column(children: children),
+        ),
+      ],
+    );
+  }
+}
+
+class SettingsTile extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+  final bool isLast;
+  final bool isBeta;
+  final FocusNode? focusNode;
+
+  const SettingsTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    this.trailing,
+    this.onTap,
+    this.isLast = false,
+    this.isBeta = false,
+    this.focusNode,
+  });
+
+  @override
+  State<SettingsTile> createState() => _SettingsTileState();
+}
+
+class _SettingsTileState extends State<SettingsTile> {
+  bool _isFocused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+    final showFocus = showFocusIndicator(context, _isFocused);
+    return Column(
+      children: [
+        Focus(
+          // Passive observer — we want the inner ListTile's InkWell to remain
+          // the actual focus target (it's what handles onTap when OK is
+          // pressed). hasFocus on this node reflects "any descendant focused"
+          // so onFocusChange still fires when the tile is reached.
+          focusNode: widget.focusNode,
+          canRequestFocus: false,
+          skipTraversal: true,
+          onFocusChange: (f) {
+            setState(() => _isFocused = f);
+            if (f) {
+              // Center the focused setting row in the viewport.
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                final ctx = FocusManager.instance.primaryFocus?.context;
+                final ro = ctx?.findRenderObject();
+                if (ctx != null && ctx.mounted && ro != null) {
+                  Scrollable.maybeOf(ctx)?.position.ensureVisible(
+                    ro,
+                    alignment: 0.5,
+                    duration: const Duration(milliseconds: 380),
+                    curve: Curves.fastOutSlowIn,
+                  );
+                }
+              });
+            }
+          },
+          child: AnimatedContainer(
+            duration: AppFocus.duration,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              // A neutral wash and a neutral ring, and only for whoever is
+              // driving the app without a pointer. What was here was a 22 %
+              // accent fill and a 2 dp accent border that stayed on screen
+              // after a tap on a phone, where nothing about the interaction
+              // called for a focus indicator at all.
+              color: AppFocus.rowTint(context, focused: showFocus),
+              border:
+                  AppFocus.border(context, focused: showFocus) ??
+                  Border.all(
+                    color: Colors.transparent,
+                    width: AppFocus.ringWidth,
+                  ),
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: ListTile(
+                focusColor: Colors.transparent,
+                hoverColor: primary.withValues(alpha: 0.10),
+                leading: Container(
+                  padding: const EdgeInsets.all(LayoutConstants.spacingXs),
+                  decoration: BoxDecoration(
+                    color: primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(widget.icon, color: primary, size: 20),
+                ),
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        widget.title,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    if (widget.isBeta) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary
+                              .withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          "BETA",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                subtitle: widget.subtitle != null
+                    ? Text(
+                        widget.subtitle!,
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                        ),
+                      )
+                    : null,
+                trailing: widget.trailing != null
+                    ? ExcludeFocus(
+                        excluding: true,
+                        child: showFocus
+                            ? SwitchTheme(
+                                data: SwitchThemeData(
+                                  thumbIcon:
+                                      WidgetStateProperty.resolveWith<Icon?>((
+                                        states,
+                                      ) {
+                                        if (states.contains(
+                                          WidgetState.selected,
+                                        )) {
+                                          return const Icon(
+                                            Icons.check_rounded,
+                                            size: 14,
+                                          );
+                                        } else {
+                                          return const Icon(
+                                            Icons.close_rounded,
+                                            size: 14,
+                                          );
+                                        }
+                                      }),
+                                ),
+                                child: widget.trailing!,
+                              )
+                            : widget.trailing!,
+                      )
+                    : const Icon(Icons.chevron_right_rounded, size: 20),
+                onTap: widget.onTap,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+          ),
+        ),
+        if (!widget.isLast && !showFocus)
+          Divider(
+            height: 1,
+            indent: 56,
+            endIndent: 16,
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.8),
+          ),
+      ],
+    );
+  }
+}
+
+/// Scrolls its child into view once, on the frame after the picker is laid
+/// out.
+///
+/// [ListTile.autofocus] gives the current value the focus but does not move a
+/// [Scrollable]. In a picker taller than its dialog — the language list is
+/// thirty-odd rows — that would focus the right row off screen and still open
+/// the list on row one, which is the bug this is here to close. A no-op when
+/// the list already fits, since there is then nothing to scroll.
+class ScrollIntoView extends StatefulWidget {
+  const ScrollIntoView({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  State<ScrollIntoView> createState() => _ScrollIntoViewState();
+}
+
+class _ScrollIntoViewState extends State<ScrollIntoView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || Scrollable.maybeOf(context) == null) return;
+      // Duration.zero jumps rather than animating: the picker should already
+      // be showing the current value on the first frame the viewer sees.
+      unawaited(
+        Scrollable.ensureVisible(
+          context,
+          alignment: 0.5,
+          duration: Duration.zero,
+        ),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}
+
+/// Wraps the one option row that matches the current value so it is scrolled
+/// into view. Pair with `autofocus: isCurrent` on the row itself.
+Widget currentOption({required bool isCurrent, required Widget child}) =>
+    isCurrent ? ScrollIntoView(child: child) : child;

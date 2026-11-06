@@ -1,0 +1,27 @@
+display_name: SkyStream
+package_name: skystream
+maintainer:
+  name: Akash
+  email: akashdh11@gmail.com
+priority: optional
+section: utils
+# fastforge reads `dependencies` (a `depends` list is ignored) and takes the
+# package's description from pubspec.yaml.
+dependencies:
+  - libgtk-3-0
+  - liblzma5
+  - libvlc5
+  - vlc-plugin-base
+  - libasound2
+  - libwebkit2gtk-4.1-0
+  - libsecret-1-0
+installed_size: 0
+icon: ios/Runner/Assets.xcassets/AppIcon.appiconset/AppIcon~ios-marketing.png
+# The window's app ID (APPLICATION_ID in linux/CMakeLists.txt), so the desktop
+# shows a running SkyStream with this entry's name and icon.
+startup_wm_class: dev.akash.skystream
+categories:
+  - Video
+  - AudioVideo
+  - Player
+generic_name: Media Player

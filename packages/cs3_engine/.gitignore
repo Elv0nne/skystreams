@@ -1,0 +1,53 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+.flutter-plugins-dependencies
+/build/
+/coverage/
+
+# The repository's root .gitignore ignores every `plugins/` folder; here that is a Kotlin package
+# (com.lagradost.cloudstream3.plugins) in the engine's sources.
+!plugins/
+
+# The engine's Gradle build.
+engine/.gradle/
+engine/.kotlin/
+
+# What the IDE's Java language server builds each Gradle module into (copies of the sources).
+engine/*/bin/
+
+# Built per platform by tool/build_runtime.dart (desktop builds bundle it); not committed.
+assets/runtime/runtime-*
+
+# The test extension's build output and Gradle state.
+test_extension/build/
+test_extension/extension/build/
+test_extension/.gradle/
+test_extension/local.properties

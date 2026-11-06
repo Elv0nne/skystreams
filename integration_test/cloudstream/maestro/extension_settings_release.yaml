@@ -1,0 +1,61 @@
+# An extension's settings screen in a release build (R8 on), through the UI, which `flutter test`
+# cannot run: add CNC's repository, install CNC Verse, open its settings in SkyStream's sheet, untick
+# its first studio, save, answer its restart alert, and see the change applied.
+#   (cd OUT_DIR && maestro test -e APP_ID=dev.akash.skystream PATH_TO/extension_settings_release.yaml)
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- runFlow:
+    when:
+      visible: "Wait"
+    commands:
+      - tapOn: "Wait"
+- waitForAnimationToEnd:
+    timeout: 10000
+# The phone layout's bottom bar is icons only: Settings is the last of five.
+- tapOn:
+    point: "85%,92%"
+- scrollUntilVisible:
+    element: "CloudStream Extensions.*"
+    direction: DOWN
+    timeout: 30000
+- tapOn: "CloudStream Extensions.*"
+- tapOn: "Add Repository"
+- inputText: "https://raw.githubusercontent.com/NivinCNC/CNCVerse-Cloud-Stream-Extension/refs/heads/builds/CNC.json"
+- tapOn: "Add"
+# The new repository shows collapsed: open it, then find CNC Verse among its extensions.
+- extendedWaitUntil:
+    visible: "CNC Repo.*"
+    timeout: 60000
+- tapOn: "CNC Repo.*"
+# Centred: at the list's foot the row is under the floating navigation bar, and a tap there would
+# open Settings instead.
+- scrollUntilVisible:
+    element:
+      id: "cs3-install-CNC Verse"
+    direction: DOWN
+    centerElement: true
+    timeout: 60000
+- tapOn:
+    id: "cs3-install-CNC Verse"
+- extendedWaitUntil:
+    visible:
+      id: "cs3-settings-CNC Verse"
+    timeout: 180000
+- tapOn:
+    id: "cs3-settings-CNC Verse"
+- extendedWaitUntil:
+    visible: "Select studios to show on home"
+    timeout: 30000
+- takeScreenshot: cnc-settings-sheet
+- tapOn: "Disney"
+- tapOn: "Save settings"
+- extendedWaitUntil:
+    visible: "Restart Required"
+    timeout: 10000
+- tapOn: "Yes"
+- extendedWaitUntil:
+    visible: "CNC Verse's settings applied"
+    timeout: 60000
+- takeScreenshot: cnc-settings-applied

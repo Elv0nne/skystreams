@@ -1,0 +1,747 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_android:
+        description: 'Build Android'
+        required: true
+        default: true
+        type: boolean
+      build_ios:
+        description: 'Build iOS'
+        required: true
+        default: true
+        type: boolean
+      build_macos:
+        description: 'Build macOS'
+        required: true
+        default: true
+        type: boolean
+      build_windows:
+        description: 'Build Windows'
+        required: true
+        default: true
+        type: boolean
+      build_linux:
+        description: 'Build Linux'
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  # Pinned for the same reason as ci.yml: an unpinned `stable` means the
+  # artifacts we ship are built by a newer SDK than the one CI gated on.
+  FLUTTER_VERSION: 3.47.7
+  # Pinned for the same reason. Chocolatey's innosetup package stopped at 6.7.1
+  # when jrsoftware moved its downloads to GitHub releases (March 2026), so the
+  # Windows job downloads the installer below from its release and checks its
+  # SHA-256 (GitHub's digest for the asset, also in jrsoftware's .issig file).
+  # The x64 edition goes to C:\Program Files\Inno Setup 7, beside the image's
+  # 6.7.1, and the build step finds it by the version in its uninstall entry.
+  # (The x86 edition's entry says "7.1.0 (32-bit)", which would not match.)
+  INNO_SETUP_VERSION: 7.1.0
+  INNO_SETUP_INSTALLER: innosetup-7.1.0-x64.exe
+  INNO_SETUP_SHA256: 0362a383ed217d4c4239b5933866dd96d3eb2102737da92f80f6057a4b40df2f
+
+jobs:
+  version:
+    name: Get Version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Extract Version from pubspec.yaml
+        id: get_version
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | cut -d ' ' -f 2 | cut -d '+' -f 1)
+          echo "version=v$VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Create Dummy Assets Dir
+        run: mkdir -p assets/plugins/
+
+  create_release:
+    name: Create Release
+    needs: version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          name: ${{ needs.version.outputs.version }}
+          bodyFile: "CHANGELOG.md"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  android:
+    name: Android Build
+    needs: [version, create_release]
+    if: ${{ github.event.inputs.build_android == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      
+      # Pin the toolchain rather than inherit whichever JDK the runner image
+      # defaults to this month - ci.yml pins 25, so the shipped build
+      # matches the merge gate.
+      - name: Set Up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          flutter gen-l10n
+          dart run build_runner build --delete-conflicting-outputs
+
+      # Remove desktop TorrServer binaries to reduce APK size by ~104 MB
+      # These are only needed for macOS, Windows, and Linux
+      - name: Strip Desktop Binaries
+        run: rm -f packages/flutter_torrent_server/assets/torrserver/TorrServer-*
+        
+      - name: Decode Keystore
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/release.jks
+          echo "storePassword=$ANDROID_STORE_PASSWORD" > android/key.properties
+          echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
+          echo "keyAlias=$ANDROID_KEY_ALIAS" >> android/key.properties
+          echo "storeFile=release.jks" >> android/key.properties
+
+      - name: Generate dart-defines file
+        shell: bash
+        run: |
+          cat > dart-defines.json << 'JSON_EOF'
+          {
+            "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY }}",
+            "SIMKL_CLIENT_ID": "${{ secrets.SIMKL_CLIENT_ID }}",
+            "SIMKL_CLIENT_SECRET": "${{ secrets.SIMKL_CLIENT_SECRET }}",
+            "SIMKL_V2_CLIENT_ID": "${{ secrets.SIMKL_V2_CLIENT_ID }}",
+            "TRAKT_CLIENT_ID": "${{ secrets.TRAKT_CLIENT_ID }}",
+            "TRAKT_CLIENT_SECRET": "${{ secrets.TRAKT_CLIENT_SECRET }}",
+            "MAL_CLIENT_ID": "${{ secrets.MAL_CLIENT_ID }}",
+            "MAL_CLIENT_SECRET": "${{ secrets.MAL_CLIENT_SECRET }}",
+            "ANILIST_CLIENT_ID": "${{ secrets.ANILIST_CLIENT_ID }}",
+            "ANIMESKIP_CLIENT_ID": "${{ secrets.ANIMESKIP_CLIENT_ID }}",
+            "OPENSUBTITLES_API_KEY": "${{ secrets.OPENSUBTITLES_API_KEY }}"
+          }
+          JSON_EOF
+
+      - name: Build Split APKs
+        run: flutter build apk --release --split-per-abi --dart-define-from-file=dart-defines.json
+
+      - name: Build Universal APK
+        run: flutter build apk --release --dart-define-from-file=dart-defines.json
+
+      - name: Build Debug APK
+        run: flutter build apk --debug --dart-define-from-file=dart-defines.json
+
+      - name: Rename APKs
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          cd build/app/outputs/flutter-apk/
+          
+          # Universal Release
+          if [ -f "app-release.apk" ]; then
+            mv "app-release.apk" "../../../../skystream-android-universal-${VERSION}.apk"
+          fi
+          
+          # Universal Debug
+          if [ -f "app-debug.apk" ]; then
+            mv "app-debug.apk" "../../../../skystream-android-debug-${VERSION}.apk"
+          fi
+          
+          # Splits
+          for f in app-*-release.apk; do
+            if [ -f "$f" ]; then
+              # Extract ABI: app-<abi>-release.apk -> <abi>
+              abi="${f#app-}"
+              abi="${abi%-release.apk}"
+              mv "$f" "../../../../skystream-android-${abi}-${VERSION}.apk"
+            fi
+          done
+
+      - name: Upload Release Assets
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: "*.apk"
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  ios:
+    name: iOS Build (Unsigned)
+    needs: [version, create_release]
+    if: ${{ github.event.inputs.build_ios == 'true' }}
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Select Latest Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          flutter gen-l10n
+          dart run build_runner build --delete-conflicting-outputs
+
+      # Same strip the Android job does, and for the same reason: these six
+      # binaries are desktop builds of TorrServer (darwin/linux/windows) and
+      # iOS cannot execute any of them. iOS runs TorrServer from its own
+      # native ios/TorrServer.xcframework instead, and the plugin registers
+      # FlutterTorrentServerDesktop -- the only code that reads these files --
+      # for linux, macos and windows only
+      # (packages/flutter_torrent_server/pubspec.yaml). The package pubspec
+      # globs the whole assets/torrserver/ directory, so without this the IPA
+      # carried ~104 MB it could never use.
+      - name: Strip Desktop Binaries
+        run: rm -f packages/flutter_torrent_server/assets/torrserver/TorrServer-*
+
+      - name: Generate dart-defines file
+        shell: bash
+        run: |
+          cat > dart-defines.json << 'JSON_EOF'
+          {
+            "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY }}",
+            "SIMKL_CLIENT_ID": "${{ secrets.SIMKL_CLIENT_ID }}",
+            "SIMKL_CLIENT_SECRET": "${{ secrets.SIMKL_CLIENT_SECRET }}",
+            "SIMKL_V2_CLIENT_ID": "${{ secrets.SIMKL_V2_CLIENT_ID }}",
+            "TRAKT_CLIENT_ID": "${{ secrets.TRAKT_CLIENT_ID }}",
+            "TRAKT_CLIENT_SECRET": "${{ secrets.TRAKT_CLIENT_SECRET }}",
+            "MAL_CLIENT_ID": "${{ secrets.MAL_CLIENT_ID }}",
+            "MAL_CLIENT_SECRET": "${{ secrets.MAL_CLIENT_SECRET }}",
+            "ANILIST_CLIENT_ID": "${{ secrets.ANILIST_CLIENT_ID }}",
+            "ANIMESKIP_CLIENT_ID": "${{ secrets.ANIMESKIP_CLIENT_ID }}",
+            "OPENSUBTITLES_API_KEY": "${{ secrets.OPENSUBTITLES_API_KEY }}"
+          }
+          JSON_EOF
+
+      - name: Build iOS (No Codesign)
+        run: |
+          flutter build ios --release --no-codesign --dart-define-from-file=dart-defines.json
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          zip -r skystream-ios-unsigned-${{ needs.version.outputs.version }}.ipa Payload
+          
+      - name: Upload Release Assets
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: "skystream-ios-unsigned-${{ needs.version.outputs.version }}.ipa"
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  macos:
+    name: macOS Build
+    needs: [version, create_release]
+    if: ${{ github.event.inputs.build_macos == 'true' }}
+    runs-on: macos-latest
+    strategy:
+      # One arch failing must never cancel the other. Without this, GitHub's
+      # default fail-fast: true cancels the in-flight sibling leg, so a broken
+      # arm64 build means the release ships NO artifact for this platform at
+      # all - strictly worse than shipping the one arch that works.
+      fail-fast: false
+      matrix:
+        arch: [arm64, x64]
+        include:
+          - arch: arm64
+            torrserver_binary: TorrServer-darwin-arm64
+            xcode_arch: arm64
+            java_arch: aarch64
+          - arch: x64
+            torrserver_binary: TorrServer-darwin-amd64
+            xcode_arch: x86_64
+            java_arch: x64
+    steps:
+      - uses: actions/checkout@v7
+      - name: Select Latest Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          
+      - name: Install Dependencies
+        run: |
+          flutter config --enable-macos-desktop
+          flutter pub get
+          flutter gen-l10n
+          dart run build_runner build --delete-conflicting-outputs
+
+      # Keep only the required TorrServer binary for this architecture
+      - name: Strip Unused Binaries
+        run: |
+          cd packages/flutter_torrent_server/assets/torrserver
+          ls -la
+          # Keep only the binary for this architecture
+          find . -type f ! -name "${{ matrix.torrserver_binary }}" -delete
+          ls -la
+          
+
+      # CloudStream extensions run on Java on the desktop. The build carries a
+      # trimmed Java runtime made from this JDK
+      # (packages/cs3_engine/tool/build_runtime.dart), so users need no Java.
+      # The architecture is the build's own.
+      - name: Set Up Java For CloudStream's Runtime
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          architecture: ${{ matrix.java_arch }}
+
+      - name: Bundle CloudStream's Java Runtime
+        shell: bash
+        run: dart run packages/cs3_engine/tool/build_runtime.dart --java-home "$JAVA_HOME"
+      - name: Generate dart-defines file
+        shell: bash
+        run: |
+          cat > dart-defines.json << 'JSON_EOF'
+          {
+            "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY }}",
+            "SIMKL_CLIENT_ID": "${{ secrets.SIMKL_CLIENT_ID }}",
+            "SIMKL_CLIENT_SECRET": "${{ secrets.SIMKL_CLIENT_SECRET }}",
+            "SIMKL_V2_CLIENT_ID": "${{ secrets.SIMKL_V2_CLIENT_ID }}",
+            "TRAKT_CLIENT_ID": "${{ secrets.TRAKT_CLIENT_ID }}",
+            "TRAKT_CLIENT_SECRET": "${{ secrets.TRAKT_CLIENT_SECRET }}",
+            "MAL_CLIENT_ID": "${{ secrets.MAL_CLIENT_ID }}",
+            "MAL_CLIENT_SECRET": "${{ secrets.MAL_CLIENT_SECRET }}",
+            "ANILIST_CLIENT_ID": "${{ secrets.ANILIST_CLIENT_ID }}",
+            "ANIMESKIP_CLIENT_ID": "${{ secrets.ANIMESKIP_CLIENT_ID }}",
+            "OPENSUBTITLES_API_KEY": "${{ secrets.OPENSUBTITLES_API_KEY }}"
+          }
+          JSON_EOF
+
+      # Build for a single architecture to reduce app size from ~430MB (universal) to ~270MB
+      - name: Build macOS (${{ matrix.arch }})
+        run: |
+          # First, generate the Xcode project with flutter
+          flutter build macos --release --config-only --dart-define-from-file=dart-defines.json
+          
+          # Build using xcodebuild with single architecture
+          cd macos
+          xcodebuild -workspace Runner.xcworkspace \
+            -configuration Release \
+            -scheme Runner \
+            -derivedDataPath ../build/macos \
+            ARCHS="${{ matrix.xcode_arch }}" \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+      
+      # Re-sign all frameworks: vlc_player's podspec runs install_name_tool on
+      # VLCKit.framework after compile, which invalidates its signature, and
+      # arm64 macOS refuses to load an unsigned framework.
+      # The frameworks built in CI have code signing issues that cause
+      # assertion failures in mpv_render_context_create
+      - name: Re-sign Frameworks
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/skystream.app"
+          FRAMEWORKS_PATH="$APP_PATH/Contents/Frameworks"
+          
+          echo "Re-signing frameworks..."
+          find "$FRAMEWORKS_PATH" -name "*.framework" -type d | while read framework; do
+            echo "Signing: $framework"
+            codesign --force --deep --sign - "$framework"
+          done
+          
+          # Also sign any dylibs
+          find "$FRAMEWORKS_PATH" -name "*.dylib" -type f | while read dylib; do
+            echo "Signing: $dylib"
+            codesign --force --sign - "$dylib"
+          done
+          
+          # Sign the main app
+          echo "Signing app..."
+          codesign --force --deep --sign - "$APP_PATH"
+          
+          echo "Done re-signing."
+        
+      # CRITICAL: Use -y flag to preserve symlinks!
+      # macOS frameworks contain symlinks (e.g. VLCKit.framework/VLCKit -> Versions/A/VLCKit)
+      # Without -y, zip stores the file content instead of the symlink,
+      # causing the framework to fail to load at runtime.
+      - name: Generate DMG and Zip
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          cd build/macos/Build/Products/Release
+          
+          # Create DMG
+          mkdir -p dmg_temp
+          cp -R skystream.app dmg_temp/
+          ln -s /Applications dmg_temp/Applications
+          hdiutil create -volname "SkyStream" -srcfolder dmg_temp -ov -format UDZO "../../../../../skystream-macos-${{ matrix.arch }}-${VERSION}.dmg"
+          
+          # Fallback ZIP
+          zip -ry "../../../../../skystream-macos-${{ matrix.arch }}-${VERSION}.zip" skystream.app
+
+      - name: Upload Release Assets
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: |
+            skystream-macos-${{ matrix.arch }}-${{ needs.version.outputs.version }}.dmg
+            skystream-macos-${{ matrix.arch }}-${{ needs.version.outputs.version }}.zip
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  windows:
+    name: Windows Build
+    needs: [version, create_release]
+    if: ${{ github.event.inputs.build_windows == 'true' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # One arch failing must never cancel the other. Without this, GitHub's
+      # default fail-fast: true cancels the in-flight sibling leg, so a broken
+      # arm64 build means the release ships NO artifact for this platform at
+      # all - strictly worse than shipping the one arch that works.
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            arch: x64
+            torrserver_binary: TorrServer-windows-amd64.exe
+            java_arch: x64
+          # arm64 on windows-11-arm is DISABLED, not forgotten. build_libs.sh
+          # has always produced TorrServer-windows-arm64.exe and the desktop
+          # plugin selects it by architecture at runtime, so that half is ready
+          # - but the app itself cannot link on ARM64 yet:
+          # packages/vlc_player/windows/CMakeLists.txt needs libVLC, and
+          # VideoLAN publishes no Windows ARM64 build at
+          # download.videolan.org/pub/videolan/vlc/<ver>/. The x86-64 runtime it
+          # downloads cannot be linked into an ARM64 DLL, so this leg fails at
+          # link time every run.
+          #
+          # Left commented rather than deleted: uncomment once an ARM64 libVLC
+          # exists and vlc_player's arch guard is taught to select it. Until
+          # then an always-red leg would make a release's pass/fail meaningless.
+          # (fail-fast: false above means it could no longer take the x64
+          # artifact down with it, but red-every-release is still noise.)
+          # - os: windows-11-arm
+          #   arch: arm64
+          #   torrserver_binary: TorrServer-windows-arm64.exe
+    steps:
+      - uses: actions/checkout@v7
+      
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - name: Install Dependencies
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+          flutter gen-l10n
+          dart run build_runner build --delete-conflicting-outputs
+
+      # Keep only the Windows TorrServer binary
+      - name: Strip Unused Binaries
+        shell: pwsh
+        run: |
+          cd packages/flutter_torrent_server/assets/torrserver
+          Get-ChildItem -File | Where-Object { $_.Name -ne "${{ matrix.torrserver_binary }}" } | Remove-Item
+          Get-ChildItem
+
+
+      # CloudStream extensions run on Java on the desktop. The build carries a
+      # trimmed Java runtime made from this JDK
+      # (packages/cs3_engine/tool/build_runtime.dart), so users need no Java.
+      # The architecture is the build's own.
+      - name: Set Up Java For CloudStream's Runtime
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          architecture: ${{ matrix.java_arch }}
+
+      - name: Bundle CloudStream's Java Runtime
+        shell: bash
+        run: dart run packages/cs3_engine/tool/build_runtime.dart --java-home "$JAVA_HOME"
+      - name: Generate dart-defines file
+        shell: bash
+        run: |
+          cat > dart-defines.json << 'JSON_EOF'
+          {
+            "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY }}",
+            "SIMKL_CLIENT_ID": "${{ secrets.SIMKL_CLIENT_ID }}",
+            "SIMKL_CLIENT_SECRET": "${{ secrets.SIMKL_CLIENT_SECRET }}",
+            "SIMKL_V2_CLIENT_ID": "${{ secrets.SIMKL_V2_CLIENT_ID }}",
+            "TRAKT_CLIENT_ID": "${{ secrets.TRAKT_CLIENT_ID }}",
+            "TRAKT_CLIENT_SECRET": "${{ secrets.TRAKT_CLIENT_SECRET }}",
+            "MAL_CLIENT_ID": "${{ secrets.MAL_CLIENT_ID }}",
+            "MAL_CLIENT_SECRET": "${{ secrets.MAL_CLIENT_SECRET }}",
+            "ANILIST_CLIENT_ID": "${{ secrets.ANILIST_CLIENT_ID }}",
+            "ANIMESKIP_CLIENT_ID": "${{ secrets.ANIMESKIP_CLIENT_ID }}",
+            "OPENSUBTITLES_API_KEY": "${{ secrets.OPENSUBTITLES_API_KEY }}"
+          }
+          JSON_EOF
+
+      - name: Build Windows
+        run: flutter build windows --release --dart-define-from-file=dart-defines.json
+
+      - name: Check libVLC's plugin cache tool
+        shell: pwsh
+        run: |
+          $Release = "build\windows\${{ matrix.arch }}\runner\Release"
+          & "$Release\vlc-cache-gen.exe" "$Release\plugins"
+          if ($LASTEXITCODE -ne 0) { throw "vlc-cache-gen.exe failed on the bundle" }
+          $Cache = Get-Item "$Release\plugins\plugins.dat" -ErrorAction Stop
+          if ($Cache.Length -lt 100000) { throw "plugins.dat is only $($Cache.Length) bytes" }
+          # Made for this check only. A cache made here would be stale on any
+          # user's machine (ZIP and installer timestamps are rounded to 2 s,
+          # and the ZIP's are local), so the installer makes one on install
+          # and the portable app on its first launch.
+          Get-ChildItem "$Release\plugins" -Filter "plugins.dat*" | Remove-Item
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          $Tag = 'is-' + $env:INNO_SETUP_VERSION.Replace('.', '_')
+          $Installer = Join-Path $env:RUNNER_TEMP $env:INNO_SETUP_INSTALLER
+          Invoke-WebRequest -Uri "https://github.com/jrsoftware/issrc/releases/download/$Tag/$env:INNO_SETUP_INSTALLER" -OutFile $Installer -MaximumRetryCount 3 -RetryIntervalSec 10
+          $Hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $Installer).Hash
+          if ($Hash -ne $env:INNO_SETUP_SHA256) { throw "$env:INNO_SETUP_INSTALLER has SHA-256 $Hash, not the pinned $env:INNO_SETUP_SHA256" }
+          # For all users, so its uninstall entry is in HKLM, where the build step looks.
+          $Log = Join-Path $env:RUNNER_TEMP 'innosetup-install.log'
+          $Setup = Start-Process -FilePath $Installer -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', '/ALLUSERS', "/LOG=`"$Log`"" -Wait -PassThru
+          if ($Setup.ExitCode -ne 0) {
+            Get-Content -LiteralPath $Log -Tail 40 -ErrorAction SilentlyContinue
+            throw "Inno Setup $env:INNO_SETUP_VERSION's installer exited with $($Setup.ExitCode)"
+          }
+
+      - name: Build Installer (EXE)
+        shell: pwsh
+        run: |
+          $Version = "${{ needs.version.outputs.version }}".TrimStart('v')
+          $AppDir = "..\..\..\build\windows\${{ matrix.arch }}\runner\Release"
+          # The pinned version's compiler, wherever it installed itself. Its uninstall
+          # entry says where; ISCC.exe's own version resource reads 0.0.0.0.
+          $Inno = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup*', 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup*' -ErrorAction SilentlyContinue |
+            Where-Object { $_.DisplayVersion -eq $env:INNO_SETUP_VERSION } |
+            Select-Object -First 1
+          if (-not $Inno) { throw "Inno Setup $env:INNO_SETUP_VERSION is not installed" }
+          & (Join-Path $Inno.InstallLocation 'ISCC.exe') /DAppVersion=$Version /DAppArch=${{ matrix.arch }} /DAppDir=$AppDir windows\packaging\exe\setup.iss
+
+      - name: Compress Release (ZIP)
+        shell: pwsh
+        run: |
+          $Version = "${{ needs.version.outputs.version }}"
+          Compress-Archive -Path build\windows\${{ matrix.arch }}\runner\Release\* -DestinationPath "skystream-windows-${{ matrix.arch }}-$Version.zip"
+
+      - name: Upload Release Assets
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: |
+            windows/packaging/exe/Output/*.exe
+            skystream-windows-${{ matrix.arch }}-${{ needs.version.outputs.version }}.zip
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  linux:
+    name: Linux Build
+    needs: [version, create_release]
+    if: ${{ github.event.inputs.build_linux == 'true' }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # One arch failing must never cancel the other. Without this, GitHub's
+      # default fail-fast: true cancels the in-flight sibling leg, so a broken
+      # arm64 build means the release ships NO artifact for this platform at
+      # all - strictly worse than shipping the one arch that works.
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-26.04
+            arch: x64
+            torrserver_binary: TorrServer-linux-amd64
+            java_arch: x64
+          - os: ubuntu-26.04-arm
+            arch: arm64
+            torrserver_binary: TorrServer-linux-arm64
+            java_arch: aarch64
+    # The newest runners, building inside Ubuntu 22.04. The build's glibc is
+    # the floor for the shipped .deb, tarball and AppImage: 22.04 is glibc
+    # 2.35, so Ubuntu 22.04, Debian 12 and everything newer can run them. Built
+    # on the runner itself (26.04, glibc 2.43) they would no longer start on
+    # Ubuntu 22.04 or 24.04, or Debian 12 or 13. Raising this image is a
+    # user-facing decision about the minimum supported distro, not a
+    # maintenance detail.
+    container: ubuntu:22.04
+    steps:
+      # The image is bare: steps run as root, and there is no sudo, git, curl
+      # or jq. git first, so actions/checkout makes a real clone (the AppImage
+      # script dates its metadata from the last commit) rather than unpacking
+      # a tarball; curl, jq and xz are what the Flutter setup uses.
+      - name: Prepare Build Container
+        run: |
+          apt-get update -o Acquire::Retries=5 -o Acquire::http::Timeout=30
+          apt-get install -y --no-install-recommends \
+            ca-certificates git curl jq unzip xz-utils zip
+          # ports.ubuntu.com, which arm64 uses, resets plain-HTTP connections
+          # often enough to flake the job: HTTPS from here on.
+          sed -i 's|http://ports.ubuntu.com|https://ports.ubuntu.com|g' \
+            /etc/apt/sources.list /etc/apt/sources.list.d/*.list 2>/dev/null || true
+          # The checkout belongs to the runner's user, not to root.
+          git config --global --add safe.directory '*'
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        if: ${{ matrix.arch != 'arm64' }}
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - name: Setup Flutter (ARM64 Linux)
+        if: ${{ matrix.arch == 'arm64' }}
+        run: |
+          git clone https://github.com/flutter/flutter.git -b ${{ env.FLUTTER_VERSION }} --depth 1 $RUNNER_TOOL_CACHE/flutter
+          echo "$RUNNER_TOOL_CACHE/flutter/bin" >> $GITHUB_PATH
+      - name: Install Linux Dependencies
+        run: |
+          # --no-install-recommends: without it apt fetches 190+ recommended
+          # packages (tilix, pocketsphinx...) the build never touches. g++
+          # because packages/flutter_js_ng compiles QuickJS with gcc and g++ by
+          # name, and file because appimagetool refuses to run without it; the
+          # runner images have both preinstalled, the container has neither.
+          apt-get update -o Acquire::Retries=5 -o Acquire::http::Timeout=30
+          apt-get install -y --no-install-recommends \
+            clang g++ cmake ninja-build pkg-config file \
+            libgtk-3-dev liblzma-dev libvlc-dev libasound2-dev libsecret-1-dev \
+            libwebkit2gtk-4.1-dev
+
+      - name: Install Flutter Dependencies
+        run: |
+          flutter config --enable-linux-desktop
+          flutter pub get
+          flutter gen-l10n
+          dart run build_runner build --delete-conflicting-outputs
+
+      # Keep only the Linux TorrServer binary
+      - name: Strip Unused Binaries
+        run: |
+          cd packages/flutter_torrent_server/assets/torrserver
+          ls -la
+          find . -type f ! -name "${{ matrix.torrserver_binary }}" -delete
+          ls -la
+          
+
+      # CloudStream extensions run on Java on the desktop. The build carries a
+      # trimmed Java runtime made from this JDK
+      # (packages/cs3_engine/tool/build_runtime.dart), so users need no Java.
+      # The architecture is the build's own.
+      - name: Set Up Java For CloudStream's Runtime
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          architecture: ${{ matrix.java_arch }}
+
+      - name: Bundle CloudStream's Java Runtime
+        shell: bash
+        run: dart run packages/cs3_engine/tool/build_runtime.dart --java-home "$JAVA_HOME"
+      - name: Generate dart-defines file
+        shell: bash
+        run: |
+          cat > dart-defines.json << 'JSON_EOF'
+          {
+            "TMDB_API_KEY": "${{ secrets.TMDB_API_KEY }}",
+            "SIMKL_CLIENT_ID": "${{ secrets.SIMKL_CLIENT_ID }}",
+            "SIMKL_CLIENT_SECRET": "${{ secrets.SIMKL_CLIENT_SECRET }}",
+            "SIMKL_V2_CLIENT_ID": "${{ secrets.SIMKL_V2_CLIENT_ID }}",
+            "TRAKT_CLIENT_ID": "${{ secrets.TRAKT_CLIENT_ID }}",
+            "TRAKT_CLIENT_SECRET": "${{ secrets.TRAKT_CLIENT_SECRET }}",
+            "MAL_CLIENT_ID": "${{ secrets.MAL_CLIENT_ID }}",
+            "MAL_CLIENT_SECRET": "${{ secrets.MAL_CLIENT_SECRET }}",
+            "ANILIST_CLIENT_ID": "${{ secrets.ANILIST_CLIENT_ID }}",
+            "ANIMESKIP_CLIENT_ID": "${{ secrets.ANIMESKIP_CLIENT_ID }}",
+            "OPENSUBTITLES_API_KEY": "${{ secrets.OPENSUBTITLES_API_KEY }}"
+          }
+          JSON_EOF
+
+      - name: Build Linux Packages
+        id: packages
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          dart pub global activate fastforge 0.6.12
+
+          # Build .deb
+          fastforge package --platform linux --targets deb --flutter-build-args=dart-define-from-file=dart-defines.json
+
+          # Rename .deb file to match tar.gz convention
+          mv dist/*/*.deb "skystream-linux-${{ matrix.arch }}-${VERSION}.deb"
+
+          # Generate the standard .tar.gz bundle as well
+          flutter build linux --release --dart-define-from-file=dart-defines.json
+          (cd build/linux/${{ matrix.arch }}/release/bundle && tar -czvf "../../../../../skystream-linux-${{ matrix.arch }}-${VERSION}.tar.gz" .)
+
+      # The AppImage is packed from the tarball's bundle. A failure here fails
+      # the job, but the step below still uploads the .deb and the tarball.
+      - name: Build Linux AppImage
+        run: |
+          APPIMAGE="skystream-linux-${{ matrix.arch }}-${{ needs.version.outputs.version }}.AppImage"
+          ./scripts/build_appimage.sh "${{ matrix.arch }}" "build/linux/${{ matrix.arch }}/release/bundle" "$APPIMAGE"
+
+          # Smoke run: the app itself must be up 20 seconds in, so AppRun found
+          # every library and the binary started from inside the image. Unpacked
+          # to run, as the runner may have no FUSE.
+          apt-get install -y --no-install-recommends xvfb xauth procps
+          APPIMAGE_EXTRACT_AND_RUN=1 timeout 60 xvfb-run -a "./$APPIMAGE" > appimage-smoke.log 2>&1 &
+          sleep 20
+          if ! pgrep -x skystream > /dev/null; then
+            cat appimage-smoke.log
+            exit 1
+          fi
+          pkill -x skystream || true
+
+      - name: Upload Release Assets
+        if: ${{ !cancelled() && steps.packages.outcome == 'success' }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.version }}
+          allowUpdates: true
+          replacesArtifacts: true
+          artifacts: |
+            skystream-linux-${{ matrix.arch }}-${{ needs.version.outputs.version }}.tar.gz
+            skystream-linux-${{ matrix.arch }}-${{ needs.version.outputs.version }}.deb
+            skystream-linux-${{ matrix.arch }}-${{ needs.version.outputs.version }}.AppImage
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}

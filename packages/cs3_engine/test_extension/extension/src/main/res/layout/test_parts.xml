@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The engine's inflater tests: the kinds of element extension layouts use, an include of a merge, and a
+     class no one has. The extension never shows it. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/parts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/token_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/token_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/token_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/material_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/save" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="4" />
+
+        <Spinner
+            android:id="@+id/choices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/qualities" />
+
+        <CheckBox
+            android:id="@+id/agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:enabled="false"
+            android:text="@android:string/ok" />
+
+        <View
+            android:id="@+id/gone"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/test_merge" />
+        </androidx.cardview.widget.CardView>
+
+        <com.example.NoSuchView
+            android:id="@+id/unknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

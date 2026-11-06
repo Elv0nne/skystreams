@@ -1,0 +1,1586 @@
+{
+ "android": {
+  "drop20-hls": {
+   "endPosMs": 0,
+   "endedOrError": true,
+   "finalState": "stopped",
+   "firstPosMs": 1032,
+   "lastMoveAfterCutMs": -1,
+   "leaveMs": 1,
+   "playingAtEnd": false,
+   "scenario": "drop20-hls",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 102,
+   "states": [
+    "playing",
+    "opening",
+    "error",
+    "stopped"
+   ],
+   "ttffMs": 2953
+  },
+  "drop20-mp4": {
+   "endPosMs": 81195,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 151,
+   "lastMoveAfterCutMs": 74892,
+   "leaveMs": 697,
+   "playingAtEnd": true,
+   "scenario": "drop20-mp4",
+   "stalledMs": 824,
+   "stalls": 1,
+   "startupViews": 5,
+   "states": [
+    "playing",
+    "ended",
+    "stopped",
+    "opening",
+    "playing",
+    "buffering",
+    "playing"
+   ],
+   "ttffMs": 2036
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 151,
+   "leaveMs": 5042,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 1919
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 155,
+   "leaveMs": 846,
+   "maxRssMb": 857,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 1814
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183799,
+   "leaveMs": 570,
+   "savedAtMs": 183658,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4199,
+   "stalls": 0,
+   "ttffMs": 5024
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 794,
+   "leaveMs": 606,
+   "maxRssMb": 649,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "resumeMs": null,
+     "step": 10
+    },
+    {
+     "resumeMs": 3807,
+     "step": 60
+    },
+    {
+     "resumeMs": null,
+     "step": -60
+    }
+   ],
+   "stalls": 3,
+   "startupViews": 0,
+   "ttffMs": 3428
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 155,
+   "leaveMs": 823,
+   "maxRssMb": 707,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "resumeMs": 1549,
+     "step": 10
+    },
+    {
+     "resumeMs": 349,
+     "step": 60
+    },
+    {
+     "resumeMs": 3128,
+     "step": -10
+    },
+    {
+     "resumeMs": 1033,
+     "step": -60
+    }
+   ],
+   "stalls": 5,
+   "startupViews": 6,
+   "ttffMs": 2820
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 176,
+   "leaveMs": 575,
+   "maxRssMb": 722,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "resumeMs": 2197,
+     "step": 10
+    },
+    {
+     "resumeMs": 1564,
+     "step": 60
+    },
+    {
+     "resumeMs": 5154,
+     "step": -10
+    },
+    {
+     "resumeMs": 1156,
+     "step": -60
+    }
+   ],
+   "stalls": 5,
+   "startupViews": 0,
+   "ttffMs": 4019
+  },
+  "stall20-hls": {
+   "endPosMs": 71422,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 769,
+   "lastMoveAfterCutMs": 74636,
+   "leaveMs": 769,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 11267,
+   "stalls": 1,
+   "startupViews": 0,
+   "states": [
+    "playing",
+    "buffering",
+    "playing"
+   ],
+   "ttffMs": 2965
+  },
+  "start-hls-8M": {
+   "firstPosMs": 631,
+   "height": 1080.0,
+   "leaveMs": 529,
+   "maxRssMb": 662,
+   "scenario": "start-hls-8M",
+   "stalls": 0,
+   "ttffMs": 2860
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 128,
+   "height": 1080.0,
+   "leaveMs": 631,
+   "maxRssMb": 733,
+   "scenario": "start-mkv-8M",
+   "stalls": 0,
+   "ttffMs": 4348
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 401,
+   "height": 1080.0,
+   "leaveMs": 1047,
+   "maxRssMb": 685,
+   "scenario": "start-mp4-30M",
+   "stalls": 0,
+   "ttffMs": 2004
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 431,
+   "height": 1080.0,
+   "leaveMs": 982,
+   "maxRssMb": 667,
+   "scenario": "start-mp4-8M",
+   "stalls": 1,
+   "ttffMs": 17709
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 1313,
+   "firstPosMs": 178,
+   "leaveMs": 817,
+   "maxRssMb": 807,
+   "scenario": "storm-mp4-30M",
+   "stalled": 4229,
+   "stormMs": 25634,
+   "ttffMs": 2109
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 510,
+   "leaveMs": 571,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 125,
+     "resumeMs": 1255
+    },
+    {
+     "id": 1,
+     "rebufferMs": 225,
+     "resumeMs": 1277
+    }
+   ],
+   "ttffMs": 16575
+  },
+  "warmup": {
+   "attempts": [
+    "failed: QoE prog.mp4 | The only source would not play - the network dropped | Retry | Remote \u00b7 Video",
+    "failed: QoE prog.mp4 | The only source would not play - the source never started | Retry | Remote \u00b7 Video",
+    "failed: QoE prog.mp4 | The only source would not play - the source never started | Retry | Remote \u00b7 Video"
+   ],
+   "firstPosMs": 0,
+   "scenario": "warmup",
+   "ttffMs": null
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 24,
+   "height": 1080.0,
+   "leaveMs": 617,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 8841,
+   "stalls": 6,
+   "ttffMs": 4196
+  }
+ },
+ "androidtv": {
+  "drop20-hls": {
+   "endPosMs": 0,
+   "endedOrError": true,
+   "finalState": "stopped",
+   "firstPosMs": 132,
+   "lastMoveAfterCutMs": -1,
+   "leaveMs": 0,
+   "playingAtEnd": false,
+   "scenario": "drop20-hls",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 173,
+   "states": [
+    "playing",
+    "opening",
+    "error",
+    "stopped"
+   ],
+   "ttffMs": 2035
+  },
+  "drop20-mp4": {
+   "endPosMs": 0,
+   "endedOrError": true,
+   "finalState": "stopped",
+   "firstPosMs": 185,
+   "lastMoveAfterCutMs": -1,
+   "leaveMs": 0,
+   "playingAtEnd": false,
+   "scenario": "drop20-mp4",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 173,
+   "states": [
+    "playing",
+    "opening",
+    "error",
+    "stopped"
+   ],
+   "ttffMs": 2034
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 388,
+   "leaveMs": 651,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 2870
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 57,
+   "leaveMs": 704,
+   "maxRssMb": 770,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 1864
+  },
+  "resume-hls-8M": {
+   "firstPosMs": 179961,
+   "leaveMs": 702,
+   "savedAtMs": 183993,
+   "scenario": "resume-hls-8M",
+   "seekTo180Ms": 13088,
+   "stalls": 1,
+   "ttffMs": 11719
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183524,
+   "leaveMs": 776,
+   "savedAtMs": 183410,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4609,
+   "stalls": 0,
+   "ttffMs": 4755
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 367,
+   "leaveMs": 587,
+   "maxRssMb": 575,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "landedOffMs": -6213,
+     "posAfterMs": -16455,
+     "resumeMs": 2767,
+     "step": 10
+    },
+    {
+     "landedOffMs": null,
+     "posAfterMs": -50251,
+     "resumeMs": null,
+     "step": 60
+    },
+    {
+     "landedOffMs": 278,
+     "posAfterMs": 6296,
+     "resumeMs": 1540,
+     "step": -60
+    }
+   ],
+   "stalls": 3,
+   "startupViews": 10,
+   "ttffMs": 5971
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 151,
+   "leaveMs": 669,
+   "maxRssMb": 678,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "resumeMs": 1861,
+     "step": 10
+    },
+    {
+     "resumeMs": null,
+     "step": 60
+    },
+    {
+     "resumeMs": 2995,
+     "step": -10
+    },
+    {
+     "resumeMs": 2525,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 8,
+   "ttffMs": 2056
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 155,
+   "leaveMs": 707,
+   "maxRssMb": 664,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "resumeMs": 3238,
+     "step": 10
+    },
+    {
+     "resumeMs": 1811,
+     "step": 60
+    },
+    {
+     "resumeMs": 1003,
+     "step": -10
+    },
+    {
+     "resumeMs": 200,
+     "step": -60
+    }
+   ],
+   "stalls": 5,
+   "startupViews": 13,
+   "ttffMs": 3299
+  },
+  "stall20-hls": {
+   "endPosMs": 58093,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 600,
+   "lastMoveAfterCutMs": 75161,
+   "leaveMs": 543,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 51,
+   "states": [
+    "buffering",
+    "playing"
+   ],
+   "ttffMs": 2520
+  },
+  "start-hls-8M": {
+   "firstPosMs": 331,
+   "height": 720.0,
+   "leaveBlockMs": 124,
+   "leaveMs": 533,
+   "maxRssMb": 651,
+   "scenario": "start-hls-8M",
+   "stalls": 0,
+   "ttffMs": 6041
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 264,
+   "height": null,
+   "leaveBlockMs": 86,
+   "leaveMs": 548,
+   "maxRssMb": 666,
+   "scenario": "start-mkv-8M",
+   "stalls": 0,
+   "ttffMs": 5612
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 429,
+   "height": 1080.0,
+   "leaveBlockMs": 340,
+   "leaveMs": 778,
+   "maxRssMb": 718,
+   "scenario": "start-mp4-30M",
+   "stalls": 1,
+   "ttffMs": 3815
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 189,
+   "height": 1080.0,
+   "leaveBlockMs": 433,
+   "leaveMs": 588,
+   "maxRssMb": 668,
+   "scenario": "start-mp4-8M",
+   "stalls": 3,
+   "ttffMs": 4404
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 866,
+   "firstPosMs": 429,
+   "leaveMs": 624,
+   "maxRssMb": 816,
+   "scenario": "storm-mp4-30M",
+   "stalled": 6681,
+   "stormMs": 26499,
+   "ttffMs": 2035
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 177,
+   "leaveMs": 1314,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 1045,
+     "resumeMs": 2385
+    },
+    {
+     "id": 1,
+     "rebufferMs": 824,
+     "resumeMs": 2179
+    }
+   ],
+   "ttffMs": 2058
+  },
+  "warmup": {
+   "attempts": [
+    "failed: QoE prog.mp4 | The only source would not play - the source never started | Retry | Remote \u00b7 Video | Reachable | Unplayable",
+    3456
+   ],
+   "firstPosMs": 413,
+   "scenario": "warmup",
+   "ttffMs": 3456
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 18,
+   "height": 720.0,
+   "leaveMs": 681,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 5901,
+   "stalls": 3,
+   "ttffMs": 4435
+  }
+ },
+ "ios": {
+  "drop20-hls": {
+   "endPosMs": 78316,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 195,
+   "lastMoveAfterCutMs": 75322,
+   "leaveMs": 654,
+   "playingAtEnd": true,
+   "scenario": "drop20-hls",
+   "stalledMs": 1521,
+   "stalls": 1,
+   "startupViews": 6,
+   "states": [
+    "playing",
+    "ended",
+    "opening",
+    "buffering",
+    "opening",
+    "playing"
+   ],
+   "ttffMs": 1505
+  },
+  "drop20-mp4": {
+   "endPosMs": 81654,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 155,
+   "lastMoveAfterCutMs": 75101,
+   "leaveMs": 650,
+   "playingAtEnd": true,
+   "scenario": "drop20-mp4",
+   "stalledMs": 993,
+   "stalls": 1,
+   "startupViews": 5,
+   "states": [
+    "playing",
+    "ended",
+    "stopped",
+    "opening",
+    "buffering",
+    "opening",
+    "playing"
+   ],
+   "ttffMs": 1051
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 777,
+   "leaveBlockMs": 130512,
+   "leaveMs": 130577,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 2028
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 408,
+   "leaveMs": 651,
+   "maxRssMb": 694,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 1047
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183549,
+   "leaveMs": 652,
+   "savedAtMs": 183410,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4000,
+   "stalls": 0,
+   "ttffMs": 4850
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 809,
+   "leaveMs": 602,
+   "maxRssMb": 652,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "landedOffMs": -6476,
+     "posAfterMs": -3484,
+     "resumeMs": 5013,
+     "step": 10
+    },
+    {
+     "landedOffMs": -1200,
+     "posAfterMs": 3851,
+     "resumeMs": 3565,
+     "step": 60
+    },
+    {
+     "landedOffMs": -5042,
+     "posAfterMs": 1340,
+     "resumeMs": 5467,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 2626
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 404,
+   "leaveMs": 651,
+   "maxRssMb": 761,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7504,
+     "resumeMs": 32,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7751,
+     "resumeMs": 206,
+     "step": 60
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 8000,
+     "resumeMs": 254,
+     "step": -10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7749,
+     "resumeMs": 254,
+     "step": -60
+    }
+   ],
+   "stalls": 0,
+   "startupViews": 0,
+   "ttffMs": 1068
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 660,
+   "leaveMs": 651,
+   "maxRssMb": 704,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 5002,
+     "resumeMs": 2496,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 5749,
+     "resumeMs": 1004,
+     "step": 60
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 2749,
+     "resumeMs": 1004,
+     "step": -10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 752,
+     "resumeMs": 1002,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 3073
+  },
+  "stall20-hls": {
+   "endPosMs": 71401,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 370,
+   "lastMoveAfterCutMs": 75188,
+   "leaveMs": 654,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 10971,
+   "stalls": 1,
+   "startupViews": 0,
+   "states": [
+    "playing"
+   ],
+   "ttffMs": 1429
+  },
+  "start-hls-8M": {
+   "firstPosMs": 278,
+   "height": 1080.0,
+   "leaveBlockMs": 34,
+   "leaveMs": 650,
+   "maxRssMb": 811,
+   "scenario": "start-hls-8M",
+   "stalls": 0,
+   "ttffMs": 2363
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 211,
+   "height": 1080.0,
+   "leaveBlockMs": 54,
+   "leaveMs": 650,
+   "maxRssMb": 846,
+   "scenario": "start-mkv-8M",
+   "stalls": 0,
+   "ttffMs": 3443
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 405,
+   "height": 1080.0,
+   "leaveBlockMs": 42,
+   "leaveMs": 650,
+   "maxRssMb": 817,
+   "scenario": "start-mp4-30M",
+   "stalls": 0,
+   "ttffMs": 1065
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 402,
+   "height": 1080.0,
+   "leaveBlockMs": 49,
+   "leaveMs": 652,
+   "maxRssMb": 816,
+   "scenario": "start-mp4-8M",
+   "stalls": 0,
+   "ttffMs": 3078
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 138,
+   "firstPosMs": 154,
+   "leaveMs": 650,
+   "maxRssMb": 692,
+   "scenario": "storm-mp4-30M",
+   "stalled": 0,
+   "stormMs": 26001,
+   "ttffMs": 1051
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 171,
+   "leaveMs": 650,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 0,
+     "resumeMs": 1
+    },
+    {
+     "id": 1,
+     "rebufferMs": 0,
+     "resumeMs": 2
+    }
+   ],
+   "ttffMs": 1301
+  },
+  "warmup": {
+   "attempts": [
+    1388
+   ],
+   "firstPosMs": 155,
+   "scenario": "warmup",
+   "ttffMs": 1388
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 126,
+   "height": 1080.0,
+   "leaveMs": 5134,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 9022,
+   "stalls": 6,
+   "ttffMs": 4429
+  }
+ },
+ "linux": {
+  "drop20-hls": {
+   "endPosMs": 77698,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 900,
+   "lastMoveAfterCutMs": 74849,
+   "leaveMs": 652,
+   "playingAtEnd": true,
+   "scenario": "drop20-hls",
+   "stalledMs": 501,
+   "stalls": 3,
+   "startupViews": 6,
+   "states": [
+    "playing",
+    "ended",
+    "opening",
+    "idle",
+    "playing"
+   ],
+   "ttffMs": 1834
+  },
+  "drop20-mp4": {
+   "endPosMs": 81902,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 150,
+   "lastMoveAfterCutMs": 75119,
+   "leaveMs": 582,
+   "playingAtEnd": true,
+   "scenario": "drop20-mp4",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 3,
+   "states": [
+    "playing",
+    "ended",
+    "opening",
+    "idle",
+    "playing"
+   ],
+   "ttffMs": 1339
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 734,
+   "leaveBlockMs": 130503,
+   "leaveMs": 130553,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 1835
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 150,
+   "leaveMs": 685,
+   "maxRssMb": 1924,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 1344
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183900,
+   "leaveMs": 560,
+   "savedAtMs": 183400,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4283,
+   "stalls": 0,
+   "ttffMs": 5327
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 767,
+   "leaveMs": 533,
+   "maxRssMb": 1665,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "landedOffMs": -6162,
+     "posAfterMs": -3161,
+     "resumeMs": 5242,
+     "step": 10
+    },
+    {
+     "landedOffMs": -1542,
+     "posAfterMs": 3457,
+     "resumeMs": 3745,
+     "step": 60
+    },
+    {
+     "landedOffMs": -4868,
+     "posAfterMs": 1392,
+     "resumeMs": 5506,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 2849
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 150,
+   "leaveMs": 650,
+   "maxRssMb": 1481,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7248,
+     "resumeMs": 60,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7250,
+     "resumeMs": 257,
+     "step": 60
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7250,
+     "resumeMs": 107,
+     "step": -10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7251,
+     "resumeMs": 257,
+     "step": -60
+    }
+   ],
+   "stalls": 0,
+   "startupViews": 0,
+   "ttffMs": 1345
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 400,
+   "leaveMs": 650,
+   "maxRssMb": 1513,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 5750,
+     "resumeMs": 2482,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 5001,
+     "resumeMs": 1002,
+     "step": 60
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 2249,
+     "resumeMs": 1004,
+     "step": -10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 1000,
+     "resumeMs": 1006,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 3362
+  },
+  "stall20-hls": {
+   "endPosMs": 75743,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 844,
+   "lastMoveAfterCutMs": 75344,
+   "leaveMs": 684,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 8014,
+   "stalls": 3,
+   "startupViews": 0,
+   "states": [
+    "playing"
+   ],
+   "ttffMs": 2369
+  },
+  "start-hls-8M": {
+   "firstPosMs": 275,
+   "height": 1080.0,
+   "leaveBlockMs": 29,
+   "leaveMs": 652,
+   "maxRssMb": 1205,
+   "scenario": "start-hls-8M",
+   "stalls": 1,
+   "ttffMs": 2366
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 462,
+   "height": 1080.0,
+   "leaveBlockMs": 405,
+   "leaveMs": 682,
+   "maxRssMb": 1058,
+   "scenario": "start-mkv-8M",
+   "stalls": 0,
+   "ttffMs": 3867
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 150,
+   "height": 1080.0,
+   "leaveBlockMs": 381,
+   "leaveMs": 653,
+   "maxRssMb": 1285,
+   "scenario": "start-mp4-30M",
+   "stalls": 0,
+   "ttffMs": 1353
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 401,
+   "height": 1080.0,
+   "leaveBlockMs": 44,
+   "leaveMs": 652,
+   "maxRssMb": 907,
+   "scenario": "start-mp4-8M",
+   "stalls": 0,
+   "ttffMs": 3370
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 531,
+   "firstPosMs": 150,
+   "leaveMs": 669,
+   "maxRssMb": 1640,
+   "scenario": "storm-mp4-30M",
+   "stalled": 1281,
+   "stormMs": 26016,
+   "ttffMs": 1336
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 462,
+   "leaveMs": 703,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 0,
+     "resumeMs": 2
+    },
+    {
+     "id": 1,
+     "rebufferMs": 0,
+     "resumeMs": 3
+    }
+   ],
+   "ttffMs": 1846
+  },
+  "warmup": {
+   "attempts": [
+    1779
+   ],
+   "firstPosMs": 150,
+   "scenario": "warmup",
+   "ttffMs": 1779
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 645,
+   "height": 1080.0,
+   "leaveMs": 5134,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 10015,
+   "stalls": 6,
+   "ttffMs": 3846
+  }
+ },
+ "macos": {
+  "drop20-hls": {
+   "endPosMs": 43135,
+   "endedOrError": false,
+   "finalState": "paused",
+   "firstPosMs": 655,
+   "lastMoveAfterCutMs": 33900,
+   "leaveMs": 637,
+   "playingAtEnd": false,
+   "scenario": "drop20-hls",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 0,
+   "states": [
+    "playing",
+    "paused"
+   ],
+   "ttffMs": 2149
+  },
+  "drop20-mp4": {
+   "endPosMs": 59762,
+   "endedOrError": false,
+   "finalState": "paused",
+   "firstPosMs": 406,
+   "lastMoveAfterCutMs": 50927,
+   "leaveMs": 641,
+   "playingAtEnd": false,
+   "scenario": "drop20-mp4",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 0,
+   "states": [
+    "playing",
+    "paused"
+   ],
+   "ttffMs": 1627
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 654,
+   "leaveBlockMs": 21,
+   "leaveMs": 649,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 2146
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 151,
+   "leaveMs": 642,
+   "maxRssMb": 865,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 1609
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183539,
+   "leaveMs": 625,
+   "savedAtMs": 183405,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4134,
+   "stalls": 0,
+   "ttffMs": 4818
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 200,
+   "leaveMs": 640,
+   "maxRssMb": 774,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "landedOffMs": -6306,
+     "posAfterMs": -4308,
+     "resumeMs": 6052,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 1249,
+     "resumeMs": 3465,
+     "step": 60
+    },
+    {
+     "landedOffMs": -1328,
+     "posAfterMs": 2381,
+     "resumeMs": 5476,
+     "step": -60
+    }
+   ],
+   "stalls": 3,
+   "startupViews": 0,
+   "ttffMs": 2420
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 155,
+   "leaveMs": 638,
+   "maxRssMb": 793,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 7499,
+     "resumeMs": 528,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7751,
+     "resumeMs": 166,
+     "step": 60
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 8000,
+     "resumeMs": 254,
+     "step": -10
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 7250,
+     "resumeMs": 688,
+     "step": -60
+    }
+   ],
+   "stalls": 0,
+   "startupViews": 0,
+   "ttffMs": 1650
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 404,
+   "leaveMs": 648,
+   "maxRssMb": 806,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 5246,
+     "resumeMs": 1004,
+     "step": 10
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 5755,
+     "resumeMs": 2167,
+     "step": 60
+    },
+    {
+     "landedOffMs": -9,
+     "posAfterMs": 2745,
+     "resumeMs": 5374,
+     "step": -10
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 1254,
+     "resumeMs": 6902,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 3746
+  },
+  "stall20-hls": {
+   "endPosMs": 72420,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 822,
+   "lastMoveAfterCutMs": 75308,
+   "leaveMs": 640,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 10476,
+   "stalls": 1,
+   "startupViews": 0,
+   "states": [
+    "playing"
+   ],
+   "ttffMs": 2149
+  },
+  "start-hls-8M": {
+   "firstPosMs": 303,
+   "height": 1080.0,
+   "leaveBlockMs": 11,
+   "leaveMs": 625,
+   "maxRssMb": 332,
+   "scenario": "start-hls-8M",
+   "stalls": 0,
+   "ttffMs": 1683
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 208,
+   "height": 1080.0,
+   "leaveBlockMs": 10,
+   "leaveMs": 625,
+   "maxRssMb": 322,
+   "scenario": "start-mkv-8M",
+   "stalls": 0,
+   "ttffMs": 3397
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 156,
+   "height": 1080.0,
+   "leaveBlockMs": 10,
+   "leaveMs": 625,
+   "maxRssMb": 343,
+   "scenario": "start-mp4-30M",
+   "stalls": 0,
+   "ttffMs": 1045
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 655,
+   "height": 1080.0,
+   "leaveBlockMs": 11,
+   "leaveMs": 625,
+   "maxRssMb": 312,
+   "scenario": "start-mp4-8M",
+   "stalls": 0,
+   "ttffMs": 3055
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 167,
+   "firstPosMs": 155,
+   "leaveMs": 641,
+   "maxRssMb": 789,
+   "scenario": "storm-mp4-30M",
+   "stalled": 0,
+   "stormMs": 25083,
+   "ttffMs": 1872
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 211,
+   "leaveMs": 640,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 0,
+     "resumeMs": 1
+    },
+    {
+     "id": 1,
+     "rebufferMs": 0,
+     "resumeMs": 2
+    }
+   ],
+   "ttffMs": 1874
+  },
+  "warmup": {
+   "attempts": [
+    1162
+   ],
+   "firstPosMs": 154,
+   "scenario": "warmup",
+   "ttffMs": 1162
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 579,
+   "height": 1080.0,
+   "leaveMs": 651,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 9120,
+   "stalls": 6,
+   "ttffMs": 3936
+  }
+ },
+ "windows": {
+  "drop20-hls": {
+   "endPosMs": 76791,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 276,
+   "lastMoveAfterCutMs": 75088,
+   "leaveMs": 639,
+   "playingAtEnd": true,
+   "scenario": "drop20-hls",
+   "stalledMs": 20,
+   "stalls": 9,
+   "startupViews": 7,
+   "states": [
+    "playing",
+    "ended",
+    "opening",
+    "idle",
+    "playing"
+   ],
+   "ttffMs": 2855
+  },
+  "drop20-mp4": {
+   "endPosMs": 80902,
+   "endedOrError": true,
+   "finalState": "playing",
+   "firstPosMs": 169,
+   "lastMoveAfterCutMs": 74861,
+   "leaveMs": 651,
+   "playingAtEnd": true,
+   "scenario": "drop20-mp4",
+   "stalledMs": 0,
+   "stalls": 0,
+   "startupViews": 4,
+   "states": [
+    "playing",
+    "ended",
+    "opening",
+    "idle",
+    "playing"
+   ],
+   "ttffMs": 2775
+  },
+  "leave-during-stall-hls": {
+   "firstPosMs": 641,
+   "leaveBlockMs": 180,
+   "leaveMs": 736,
+   "scenario": "leave-during-stall-hls",
+   "ttffMs": 3476
+  },
+  "memory-mp4-30M": {
+   "firstPosMs": 153,
+   "leaveMs": 1164,
+   "maxRssMb": 1072,
+   "scenario": "memory-mp4-30M",
+   "ttffMs": 2495
+  },
+  "resume-hls-8M": {
+   "firstPosMs": 178950,
+   "leaveMs": 595,
+   "savedAtMs": 183649,
+   "scenario": "resume-hls-8M",
+   "seekTo180Ms": 5467,
+   "stalls": 0,
+   "ttffMs": 10309
+  },
+  "resume-mp4-8M": {
+   "firstPosMs": 183425,
+   "leaveMs": 653,
+   "savedAtMs": 183151,
+   "scenario": "resume-mp4-8M",
+   "seekTo180Ms": 4533,
+   "stalls": 1,
+   "ttffMs": 7072
+  },
+  "seeks-hls-8M": {
+   "firstPosMs": 609,
+   "leaveMs": 642,
+   "maxRssMb": 926,
+   "scenario": "seeks-hls-8M",
+   "seeks": [
+    {
+     "landedOffMs": -6647,
+     "posAfterMs": -2665,
+     "resumeMs": 4229,
+     "step": 10
+    },
+    {
+     "landedOffMs": -2701,
+     "posAfterMs": 3534,
+     "resumeMs": 3903,
+     "step": 60
+    },
+    {
+     "landedOffMs": null,
+     "posAfterMs": 0,
+     "resumeMs": null,
+     "step": -60
+    }
+   ],
+   "stalls": 3,
+   "startupViews": 0,
+   "ttffMs": 4413
+  },
+  "seeks-mp4-30M": {
+   "firstPosMs": 401,
+   "leaveMs": 1015,
+   "maxRssMb": 954,
+   "scenario": "seeks-mp4-30M",
+   "seeks": [
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 6751,
+     "resumeMs": 1466,
+     "step": 10
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 6500,
+     "resumeMs": 1130,
+     "step": 60
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 6750,
+     "resumeMs": 1099,
+     "step": -10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 7000,
+     "resumeMs": 1004,
+     "step": -60
+    }
+   ],
+   "stalls": 3,
+   "startupViews": 0,
+   "ttffMs": 3337
+  },
+  "seeks-mp4-8M": {
+   "firstPosMs": 401,
+   "leaveMs": 1059,
+   "maxRssMb": 951,
+   "scenario": "seeks-mp4-8M",
+   "seeks": [
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 5501,
+     "resumeMs": 1116,
+     "step": 10
+    },
+    {
+     "landedOffMs": 0,
+     "posAfterMs": 4750,
+     "resumeMs": 1005,
+     "step": 60
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 2000,
+     "resumeMs": 5645,
+     "step": -10
+    },
+    {
+     "landedOffMs": -10,
+     "posAfterMs": 750,
+     "resumeMs": 6767,
+     "step": -60
+    }
+   ],
+   "stalls": 4,
+   "startupViews": 0,
+   "ttffMs": 4679
+  },
+  "stall20-hls": {
+   "endPosMs": 75088,
+   "endedOrError": false,
+   "finalState": "playing",
+   "firstPosMs": 485,
+   "lastMoveAfterCutMs": 75390,
+   "leaveMs": 1150,
+   "playingAtEnd": true,
+   "scenario": "stall20-hls",
+   "stalledMs": 8535,
+   "stalls": 7,
+   "startupViews": 0,
+   "states": [
+    "playing"
+   ],
+   "ttffMs": 3126
+  },
+  "start-hls-8M": {
+   "firstPosMs": 692,
+   "height": 1080.0,
+   "leaveBlockMs": 463,
+   "leaveMs": 905,
+   "maxRssMb": 883,
+   "scenario": "start-hls-8M",
+   "stalls": 2,
+   "ttffMs": 5523
+  },
+  "start-mkv-8M": {
+   "firstPosMs": 78,
+   "height": 1080.0,
+   "leaveBlockMs": 593,
+   "leaveMs": 904,
+   "maxRssMb": 919,
+   "scenario": "start-mkv-8M",
+   "stalls": 1,
+   "ttffMs": 5466
+  },
+  "start-mp4-30M": {
+   "firstPosMs": 401,
+   "height": 1080.0,
+   "leaveBlockMs": 624,
+   "leaveMs": 1057,
+   "maxRssMb": 946,
+   "scenario": "start-mp4-30M",
+   "stalls": 2,
+   "ttffMs": 3216
+  },
+  "start-mp4-8M": {
+   "firstPosMs": 651,
+   "height": 1080.0,
+   "leaveBlockMs": 411,
+   "leaveMs": 667,
+   "maxRssMb": 927,
+   "scenario": "start-mp4-8M",
+   "stalls": 1,
+   "ttffMs": 6591
+  },
+  "storm-mp4-30M": {
+   "finalResumeMs": 752,
+   "firstPosMs": 150,
+   "leaveMs": 900,
+   "maxRssMb": 984,
+   "scenario": "storm-mp4-30M",
+   "stalled": 0,
+   "stormMs": 25372,
+   "ttffMs": 2754
+  },
+  "switch-audio-mkv": {
+   "firstPosMs": 334,
+   "leaveMs": 2003,
+   "scenario": "switch-audio-mkv",
+   "switches": [
+    {
+     "id": 2,
+     "rebufferMs": 0,
+     "resumeMs": 11
+    },
+    {
+     "id": 1,
+     "rebufferMs": 0,
+     "resumeMs": 5
+    }
+   ],
+   "ttffMs": 3294
+  },
+  "warmup": {
+   "attempts": [
+    29180
+   ],
+   "firstPosMs": 156,
+   "scenario": "warmup",
+   "ttffMs": 29180
+  },
+  "weak-hls-3500": {
+   "firstPosMs": 110,
+   "height": 1080.0,
+   "leaveMs": 659,
+   "scenario": "weak-hls-3500",
+   "stalledMs": 9108,
+   "stalls": 6,
+   "ttffMs": 25122
+  }
+ }
+}
