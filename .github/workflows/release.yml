@@ -91,6 +91,12 @@ jobs:
       ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
     steps:
       - uses: actions/checkout@v7
+      # assets/plugins/ is in .gitignore, so a fresh clone lacks it, but pubspec.yaml lists it as an
+      # asset directory and the build fails without it. The "version" job makes it on ITS runner only;
+      # each platform job runs on its own runner, so each one has to make it again.
+      - name: Ensure assets/plugins exists
+        shell: bash
+        run: mkdir -p assets/plugins
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -197,6 +203,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
+      # assets/plugins/ is in .gitignore, so a fresh clone lacks it, but pubspec.yaml lists it as an
+      # asset directory and the build fails without it. The "version" job makes it on ITS runner only;
+      # each platform job runs on its own runner, so each one has to make it again.
+      - name: Ensure assets/plugins exists
+        shell: bash
+        run: mkdir -p assets/plugins
       - name: Select Latest Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -285,6 +297,12 @@ jobs:
             java_arch: x64
     steps:
       - uses: actions/checkout@v7
+      # assets/plugins/ is in .gitignore, so a fresh clone lacks it, but pubspec.yaml lists it as an
+      # asset directory and the build fails without it. The "version" job makes it on ITS runner only;
+      # each platform job runs on its own runner, so each one has to make it again.
+      - name: Ensure assets/plugins exists
+        shell: bash
+        run: mkdir -p assets/plugins
       - name: Select Latest Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -457,6 +475,12 @@ jobs:
           #   torrserver_binary: TorrServer-windows-arm64.exe
     steps:
       - uses: actions/checkout@v7
+      # assets/plugins/ is in .gitignore, so a fresh clone lacks it, but pubspec.yaml lists it as an
+      # asset directory and the build fails without it. The "version" job makes it on ITS runner only;
+      # each platform job runs on its own runner, so each one has to make it again.
+      - name: Ensure assets/plugins exists
+        shell: bash
+        run: mkdir -p assets/plugins
       
       - uses: subosito/flutter-action@v2
         with:
@@ -623,6 +647,12 @@ jobs:
           # The checkout belongs to the runner's user, not to root.
           git config --global --add safe.directory '*'
       - uses: actions/checkout@v7
+      # assets/plugins/ is in .gitignore, so a fresh clone lacks it, but pubspec.yaml lists it as an
+      # asset directory and the build fails without it. The "version" job makes it on ITS runner only;
+      # each platform job runs on its own runner, so each one has to make it again.
+      - name: Ensure assets/plugins exists
+        shell: bash
+        run: mkdir -p assets/plugins
       - uses: subosito/flutter-action@v2
         if: ${{ matrix.arch != 'arm64' }}
         with:
