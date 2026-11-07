@@ -76,7 +76,14 @@ object VideoProxy {
      * Không bao giờ ném lỗi: có sự cố gì thì link gốc vẫn được trả như trước.
      */
     fun wrap(api: MainAPI, link: ExtractorLink): String? = try {
-        val interceptor = api.getVideoInterceptor(link) ?: return null
+        // Giống CS3IPlayer của CloudStream: interceptor lấy từ provider có TÊN trùng `link.source`
+        // (`getApiFromNameNull(link.source)?.getVideoInterceptor(link)`), KHÔNG phải mọi link mà
+        // provider này gọi callback. Link do extractor của host khác tạo (source = tên host đó) vẫn
+        // đi thẳng, không bị interceptor của provider chen vào (có plugin thêm header/đổi request
+        // chỉ đúng cho server của họ).
+        val owner = if (link.source == api.name) api
+        else com.lagradost.cloudstream3.APIHolder.getApiFromNameNull(link.source)
+        val interceptor = owner?.getVideoInterceptor(link) ?: return null
         val port = ensureStarted()
         val id = newId()
         val base = com.lagradost.cloudstream3.app.baseClient
