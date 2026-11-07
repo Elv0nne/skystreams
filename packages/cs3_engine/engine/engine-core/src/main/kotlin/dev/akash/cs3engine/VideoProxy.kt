@@ -50,6 +50,8 @@ object VideoProxy {
 
     private const val MAX_ENTRIES = 256
     private const val MAX_PLAYLIST_BYTES = 8L * 1024 * 1024
+    private const val MAX_SEGMENT_BYTES = 128L * 1024 * 1024
+    private val IMAGE_EXT = Regex("""\.(png|jpe?g|gif|webp|bmp|ico|svg)$""", RegexOption.IGNORE_CASE)
     private const val COPY_BUFFER = 64 * 1024
 
     private val entries = object : LinkedHashMap<String, Entry>(64, 0.75f, true) {
@@ -212,8 +214,14 @@ object VideoProxy {
         if (entry.referer != null && entry.headers.keys.none { it.equals("referer", true) }) {
             builder.header("Referer", entry.referer)
         }
-        req.headers["range"]?.let { builder.header("Range", it) }
-        req.headers["if-range"]?.let { builder.header("If-Range", it) }
+        // Phần HLS (playlist + segment) KHÔNG chuyển Range lên nguồn: segment đã qua interceptor (FE cắt
+        // ~22KB header PNG giả) nên offset của nguồn lệch với offset player thấy. Lấy cả segment rồi tự
+        // cắt đoạn được hỏi (xem serveRanged). Video liền (HY/MP4) thì chuyển Range như cũ.
+        val hlsPart = !isMain || entry.type == ExtractorLinkType.M3U8
+        if (!hlsPart) {
+            req.headers["range"]?.let { builder.header("Range", it) }
+            req.headers["if-range"]?.let { builder.header("If-Range", it) }
+        }
 
         val response = try {
             entry.client.newCall(builder.build()).execute()
@@ -224,16 +232,30 @@ object VideoProxy {
         }
 
         response.use { resp ->
-            val ct = resp.header("Content-Type")?.lowercase().orEmpty()
-            val looksLikePlaylist = ct.contains("mpegurl") ||
-                target.substringBefore('?').lowercase().endsWith(".m3u8") ||
-                (isMain && entry.type == ExtractorLinkType.M3U8)
-
-            if (looksLikePlaylist && resp.isSuccessful && resp.code != 206) {
-                return servePlaylist(req, resp, segs[1], out)
-            }
-            streamBody(req, resp, out)
+            // Nhận diện theo NỘI DUNG, không tin Content-Type/đuôi file: nguồn kiểu FE trả playlist con
+            // dạng text/plain hoặc image/png, URL không có .m3u8. Nhận sai thì segment bên trong lọt
+            // ra ngoài cầu, không qua interceptor và player không phát được.
+            val sniff = if (resp.code == 200) sniff(resp) else Sniff(false, false)
+            if (sniff.playlist) return servePlaylist(req, resp, segs[1], out)
+            streamBody(req, resp, out, hlsPart, sniff.ts)
         }
+    }
+
+    private class Sniff(val playlist: Boolean, val ts: Boolean)
+
+    /** Xem vài byte đầu của body mà không tiêu thụ chúng. */
+    private fun sniff(resp: Response): Sniff {
+        val peek = resp.body.source().peek()
+        val head = ByteArray(10)
+        var got = 0
+        while (got < head.size) {
+            val n = peek.read(head, got, head.size - got)
+            if (n < 0) break
+            got += n
+        }
+        if (got == 0) return Sniff(false, false)
+        val text = String(head, 0, got, Charsets.UTF_8).removePrefix("\uFEFF")
+        return Sniff(text.startsWith("#EXTM3U"), head[0] == 0x47.toByte())
     }
 
     private fun servePlaylist(req: Req, resp: Response, id: String, out: OutputStream) {
@@ -276,8 +298,11 @@ object VideoProxy {
             if (raw.startsWith("data:", ignoreCase = true)) return raw
             val abs = base?.resolve(raw)?.toString() ?: raw
             val b64 = Base64.getUrlEncoder().withoutPadding().encodeToString(abs.toByteArray(Charsets.UTF_8))
-            val name = abs.substringBefore('?').substringAfterLast('/').ifBlank { "r" }
+            // Segment của FE đặt tên như ảnh (.png/.jpg) để qua mặt CDN. Player đoán định dạng theo đuôi
+            // file, nên đổi thành .ts (nội dung thật là MPEG-TS sau khi interceptor cắt header giả).
+            var name = abs.substringBefore('?').substringAfterLast('/').ifBlank { "r" }
                 .filter { it.isLetterOrDigit() || it == '.' || it == '_' || it == '-' }.ifBlank { "r" }
+            if (IMAGE_EXT.containsMatchIn(name)) name = name.replace(IMAGE_EXT, ".ts")
             return "http://127.0.0.1:$port/v/$id/s/$b64/$name"
         }
         val uriAttr = Regex("""URI="([^"]*)"""")
@@ -293,16 +318,31 @@ object VideoProxy {
         }
     }
 
-    private fun streamBody(req: Req, resp: Response, out: OutputStream) {
+    private fun streamBody(req: Req, resp: Response, out: OutputStream, hlsPart: Boolean, isTs: Boolean) {
         val body = resp.body
+        // Nội dung thật là MPEG-TS nhưng nguồn gắn nhãn ảnh (image/png) hoặc nhãn chung chung: VLC/HLS có
+        // thể chọn bộ giải mã ảnh theo nhãn này. Ép về video/mp2t.
+        val originalType = resp.header("Content-Type")
+        val contentType = if (isTs && (originalType == null || originalType.startsWith("image/", true) ||
+                originalType.contains("octet-stream", true) || originalType.startsWith("text/", true))
+        ) "video/mp2t" else originalType
+
+        if (hlsPart && resp.code == 200 && req.headers["range"] != null) {
+            return serveRanged(req, resp, contentType, out)
+        }
+
         val length = body.contentLength()
         val head = StringBuilder("HTTP/1.1 ").append(resp.code).append(' ')
             .append(resp.message.ifBlank { reason(resp.code) }).append("\r\n")
         for ((name, value) in resp.headers) {
-            if (name.lowercase() in forwardedResponseHeaders) head.append(name).append(": ").append(value).append("\r\n")
+            val n = name.lowercase()
+            if (n in forwardedResponseHeaders && n != "content-type" && !(hlsPart && n == "accept-ranges")) {
+                head.append(name).append(": ").append(value).append("\r\n")
+            }
         }
-        if (resp.code == 200 || resp.code == 206) {
-            if (resp.header("Accept-Ranges") == null) head.append("Accept-Ranges: bytes\r\n")
+        if (contentType != null) head.append("Content-Type: ").append(contentType).append("\r\n")
+        if (!hlsPart && (resp.code == 200 || resp.code == 206) && resp.header("Accept-Ranges") == null) {
+            head.append("Accept-Ranges: bytes\r\n")
         }
         if (length >= 0) head.append("Content-Length: ").append(length).append("\r\n")
         head.append("Connection: close\r\n\r\n")
@@ -316,6 +356,47 @@ object VideoProxy {
                 sink.writeTo(out)
             }
         }
+        out.flush()
+    }
+
+    /** Segment HLS mà player hỏi theo Range: lấy cả segment (đã qua interceptor) rồi cắt đúng đoạn. */
+    private fun serveRanged(req: Req, resp: Response, contentType: String?, out: OutputStream) {
+        val source = resp.body.source()
+        val buf = okio.Buffer()
+        while (true) {
+            val n = source.read(buf, COPY_BUFFER.toLong())
+            if (n < 0) break
+            if (buf.size > MAX_SEGMENT_BYTES) return fail(out, 502, "Bad Gateway")
+        }
+        val all = buf.readByteArray()
+        val total = all.size.toLong()
+        val m = Regex("""bytes=(\d*)-(\d*)""").find(req.headers["range"].orEmpty())
+        var start = 0L
+        var end = total - 1
+        var partial = false
+        if (m != null && (m.groupValues[1].isNotEmpty() || m.groupValues[2].isNotEmpty())) {
+            if (m.groupValues[1].isEmpty()) {
+                start = maxOf(0L, total - m.groupValues[2].toLong())
+            } else {
+                start = m.groupValues[1].toLong()
+                if (m.groupValues[2].isNotEmpty()) end = minOf(end, m.groupValues[2].toLong())
+            }
+            partial = true
+        }
+        if (partial && (start >= total || start > end)) {
+            val h = "HTTP/1.1 416 Range Not Satisfiable\r\nContent-Range: bytes */$total\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
+            out.write(h.toByteArray(Charsets.ISO_8859_1))
+            out.flush()
+            return
+        }
+        val slice = if (partial) all.copyOfRange(start.toInt(), end.toInt() + 1) else all
+        val head = StringBuilder(if (partial) "HTTP/1.1 206 Partial Content\r\n" else "HTTP/1.1 200 OK\r\n")
+        if (contentType != null) head.append("Content-Type: ").append(contentType).append("\r\n")
+        head.append("Accept-Ranges: bytes\r\n")
+        if (partial) head.append("Content-Range: bytes $start-$end/$total\r\n")
+        head.append("Content-Length: ").append(slice.size).append("\r\nConnection: close\r\n\r\n")
+        out.write(head.toString().toByteArray(Charsets.ISO_8859_1))
+        if (req.method != "HEAD") out.write(slice)
         out.flush()
     }
 
