@@ -66,6 +66,28 @@ object VideoProxy {
 
     @Volatile private var server: ServerSocket? = null
 
+    // ---------------------------------------------------------------- nhật ký chẩn đoán
+    // Ghi vào <thư mục tạm>/skystream-videoproxy.log (Windows: %TEMP%). Chỉ có host + đường dẫn, bỏ query
+    // (có thể chứa token). Giới hạn ~1MB. Để khi một nguồn "Reachable nhưng Unplayable" thì xem được cầu này
+    // đã nhận gì, nguồn trả gì, interceptor có ném lỗi không.
+    private val logFile: java.io.File? by lazy {
+        runCatching { java.io.File(System.getProperty("java.io.tmpdir"), "skystream-videoproxy.log") }.getOrNull()
+    }
+
+    private fun safe(url: String): String =
+        runCatching { url.toHttpUrlOrNull()?.let { "${it.host}${it.encodedPath}" } ?: url.substringBefore('?') }
+            .getOrDefault("?")
+
+    @Synchronized
+    private fun dbg(msg: String) {
+        try {
+            val f = logFile ?: return
+            if (f.exists() && f.length() > 1_000_000) f.writeText("")
+            f.appendText("${java.time.LocalTime.now().withNano(0)} $msg\n")
+        } catch (_: Throwable) {
+        }
+    }
+
     /** Các hop-by-hop / header không chuyển tiếp từ nguồn về player. */
     private val forwardedResponseHeaders = setOf(
         "content-type", "content-range", "accept-ranges", "last-modified", "etag", "cache-control",
@@ -98,6 +120,7 @@ object VideoProxy {
         synchronized(entries) {
             entries[id] = Entry(link.url, link.headers, link.referer, link.type, client)
         }
+        dbg("wrap id=$id type=${link.type} source=${link.source} url=${safe(link.url)} headers=${link.headers.keys}")
         val suffix = if (link.type == ExtractorLinkType.M3U8) "index.m3u8" else "video.mp4"
         "http://127.0.0.1:$port/v/$id/main/$suffix"
     } catch (_: Throwable) {
@@ -225,9 +248,9 @@ object VideoProxy {
 
         val response = try {
             entry.client.newCall(builder.build()).execute()
-        } catch (e: IOException) {
-            return fail(out, 502, "Bad Gateway")
         } catch (e: Throwable) {
+            // Lỗi từ interceptor của plugin (vd NoClassDefFoundError thiếu API android) cũng rơi vào đây.
+            dbg("ERR ${req.method} ${segs[2]} ${safe(target)} -> ${e.javaClass.name}: ${e.message}")
             return fail(out, 502, "Bad Gateway")
         }
 
@@ -236,6 +259,8 @@ object VideoProxy {
             // dạng text/plain hoặc image/png, URL không có .m3u8. Nhận sai thì segment bên trong lọt
             // ra ngoài cầu, không qua interceptor và player không phát được.
             val sniff = if (resp.code == 200) sniff(resp) else Sniff(false, false)
+            dbg("${req.method} ${segs[2]} ${safe(target)} range=${req.headers["range"]} -> ${resp.code} " +
+                "type=${resp.header("Content-Type")} len=${resp.body.contentLength()} playlist=${sniff.playlist} ts=${sniff.ts}")
             if (sniff.playlist) return servePlaylist(req, resp, segs[1], out)
             streamBody(req, resp, out, hlsPart, sniff.ts)
         }
@@ -274,6 +299,7 @@ object VideoProxy {
             buf.readByteArray()
         }
         val text = bytes.toString(Charsets.UTF_8)
+        dbg("playlist ${safe(resp.request.url.toString())} ${bytes.size}B, ${text.lines().count { it.isNotBlank() && !it.startsWith("#") }} URL được viết lại")
         val result = if (text.trimStart().startsWith("#EXTM3U")) {
             rewritePlaylist(text, resp.request.url.toString(), id).toByteArray(Charsets.UTF_8)
         } else {
