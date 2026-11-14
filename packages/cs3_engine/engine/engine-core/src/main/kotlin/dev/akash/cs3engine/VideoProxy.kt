@@ -344,8 +344,46 @@ object VideoProxy {
         }
     }
 
-    private fun streamBody(req: Req, resp: Response, out: OutputStream, hlsPart: Boolean, isTs: Boolean) {
+    /**
+     * Tìm điểm bắt đầu MPEG-TS trong ~128KB đầu của segment: byte 0x47 lặp lại cách nhau 188 byte (5 gói
+     * liên tiếp, chặt hơn 3 gói của cs347 để ít nhận nhầm). Trả -1 nếu không thấy. Mục đích: segment kiểu
+     * FE có header PNG giả ~22KB phía trước; nếu bộ chặn của plugin vì lý do gì đó không cắt (hoặc cắt
+     * hỏng), cầu tự cắt để player vẫn nhận được TS hợp lệ. [head] trả về vài byte đầu để ghi log.
+     */
+    private fun findTsStart(source: okio.BufferedSource, head: ByteArray): Int {
+        val peek = source.peek()
+        val buf = okio.Buffer()
+        while (buf.size < 131072) {
+            if (peek.read(buf, 131072 - buf.size) < 0) break
+        }
+        val data = buf.readByteArray()
+        System.arraycopy(data, 0, head, 0, minOf(head.size, data.size))
+        val need = 188 * 4 + 1
+        for (i in 0..(data.size - need)) {
+            if (data[i] == 0x47.toByte() && data[i + 188] == 0x47.toByte() && data[i + 376] == 0x47.toByte() &&
+                data[i + 564] == 0x47.toByte() && data[i + 752] == 0x47.toByte()
+            ) return i
+        }
+        return -1
+    }
+
+    private fun streamBody(req: Req, resp: Response, out: OutputStream, hlsPart: Boolean, tsFirstByte: Boolean) {
         val body = resp.body
+        var isTs = tsFirstByte
+        var stripped = 0L
+        if (hlsPart && resp.code == 200 && !tsFirstByte) {
+            val head = ByteArray(16)
+            val k = findTsStart(body.source(), head)
+            if (k > 0) {
+                body.source().skip(k.toLong())
+                stripped = k.toLong()
+                isTs = true
+                dbg("resync: cắt thêm ${k}B đầu segment (bộ chặn chưa cắt hoặc cắt chưa đủ)")
+            } else if (k < 0) {
+                dbg("KHÔNG phải TS: không thấy chuỗi 0x47 mỗi 188B trong 128KB đầu; 16 byte đầu=" +
+                    head.joinToString("") { "%02x".format(it) } + " type=${resp.header("Content-Type")} len=${body.contentLength()}")
+            }
+        }
         // Nội dung thật là MPEG-TS nhưng nguồn gắn nhãn ảnh (image/png) hoặc nhãn chung chung: VLC/HLS có
         // thể chọn bộ giải mã ảnh theo nhãn này. Ép về video/mp2t.
         val originalType = resp.header("Content-Type")
@@ -357,7 +395,7 @@ object VideoProxy {
             return serveRanged(req, resp, contentType, out)
         }
 
-        val length = body.contentLength()
+        val length = body.contentLength().let { if (it >= 0) it - stripped else it }
         val head = StringBuilder("HTTP/1.1 ").append(resp.code).append(' ')
             .append(resp.message.ifBlank { reason(resp.code) }).append("\r\n")
         for ((name, value) in resp.headers) {
